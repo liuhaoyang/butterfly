@@ -1,0 +1,18 @@
+<Project>
+  <Import Project="sign.props" />
+  <Import Project="version.props" />
+  <PropertyGroup>
+    <Authors>Lemon</Authors>
+    <Product>Butterfly.APM</Product>
+    <PackageIconUrl></PackageIconUrl>
+    <PackageProjectUrl>https://github.com/dotnet-lab/Butterfly</PackageProjectUrl>
+    <PackageLicenseUrl>https://github.com/dotnet-lab/Butterfly/blob/dev/LICENSE</PackageLicenseUrl>
+    <RepositoryType>git</RepositoryType>
+    <RepositoryUrl>https://github.com/dotnet-lab/Butterfly</RepositoryUrl>
+    <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
+    <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
+    <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
+    <GeneratePackageOnBuild>False</GeneratePackageOnBuild>
+    <PackageRequireLicenseAcceptance>False</PackageRequireLicenseAcceptance>  
+  </PropertyGroup>
+</Project>
