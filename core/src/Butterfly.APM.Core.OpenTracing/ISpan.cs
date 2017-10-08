@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Butterfly.APM.Core.OpenTracing
 {
-    public interface ISpan
+    public interface ISpan : IDisposable
     {
         ISpanContext SpanContext { get; }
 

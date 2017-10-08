@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Butterfly.APM.Core.OpenTracing
+﻿namespace Butterfly.APM.Core.OpenTracing
 {
     public interface ISpanBuilder
     {
-        ArraySegment<>
+        ISpanBuilder Reference(SpanReferenceOptions reference, ISpanContext spanContext);
+
+        string OperationName { get; }
     }
 }

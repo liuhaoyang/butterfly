@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace Butterfly.APM.Core.OpenTracing
 {
@@ -29,6 +28,18 @@ namespace Butterfly.APM.Core.OpenTracing
                     baggage[item.Key] = item.Value;
                 }
             }
+            return baggage;
+        }
+
+        public static Baggage ToBaggage(this ReadOnlyBaggage readOnlyBaggage)
+        {
+            if (readOnlyBaggage == null)
+            {
+                throw new ArgumentNullException(nameof(readOnlyBaggage));
+            }
+            var baggage = new Baggage();
+            foreach (var item in readOnlyBaggage)
+                baggage[item.Key] = item.Value;
             return baggage;
         }
     }

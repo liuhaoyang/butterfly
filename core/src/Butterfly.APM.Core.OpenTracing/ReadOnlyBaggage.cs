@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 
 namespace Butterfly.APM.Core.OpenTracing
@@ -7,9 +8,9 @@ namespace Butterfly.APM.Core.OpenTracing
     {
         private readonly IEnumerable<KeyValuePair<string, string>> _collection;
 
-        internal ReadOnlyBaggage(Baggage baggage)
+        internal ReadOnlyBaggage(IEnumerable<KeyValuePair<string, string>> collection)
         {
-            _collection = baggage;
+            _collection = collection ?? throw new ArgumentNullException(nameof(collection));
         }
 
         public IEnumerator<KeyValuePair<string, string>> GetEnumerator()
