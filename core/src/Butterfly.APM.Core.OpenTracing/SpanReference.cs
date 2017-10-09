@@ -2,12 +2,11 @@
 
 namespace Butterfly.APM.Core.OpenTracing
 {
-    public struct SpanReference
+    public class SpanReference
     {
         public SpanReferenceOptions SpanReferenceOptions { get; }
 
         public ISpanContext SpanContext { get; }
-
 
         public SpanReference(SpanReferenceOptions spanReferenceOptions, ISpanContext spanContext)
         {

@@ -10,6 +10,6 @@ namespace Butterfly.APM.Core.OpenTracing
 
         bool Sampled { get; }
 
-        ReadOnlyBaggage GetBaggage();
+        Baggage Baggage { get; }
     }
 }

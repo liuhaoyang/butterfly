@@ -1,11 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Butterfly.APM.Core.OpenTracing
 {
     public interface ISpan : IDisposable
     {
+        long StartTimestamp { get; }
+
+        long FinishTimestamp { get; }
+
+        long ElapsedTicks { get; }
+
         ISpanContext SpanContext { get; }
 
         Baggage Baggage { get; }

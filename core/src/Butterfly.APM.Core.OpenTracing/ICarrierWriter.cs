@@ -4,8 +4,8 @@ namespace Butterfly.APM.Core.OpenTracing
 {
     public interface ICarrierWriter
     {
-        void Write(ISpanContext spanContext, ICarrier carrier);
+        void Write(SpanContextPackage spanContext, ICarrier carrier);
 
-        Task WriteAsync(ISpanContext spanContext, ICarrier carrier);
+        Task WriteAsync(SpanContextPackage spanContext, ICarrier carrier);
     }
 }

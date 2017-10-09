@@ -4,9 +4,7 @@ namespace Butterfly.APM.Core.OpenTracing
 {
     public interface ISpanBuilder
     {
-        ISpanBuilder Reference(SpanReference reference);
-
-        IReadOnlyCollection<SpanReference> References { get; }
+        SpanReferenceCollection References { get; }
 
         string OperationName { get; }
 

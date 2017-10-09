@@ -1,28 +1,25 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Butterfly.APM.Core.OpenTracing
 {
     internal class SpanContext : ISpanContext
     {
-        private readonly ReadOnlyBaggage _readOnlyBaggage;
+        private readonly Baggage _baggage;
 
         public string TraceId { get; }
 
         public string SpanId { get; }
 
-        public bool Sampled => throw new NotImplementedException();
+        public bool Sampled { get; }
 
-        public SpanContext(string traceId, string spanId, bool sampled, ReadOnlyBaggage readOnlyBaggage)
+        public Baggage Baggage { get; }
+
+        public SpanContext(string traceId, string spanId, bool sampled, Baggage baggage)
         {
             TraceId = traceId;
             SpanId = spanId;
-        }
-
-        public ReadOnlyBaggage GetBaggage()
-        {
-            return _readOnlyBaggage;
+            Sampled = sampled;
+            Baggage = baggage ?? throw new ArgumentNullException(nameof(baggage));
         }
     }
 }

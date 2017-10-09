@@ -10,11 +10,6 @@ namespace Butterfly.APM.Core.OpenTracing
             return Merge(baggage, (IEnumerable<KeyValuePair<string, string>>)other);
         }
 
-        public static Baggage Merge(this Baggage baggage, ReadOnlyBaggage other)
-        {
-            return Merge(baggage, (IEnumerable<KeyValuePair<string, string>>)other);
-        }
-
         public static Baggage Merge(this Baggage baggage, IEnumerable<KeyValuePair<string, string>> other)
         {
             if (baggage == null)
@@ -28,18 +23,6 @@ namespace Butterfly.APM.Core.OpenTracing
                     baggage[item.Key] = item.Value;
                 }
             }
-            return baggage;
-        }
-
-        public static Baggage ToBaggage(this ReadOnlyBaggage readOnlyBaggage)
-        {
-            if (readOnlyBaggage == null)
-            {
-                throw new ArgumentNullException(nameof(readOnlyBaggage));
-            }
-            var baggage = new Baggage();
-            foreach (var item in readOnlyBaggage)
-                baggage[item.Key] = item.Value;
             return baggage;
         }
     }
