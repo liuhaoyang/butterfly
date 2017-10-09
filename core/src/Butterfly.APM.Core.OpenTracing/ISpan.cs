@@ -11,5 +11,7 @@ namespace Butterfly.APM.Core.OpenTracing
         Baggage Baggage { get; }
 
         TagCollection Tags { get; }
+
+        void Finish();
     }
 }
