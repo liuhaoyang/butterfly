@@ -4,8 +4,7 @@ using System.Text;
 
 namespace Butterfly.APM.Core.OpenTracing
 {
-    public interface ICarrier : IEnumerable<KeyValuePair<string, string>>
+    public interface ITextMapCarrier : ICarrier
     {
-        string this[string key] { get; set; }
     }
 }
