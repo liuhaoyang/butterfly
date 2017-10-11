@@ -7,10 +7,10 @@ namespace Butterfly.APM.Core.OpenTracing
     public class Tracer : ITracer
     {
         private readonly ISpanContextFactory _spanContextFactory;
-        private readonly ISpanQueue _spanQueue;
+        private readonly ISpanChannel _spanQueue;
         private readonly ISampler _sampler;
 
-        public Tracer(ISpanContextFactory spanContextFactory, ISpanQueue spanQueue, ISampler sampler)
+        public Tracer(ISpanContextFactory spanContextFactory, ISpanChannel spanQueue, ISampler sampler)
         {
             _spanContextFactory = spanContextFactory ?? throw new ArgumentNullException(nameof(spanContextFactory));
             _spanQueue = spanQueue ?? throw new ArgumentNullException(nameof(spanQueue));
@@ -74,7 +74,7 @@ namespace Butterfly.APM.Core.OpenTracing
                 baggage.Merge(reference.SpanContext.Baggage);
             }
             var spanContext = _spanContextFactory.Create(new SpanContextPackage(traceId, spanId, _sampler.ShouldSample(), baggage));
-            return new Span(spanContext, _spanQueue);
+            return new Span(spanBuilder.OperationName, spanContext, _spanQueue);
         }
     }
 }

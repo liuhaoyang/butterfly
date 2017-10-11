@@ -10,6 +10,8 @@ namespace Butterfly.APM.Core.OpenTracing
 
         long ElapsedTicks { get; }
 
+        string OperationName { get; }
+
         ISpanContext SpanContext { get; }
 
         Baggage Baggage { get; }
