@@ -7,6 +7,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{2E623577-C14
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Butterfly.APM.OpenTracing", "src\Butterfly.APM.OpenTracing\Butterfly.APM.OpenTracing.csproj", "{8C6AEEE3-94B6-4759-9520-BA5611663FA6}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Butterfly.APM.Core", "src\Butterfly.APM.Core\Butterfly.APM.Core.csproj", "{AC868637-E54F-4A1C-B1C1-199AFCE90815}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -17,12 +19,17 @@ Global
 		{8C6AEEE3-94B6-4759-9520-BA5611663FA6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8C6AEEE3-94B6-4759-9520-BA5611663FA6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8C6AEEE3-94B6-4759-9520-BA5611663FA6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AC868637-E54F-4A1C-B1C1-199AFCE90815}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AC868637-E54F-4A1C-B1C1-199AFCE90815}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AC868637-E54F-4A1C-B1C1-199AFCE90815}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AC868637-E54F-4A1C-B1C1-199AFCE90815}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{8C6AEEE3-94B6-4759-9520-BA5611663FA6} = {2E623577-C14B-42DB-97D3-EBF1E1B5B554}
+		{AC868637-E54F-4A1C-B1C1-199AFCE90815} = {2E623577-C14B-42DB-97D3-EBF1E1B5B554}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {3D45CC9B-D8C6-4DC1-8D68-09FBCD9371A8}
