@@ -7,10 +7,10 @@ namespace Butterfly.APM.OpenTracing
     public class Tracer : ITracer
     {
         private readonly ISpanContextFactory _spanContextFactory;
-        private readonly ISpanChannel _spanQueue;
+        private readonly ISpanRecorder _spanQueue;
         private readonly ISampler _sampler;
 
-        public Tracer(ISpanContextFactory spanContextFactory, ISpanChannel spanQueue, ISampler sampler)
+        public Tracer(ISpanContextFactory spanContextFactory, ISpanRecorder spanQueue, ISampler sampler)
         {
             _spanContextFactory = spanContextFactory ?? throw new ArgumentNullException(nameof(spanContextFactory));
             _spanQueue = spanQueue ?? throw new ArgumentNullException(nameof(spanQueue));

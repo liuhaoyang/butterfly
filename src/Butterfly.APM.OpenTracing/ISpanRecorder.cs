@@ -2,8 +2,8 @@
 
 namespace Butterfly.APM.OpenTracing
 {
-    public interface ISpanChannel
+    public interface ISpanRecorder
     {
-        Task FlowAsync(ISpan span);
+        Task RecordAsync(ISpan span);
     }
 }

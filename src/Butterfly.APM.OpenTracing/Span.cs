@@ -6,7 +6,7 @@ namespace Butterfly.APM.OpenTracing
 {
     internal class Span : ISpan
     {
-        private readonly ISpanChannel _spanChannel;
+        private readonly ISpanRecorder _spanChannel;
         private long _startTimestamp;
         private long _finishTimestamp;
         private int _state;
@@ -36,7 +36,7 @@ namespace Butterfly.APM.OpenTracing
 
         public string OperationName { get; }
 
-        public Span(string operationName, ISpanContext spanContext, ISpanChannel spanChannel)
+        public Span(string operationName, ISpanContext spanContext, ISpanRecorder spanChannel)
         {
             SpanContext = spanContext ?? throw new ArgumentNullException(nameof(spanContext));
             Baggage = spanContext.Baggage;
@@ -58,7 +58,7 @@ namespace Butterfly.APM.OpenTracing
             if (Interlocked.CompareExchange(ref _state, 1, 0) != 1)
             {
                 _finishTimestamp = Stopwatch.GetTimestamp();
-                _spanChannel.FlowAsync(this);
+                _spanChannel.RecordAsync(this);
             }
         }
     }
