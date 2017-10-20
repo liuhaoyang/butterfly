@@ -40,8 +40,8 @@ namespace Butterfly.APM.OpenTracing
         {
             SpanContext = spanContext ?? throw new ArgumentNullException(nameof(spanContext));
             Baggage = spanContext.Baggage;
-            OperationName = operationName;
             Tags = new TagCollection();
+            OperationName = operationName;
 
             _spanChannel = spanChannel ?? throw new ArgumentNullException(nameof(spanChannel));
             _state = 0;
