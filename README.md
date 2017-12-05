@@ -1,2 +1,2 @@
 # Butterfly
-Powerful solution for application performance management.
+A distributed tracing system.
