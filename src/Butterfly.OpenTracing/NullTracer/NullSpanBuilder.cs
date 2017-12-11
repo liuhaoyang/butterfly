@@ -13,5 +13,7 @@ namespace Butterfly.OpenTracing.NullTracer
         public string OperationName => string.Empty;
 
         public Baggage Baggage { get; } = new Baggage();
+
+        public bool? Sampled { get; }
     }
 }
