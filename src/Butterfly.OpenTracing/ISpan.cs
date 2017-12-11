@@ -14,6 +14,8 @@ namespace Butterfly.OpenTracing
 
         TagCollection Tags { get; }
 
+        LogCollection Logs { get; }
+
         void Finish();
     }
 }

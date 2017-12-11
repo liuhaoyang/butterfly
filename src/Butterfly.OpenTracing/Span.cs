@@ -16,6 +16,8 @@ namespace Butterfly.OpenTracing
         public ISpanContext SpanContext { get; }
 
         public TagCollection Tags { get; }
+        
+        public LogCollection Logs { get; }
 
         public string OperationName { get; }
 
@@ -23,9 +25,10 @@ namespace Butterfly.OpenTracing
         {
             _state = 0;
             _spanChannel = spanChannel ?? throw new ArgumentNullException(nameof(spanChannel));
-            SpanContext = spanContext ?? throw new ArgumentNullException(nameof(spanContext)); 
+            SpanContext = spanContext ?? throw new ArgumentNullException(nameof(spanContext));
             Tags = new TagCollection();
-            OperationName = operationName;      
+            Logs = new LogCollection();
+            OperationName = operationName;
             StartTimestamp = DateTime.UtcNow;
         }
 

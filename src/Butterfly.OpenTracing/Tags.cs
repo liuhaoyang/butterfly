@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Butterfly.OpenTracing
 {
-    internal static class Tags
+    public static class Tags
     {
         /// <summary>
         /// The software package, framework, library, or module that generated the associated Span.
