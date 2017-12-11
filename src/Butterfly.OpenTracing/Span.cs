@@ -7,7 +7,7 @@ namespace Butterfly.OpenTracing
     internal class Span : ISpan
     {
         private readonly ISpanRecorder _spanChannel;
-        private long _startTimestamp;
+        private readonly long _startTimestamp;
         private long _finishTimestamp;
         private int _state;
 

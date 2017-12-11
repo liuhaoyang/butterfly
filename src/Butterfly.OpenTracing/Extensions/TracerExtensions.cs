@@ -8,12 +8,12 @@ namespace Butterfly.OpenTracing.Extensions
     {
         public static ISpanContext GetLocalSpanContext(this ITracer tracer)
         {
-            throw new NotImplementedException();
+            return SpanContextLocal.Current;
         }
 
         public static void SetLocalSpanContext(this ITracer tracer, ISpanContext spanContext)
         {
-            throw new NotImplementedException();
+            SpanContextLocal.Current = spanContext;
         }
     }
 }
