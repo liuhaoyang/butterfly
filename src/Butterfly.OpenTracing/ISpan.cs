@@ -4,17 +4,13 @@ namespace Butterfly.OpenTracing
 {
     public interface ISpan : IDisposable
     {
-        long StartTimestamp { get; }
+        DateTime StartTimestamp { get; }
 
-        long FinishTimestamp { get; }
-
-        long Duration { get; }
+        DateTime FinishTimestamp { get; }
 
         string OperationName { get; }
 
         ISpanContext SpanContext { get; }
-
-        Baggage Baggage { get; }
 
         TagCollection Tags { get; }
 
