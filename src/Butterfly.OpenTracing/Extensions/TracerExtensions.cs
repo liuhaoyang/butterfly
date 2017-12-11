@@ -1,19 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Butterfly.OpenTracing.Extensions
+﻿namespace Butterfly.OpenTracing.Extensions
 {
     public static class TracerExtensions
     {
-        public static ISpanContext GetLocalSpanContext(this ITracer tracer)
+        public static ISpan GetCurrentSpan(this ITracer tracer)
         {
-            return SpanContextLocal.Current;
+            return SpanLocal.Current;
         }
 
-        public static void SetLocalSpanContext(this ITracer tracer, ISpanContext spanContext)
+        public static void SetCurrentSpan(this ITracer tracer, ISpan spanContext)
         {
-            SpanContextLocal.Current = spanContext;
+            SpanLocal.Current = spanContext;
         }
     }
 }

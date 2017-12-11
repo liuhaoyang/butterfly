@@ -9,5 +9,7 @@ namespace Butterfly.OpenTracing
         string OperationName { get; }
 
         Baggage Baggage { get; }
+
+        bool? Sampled { get; }
     }
 }
