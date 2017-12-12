@@ -4,6 +4,6 @@ namespace Butterfly.OpenTracing
 {
     public interface ISpanRecorder
     {
-        Task RecordAsync(ISpan span);
+        void Record(ISpan span);
     }
 }

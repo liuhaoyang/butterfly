@@ -42,7 +42,7 @@ namespace Butterfly.OpenTracing
             if (Interlocked.CompareExchange(ref _state, 1, 0) != 1)
             {
                 _finishTimestamp = DateTime.UtcNow;
-                _spanChannel.RecordAsync(this);
+                _spanChannel.Record(this);
             }
         }
     }
