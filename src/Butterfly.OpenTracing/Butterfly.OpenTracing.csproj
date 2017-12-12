@@ -9,7 +9,8 @@
     <AssemblyName>Butterfly.OpenTracing</AssemblyName>
     <PackageId>Butterfly.OpenTracing</PackageId>
     <PackageTags>OpenTracing;Tracing</PackageTags>
-    <PackageReleaseNotes></PackageReleaseNotes>
+    <PackageReleaseNotes>
+    </PackageReleaseNotes>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|netstandard1.6|AnyCPU'">
     <DefineConstants>TRACE;DEBUG;NETSTANDARD1_6</DefineConstants>
