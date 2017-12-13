@@ -1,29 +1,18 @@
-<Project Sdk="Microsoft.NET.Sdk">
-
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <Import Project="..\..\build\common.props" />
-  <Import Project="..\..\build\net45.props" />
   <PropertyGroup>
-    <Description></Description>
+    <Description>
+    </Description>
     <AssemblyTitle>Butterfly.Core</AssemblyTitle>
-    <TargetFrameworks>netstandard1.6;net45</TargetFrameworks>
+    <TargetFramework>netstandard2.0</TargetFramework>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <AssemblyName>Butterfly.Core</AssemblyName>
     <PackageId>Butterfly.Core</PackageId>
     <PackageTags>Butterfly;Tracing;APM</PackageTags>
-    <PackageReleaseNotes></PackageReleaseNotes>
+    <PackageReleaseNotes>
+    </PackageReleaseNotes>
   </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|netstandard1.6|AnyCPU'">
-    <DefineConstants>TRACE;DEBUG;NETSTANDARD1_6</DefineConstants>
-    <LangVersion>default</LangVersion>
-  </PropertyGroup>
-
   <ItemGroup>
-    <PackageReference Include="AspectCore.Abstractions" Version="0.2.0-preview-final" />
+    <ProjectReference Include="..\Butterfly.Protocal\Butterfly.Protocal.csproj" />
   </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Storage\" />
-  </ItemGroup>
-
 </Project>

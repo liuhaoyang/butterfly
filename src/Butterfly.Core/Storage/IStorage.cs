@@ -1,4 +1,11 @@
-﻿$HEADER$namespace $NAMESPACE$
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
+using Butterfly.Protocol;
+
+namespace Butterfly.Core.Storage
 {
-  public class $CLASS$ {$END$}
+    public interface IStorage
+    {
+        Task Accept(IEnumerable<Span> spans);
+    }
 }

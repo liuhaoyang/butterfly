@@ -2,13 +2,13 @@
   <Import Project="sign.props" />
   <Import Project="version.props" />
   <PropertyGroup>
-    <Authors>Lemon</Authors>
-    <Product>Butterfly.APM</Product>
+    <Authors>Butterfly Team</Authors>
+    <Product>Butterfly</Product>
     <PackageIconUrl></PackageIconUrl>
-    <PackageProjectUrl>https://github.com/dotnet-lab/Butterfly</PackageProjectUrl>
-    <PackageLicenseUrl>https://github.com/dotnet-lab/Butterfly/blob/dev/LICENSE</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/ButterflyAPM/Butterfly</PackageProjectUrl>
+    <PackageLicenseUrl>https://github.com/ButterflyAPM/Butterfly/blob/master/LICENSE</PackageLicenseUrl>
     <RepositoryType>git</RepositoryType>
-    <RepositoryUrl>https://github.com/dotnet-lab/Butterfly</RepositoryUrl>
+    <RepositoryUrl>https://github.com/ButterflyAPM/Butterfly</RepositoryUrl>
     <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
     <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
     <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
