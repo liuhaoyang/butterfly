@@ -4,12 +4,12 @@
   <Import Project="..\..\build\net45.props" />
   <PropertyGroup>
     <Description></Description>
-    <AssemblyTitle>Butterfly.APM.Core</AssemblyTitle>
+    <AssemblyTitle>Butterfly.Core</AssemblyTitle>
     <TargetFrameworks>netstandard1.6;net45</TargetFrameworks>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <AssemblyName>Butterfly.Core</AssemblyName>
-    <PackageId>Butterfly.APM.Core</PackageId>
-    <PackageTags></PackageTags>
+    <PackageId>Butterfly.Core</PackageId>
+    <PackageTags>Butterfly;Tracing;APM</PackageTags>
     <PackageReleaseNotes></PackageReleaseNotes>
   </PropertyGroup>
 

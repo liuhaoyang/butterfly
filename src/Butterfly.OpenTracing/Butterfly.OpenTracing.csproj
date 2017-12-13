@@ -2,15 +2,13 @@
   <Import Project="..\..\build\common.props" />
   <Import Project="..\..\build\net45.props" />
   <PropertyGroup>
-    <Description>
-    </Description>
-    <AssemblyTitle>Butterfly.APM.OpenTracing</AssemblyTitle>
+    <Description>Reference implementation of OpenTracing API</Description>
+    <AssemblyTitle>Butterfly.OpenTracing</AssemblyTitle>
     <TargetFrameworks>netstandard1.6;net45</TargetFrameworks>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <AssemblyName>Butterfly.OpenTracing</AssemblyName>
-    <PackageId>Butterfly.APM.OpenTracing</PackageId>
-    <PackageTags>
-    </PackageTags>
+    <PackageId>Butterfly.OpenTracing</PackageId>
+    <PackageTags>OpenTracing;Tracing</PackageTags>
     <PackageReleaseNotes>
     </PackageReleaseNotes>
   </PropertyGroup>

@@ -5,9 +5,9 @@ namespace Butterfly.OpenTracing
     public class PercentageSampler : ISampler
     {
         private readonly Random _random = new Random();
-        private readonly int _samplingRate;
+        private readonly float _samplingRate;
 
-        public PercentageSampler(int samplingRate)
+        public PercentageSampler(float samplingRate)
         {
             _samplingRate = samplingRate;
         }
@@ -18,7 +18,7 @@ namespace Butterfly.OpenTracing
             {
                 return true;
             }
-            var random = _random.Next(1, 100);
+            var random = _random.NextDouble();
             return random < _samplingRate;
         }
     }
