@@ -5,13 +5,13 @@ namespace Butterfly.OpenTracing
 {
     internal class Span : ISpan
     {
-        private readonly ISpanRecorder _spanChannel;
-        private DateTime _finishTimestamp;
+        private readonly ISpanRecorder _spanRecorder;
+        private DateTimeOffset _finishTimestamp;
         private int _state;
 
-        public DateTime StartTimestamp { get; }
+        public DateTimeOffset StartTimestamp { get; }
 
-        public DateTime FinishTimestamp => _finishTimestamp;
+        public DateTimeOffset FinishTimestamp => _finishTimestamp;
 
         public ISpanContext SpanContext { get; }
 
@@ -21,28 +21,28 @@ namespace Butterfly.OpenTracing
 
         public string OperationName { get; }
 
-        public Span(string operationName, ISpanContext spanContext, ISpanRecorder spanChannel)
+        public Span(string operationName, DateTimeOffset startTimestamp, ISpanContext spanContext, ISpanRecorder spanRecorder)
         {
             _state = 0;
-            _spanChannel = spanChannel ?? throw new ArgumentNullException(nameof(spanChannel));
+            _spanRecorder = spanRecorder ?? throw new ArgumentNullException(nameof(spanRecorder));
             SpanContext = spanContext ?? throw new ArgumentNullException(nameof(spanContext));
             Tags = new TagCollection();
             Logs = new LogCollection();
             OperationName = operationName;
-            StartTimestamp = DateTime.UtcNow;
+            StartTimestamp = startTimestamp;
         }
 
         public void Dispose()
         {
-            Finish();
+            Finish(DateTimeOffset.UtcNow);
         }
 
-        public void Finish()
+        public void Finish(DateTimeOffset finishTimestamp)
         {
             if (Interlocked.CompareExchange(ref _state, 1, 0) != 1)
             {
                 _finishTimestamp = DateTime.UtcNow;
-                _spanChannel.RecordAsync(this);
+                _spanRecorder.Record(this);
             }
         }
     }
