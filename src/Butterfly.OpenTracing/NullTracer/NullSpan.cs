@@ -13,20 +13,20 @@ namespace Butterfly.OpenTracing.NullTracer
         public TagCollection Tags { get; } = new TagCollection();
         
         public LogCollection Logs { get; } =new LogCollection();
-
-        public DateTime StartTimestamp { get; set; }
         
-        public DateTime FinishTimestamp { get; set; }
+        public void Finish(DateTimeOffset finishTimestamp)
+        {
+        }
+
+        public DateTimeOffset StartTimestamp { get; set; }
+        
+        public DateTimeOffset FinishTimestamp { get; set; }
         
         public string OperationName => string.Empty;
 
         public void Dispose()
         {
-            Finish();
-        }
-
-        public void Finish()
-        {
+            Finish(DateTimeOffset.UtcNow);
         }
     }
 }

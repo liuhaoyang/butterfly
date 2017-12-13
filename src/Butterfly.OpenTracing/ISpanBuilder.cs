@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+﻿using System;
 
 namespace Butterfly.OpenTracing
 {
@@ -7,6 +7,8 @@ namespace Butterfly.OpenTracing
         SpanReferenceCollection References { get; }
 
         string OperationName { get; }
+
+        DateTimeOffset? StartTimestamp { get; }
 
         Baggage Baggage { get; }
 

@@ -23,6 +23,7 @@ namespace Butterfly.OpenTracing
             {
                 throw new ArgumentNullException(nameof(carrierReader));
             }
+
             return carrierReader.Read(carrier);
         }
 
@@ -37,10 +38,12 @@ namespace Butterfly.OpenTracing
             {
                 throw new ArgumentNullException(nameof(carrierWriter));
             }
+
             if (spanContext == null)
             {
                 throw new ArgumentNullException(nameof(spanContext));
             }
+
             carrierWriter.Write(spanContext.Package(), carrier);
         }
 
@@ -50,10 +53,12 @@ namespace Butterfly.OpenTracing
             {
                 throw new ArgumentNullException(nameof(carrierWriter));
             }
+
             if (spanContext == null)
             {
                 throw new ArgumentNullException(nameof(spanContext));
             }
+
             return carrierWriter.WriteAsync(spanContext.Package(), carrier);
         }
 
@@ -74,8 +79,9 @@ namespace Butterfly.OpenTracing
                 {
                     baggage.Merge(reference.SpanContext.Baggage);
                 }
+
             var spanContext = _spanContextFactory.Create(new SpanContextPackage(traceId, spanId, spanBuilder.Sampled ?? _sampler.ShouldSample(), baggage));
-            return new Span(spanBuilder.OperationName, spanContext, _spanQueue);
+            return new Span(spanBuilder.OperationName, spanBuilder.StartTimestamp ?? DateTimeOffset.UtcNow, spanContext, _spanQueue);
         }
     }
 }

@@ -4,9 +4,9 @@ namespace Butterfly.OpenTracing
 {
     public interface ISpan : IDisposable
     {
-        DateTime StartTimestamp { get; }
+        DateTimeOffset StartTimestamp { get; }
 
-        DateTime FinishTimestamp { get; }
+        DateTimeOffset FinishTimestamp { get; }
 
         string OperationName { get; }
 
@@ -16,6 +16,6 @@ namespace Butterfly.OpenTracing
 
         LogCollection Logs { get; }
 
-        void Finish();
+        void Finish(DateTimeOffset finishTimestamp);
     }
 }

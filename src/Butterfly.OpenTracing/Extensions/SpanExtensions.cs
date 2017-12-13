@@ -10,6 +10,7 @@ namespace Butterfly.OpenTracing
             {
                 throw new ArgumentNullException(nameof(span));
             }
+
             span.Tags[key] = value;
             return span;
         }
@@ -45,6 +46,7 @@ namespace Butterfly.OpenTracing
             {
                 throw new ArgumentNullException(nameof(span));
             }
+
             span.SpanContext.SetBaggage(key, value);
             return span;
         }
@@ -55,6 +57,7 @@ namespace Butterfly.OpenTracing
             {
                 throw new ArgumentNullException(nameof(span));
             }
+
             span.Logs.Add(new LogData(timestamp, fields));
             return span;
         }
@@ -62,6 +65,11 @@ namespace Butterfly.OpenTracing
         public static ISpan Log(this ISpan span, LogField fields)
         {
             return Log(span, DateTime.UtcNow, fields);
+        }
+
+        public static void Finish(this ISpan span)
+        {
+            span?.Finish(DateTimeOffset.UtcNow);
         }
     }
 }
