@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Butterfly.Server", "src\But
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Butterfly.Protocal", "src\Butterfly.Protocal\Butterfly.Protocal.csproj", "{D4A728C1-35D6-4107-B52C-16E44B46F1F1}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Butterfly.EntityFrameworkCore", "src\Butterfly.EntityFrameworkCore\Butterfly.EntityFrameworkCore.csproj", "{800A2351-F707-42EF-8A35-209F82563DF9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -35,6 +37,10 @@ Global
 		{D4A728C1-35D6-4107-B52C-16E44B46F1F1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D4A728C1-35D6-4107-B52C-16E44B46F1F1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D4A728C1-35D6-4107-B52C-16E44B46F1F1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{800A2351-F707-42EF-8A35-209F82563DF9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{800A2351-F707-42EF-8A35-209F82563DF9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{800A2351-F707-42EF-8A35-209F82563DF9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{800A2351-F707-42EF-8A35-209F82563DF9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -44,6 +50,7 @@ Global
 		{ED0C7CB9-CF67-404B-A788-03646BF351F5} = {2E623577-C14B-42DB-97D3-EBF1E1B5B554}
 		{435C00C6-DF6A-487B-986C-E2A346D9A064} = {2E623577-C14B-42DB-97D3-EBF1E1B5B554}
 		{D4A728C1-35D6-4107-B52C-16E44B46F1F1} = {2E623577-C14B-42DB-97D3-EBF1E1B5B554}
+		{800A2351-F707-42EF-8A35-209F82563DF9} = {2E623577-C14B-42DB-97D3-EBF1E1B5B554}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {3D45CC9B-D8C6-4DC1-8D68-09FBCD9371A8}

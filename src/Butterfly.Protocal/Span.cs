@@ -13,9 +13,9 @@ namespace Butterfly.Protocol
 
         public string OperationName { get; set; }
 
-        public DateTimeOffset StartTimestamp { get; }
+        public DateTimeOffset StartTimestamp { get;  set;}
 
-        public DateTimeOffset FinishTimestamp { get; }
+        public DateTimeOffset FinishTimestamp { get;  set;}
 
         public ICollection<Log> Logs { get; set; } = new List<Log>();
 
