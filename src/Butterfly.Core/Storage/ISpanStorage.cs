@@ -3,7 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Butterfly.Protocol;
 
-namespace Butterfly.Core.Storage
+namespace Butterfly.Core
 {
     public interface ISpanStorage
     {

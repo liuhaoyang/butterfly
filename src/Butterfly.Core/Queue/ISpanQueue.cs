@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using Butterfly.Protocol;
 
-namespace Butterfly.Core.Queue
+namespace Butterfly.Core
 {
     public interface ISpanQueue
     {

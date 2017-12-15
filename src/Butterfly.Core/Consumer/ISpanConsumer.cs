@@ -3,7 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Butterfly.Protocol;
 
-namespace Butterfly.Core.Consumer
+namespace Butterfly.Core
 {
     public interface ISpanConsumer
     {

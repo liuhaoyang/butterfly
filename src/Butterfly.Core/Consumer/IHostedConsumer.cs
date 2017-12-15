@@ -1,7 +1,7 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 
-namespace Butterfly.Core.Consumer
+namespace Butterfly.Core
 {
     public interface IHostedConsumer
     {
