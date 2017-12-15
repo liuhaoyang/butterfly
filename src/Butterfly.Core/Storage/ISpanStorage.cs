@@ -1,11 +1,12 @@
 ﻿using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 using Butterfly.Protocol;
 
 namespace Butterfly.Core.Storage
 {
-    public interface IStorage
+    public interface ISpanStorage
     {
-        Task Accept(IEnumerable<Span> spans);
+        Task Store(IEnumerable<Span> spans, CancellationToken cancellationToken);
     }
 }
