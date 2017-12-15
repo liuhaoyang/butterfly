@@ -31,7 +31,7 @@ namespace Butterfly.Server
             });
             services.AddDbContextPool<ButterflyDbContext>(options =>
             {
-                options.UseInMemoryDatabase();
+                options.UseInMemoryDatabase("Butterfly.Server");
             });
         }
 
