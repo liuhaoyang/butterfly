@@ -1,9 +1,9 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 
-namespace Butterfly.Core
+namespace Butterfly.Flow
 {
-    public interface IHostedConsumer
+    public interface IFlowService
     {
         Task Start(CancellationToken cancellationToken);
 

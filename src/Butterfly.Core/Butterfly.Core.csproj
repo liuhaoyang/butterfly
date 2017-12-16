@@ -11,6 +11,7 @@
     <PackageTags>Butterfly;Tracing;APM</PackageTags>
     <PackageReleaseNotes>
     </PackageReleaseNotes>
+    <RootNamespace>Butterfly</RootNamespace>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\Butterfly.Protocal\Butterfly.Protocal.csproj" />

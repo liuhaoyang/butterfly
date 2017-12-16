@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 
 namespace Butterfly.Core
 {
-    public interface IHostedCollector
+    public interface ICollector
     {
         Task Start(CancellationToken cancellationToken);
 

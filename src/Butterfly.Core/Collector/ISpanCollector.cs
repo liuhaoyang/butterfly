@@ -5,8 +5,8 @@ using Butterfly.Protocol;
 
 namespace Butterfly.Core
 {
-    public interface ISpanCollector
-    {
-        Task Collect(IEnumerable<Span> spans, CancellationToken cancellationToken);
-    }
+//    public interface ISpanCollector
+//    {
+//        Task Collect(IEnumerable<Span> spans, CancellationToken cancellationToken);
+//    }
 }

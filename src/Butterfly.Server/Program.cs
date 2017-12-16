@@ -20,7 +20,7 @@ namespace Butterfly.Server
         public static IWebHost BuildWebHost(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
                 .UseStartup<Startup>()
-                .UseUrls("http://*:9600")
+                .UseUrls("http://0.0.0.0:9618")
                 .Build();
     }
 }
