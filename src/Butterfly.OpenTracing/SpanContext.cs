@@ -4,8 +4,6 @@ namespace Butterfly.OpenTracing
 {
     internal class SpanContext : ISpanContext
     {
-        private readonly Baggage _baggage;
-
         public string TraceId { get; }
 
         public string SpanId { get; }

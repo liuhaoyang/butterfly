@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+﻿using System;
 
 namespace Butterfly.OpenTracing
 {
@@ -8,6 +8,10 @@ namespace Butterfly.OpenTracing
 
         string OperationName { get; }
 
+        DateTimeOffset? StartTimestamp { get; }
+
         Baggage Baggage { get; }
+
+        bool? Sampled { get; }
     }
 }

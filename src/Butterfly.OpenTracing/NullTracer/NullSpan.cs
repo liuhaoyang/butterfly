@@ -6,27 +6,27 @@ namespace Butterfly.OpenTracing.NullTracer
 {
     public class NullSpan : ISpan
     {
-        public long StartTimestamp => 0;
-
-        public long FinishTimestamp => 0;
-
-        public long Duration => 0;
-
         public ISpanContext SpanContext { get; } = new NullSpanContext();
 
         public Baggage Baggage => SpanContext.Baggage;
 
         public TagCollection Tags { get; } = new TagCollection();
+        
+        public LogCollection Logs { get; } =new LogCollection();
+        
+        public void Finish(DateTimeOffset finishTimestamp)
+        {
+        }
 
+        public DateTimeOffset StartTimestamp { get; set; }
+        
+        public DateTimeOffset FinishTimestamp { get; set; }
+        
         public string OperationName => string.Empty;
 
         public void Dispose()
         {
-            Finish();
-        }
-
-        public void Finish()
-        {
+            Finish(DateTimeOffset.UtcNow);
         }
     }
 }

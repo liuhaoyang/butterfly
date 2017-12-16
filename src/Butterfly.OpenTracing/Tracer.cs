@@ -23,6 +23,7 @@ namespace Butterfly.OpenTracing
             {
                 throw new ArgumentNullException(nameof(carrierReader));
             }
+
             return carrierReader.Read(carrier);
         }
 
@@ -37,10 +38,12 @@ namespace Butterfly.OpenTracing
             {
                 throw new ArgumentNullException(nameof(carrierWriter));
             }
+
             if (spanContext == null)
             {
                 throw new ArgumentNullException(nameof(spanContext));
             }
+
             carrierWriter.Write(spanContext.Package(), carrier);
         }
 
@@ -50,10 +53,12 @@ namespace Butterfly.OpenTracing
             {
                 throw new ArgumentNullException(nameof(carrierWriter));
             }
+
             if (spanContext == null)
             {
                 throw new ArgumentNullException(nameof(spanContext));
             }
+
             return carrierWriter.WriteAsync(spanContext.Package(), carrier);
         }
 
@@ -67,14 +72,16 @@ namespace Butterfly.OpenTracing
             var traceId = spanBuilder.References?.FirstOrDefault()?.SpanContext?.TraceId ?? Guid.NewGuid().ToString();
             var spanId = Guid.NewGuid().ToString();
 
-            Baggage baggage = new Baggage();
+            var baggage = new Baggage();
 
-            foreach (var reference in spanBuilder.References)
-            {
-                baggage.Merge(reference.SpanContext.Baggage);
-            }
-            var spanContext = _spanContextFactory.Create(new SpanContextPackage(traceId, spanId, _sampler.ShouldSample(), baggage));
-            return new Span(spanBuilder.OperationName, spanContext, _spanQueue);
+            if (spanBuilder.References != null)
+                foreach (var reference in spanBuilder.References)
+                {
+                    baggage.Merge(reference.SpanContext.Baggage);
+                }
+
+            var spanContext = _spanContextFactory.Create(new SpanContextPackage(traceId, spanId, spanBuilder.Sampled ?? _sampler.ShouldSample(), baggage));
+            return new Span(spanBuilder.OperationName, spanBuilder.StartTimestamp ?? DateTimeOffset.UtcNow, spanContext, _spanQueue);
         }
     }
 }

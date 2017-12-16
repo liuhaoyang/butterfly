@@ -1,24 +1,31 @@
 ﻿using System;
+using System.Linq;
 
 namespace Butterfly.OpenTracing
 {
     public class SpanBuilder : ISpanBuilder
     {
-        private readonly string _operationName;
-        private readonly Baggage _baggage;
-        private readonly SpanReferenceCollection _spanReferences;
+        public string OperationName { get; }
 
-        public string OperationName => _operationName;
+        public DateTimeOffset? StartTimestamp { get; }
 
-        public Baggage Baggage => _baggage;
+        public Baggage Baggage { get; }
 
-        public SpanReferenceCollection References => _spanReferences;
+        public SpanReferenceCollection References { get; }
+
+        public bool? Sampled => References.FirstOrDefault()?.SpanContext?.Sampled;
 
         public SpanBuilder(string operationName)
+            : this(operationName, null)
         {
-            _operationName = operationName ?? throw new ArgumentNullException(nameof(operationName));
-            _baggage = new Baggage();
-            _spanReferences = new SpanReferenceCollection();
+        }
+
+        public SpanBuilder(string operationName, DateTimeOffset? startTimestamp)
+        {
+            OperationName = operationName ?? throw new ArgumentNullException(nameof(operationName));
+            StartTimestamp = startTimestamp;
+            Baggage = new Baggage();
+            References = new SpanReferenceCollection();
         }
     }
 }

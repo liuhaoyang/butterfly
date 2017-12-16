@@ -10,8 +10,12 @@ namespace Butterfly.OpenTracing.NullTracer
 
         public SpanReferenceCollection References { get; } = new SpanReferenceCollection();
 
-        public string OperationName => string.Empty;
+        public string OperationName { get; }
+
+        public DateTimeOffset? StartTimestamp { get; }
 
         public Baggage Baggage { get; } = new Baggage();
+
+        public bool? Sampled { get; }
     }
 }

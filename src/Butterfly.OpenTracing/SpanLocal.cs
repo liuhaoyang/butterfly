@@ -7,24 +7,24 @@ using System.Threading;
 
 namespace Butterfly.OpenTracing
 {
-    internal static class SpanContextLocal
+    internal static class SpanLocal
     {
 #if NET45 || NET451 || NET452
-        private const string SpanContextKey = "butterfly_spancontext";
+        private const string SpanKey = "butterfly-span";
 #else
-        private static readonly AsyncLocal<ISpanContext> AsyncLocal = new AsyncLocal<ISpanContext>();
+        private static readonly AsyncLocal<ISpan> AsyncLocal = new AsyncLocal<ISpan>();
 #endif
 
-        public static ISpanContext Current
+        public static ISpan Current
         {
 #if NET45 || NET451 || NET452
             get
             {
-                return CallContext.LogicalGetData(SpanContextKey) as ISpanContext;
+                return CallContext.LogicalGetData(SpanKey) as ISpan;
             }
             set
             {
-                CallContext.LogicalSetData(SpanContextKey, value);
+                CallContext.LogicalSetData(SpanKey, value);
             }
 #else
             get
