@@ -27,7 +27,6 @@ namespace Butterfly.Flow.InMemory
 
         public Task StartAsync(CancellationToken cancellationToken)
         {
-            cancellationToken.Register(() => _cancellationTokenSource.Cancel());
             for (var i = 0; i < _consumerTasks.Length; i++)
             {
                 _consumerTasks[i] = Task.Factory.StartNew(async () => await ConsumerAction(),

@@ -8,12 +8,12 @@ namespace Butterfly.EntityFrameworkCore
     {
         public MappingProfile()
         {
-            CreateMap<Baggage, BaggageModel>();
-            CreateMap<LogField, LogFieldModel>();
-            CreateMap<Log, LogModel>();
-            CreateMap<Span, SpanModel>();
-            CreateMap<SpanReference, SpanReferenceModel>();
-            CreateMap<Tag, TagModel>();
+            CreateMap<Baggage, BaggageModel>().ReverseMap();
+            CreateMap<LogField, LogFieldModel>().ReverseMap();
+            CreateMap<Log, LogModel>().ReverseMap();
+            CreateMap<Span, SpanModel>().ReverseMap();
+            CreateMap<SpanReference, SpanReferenceModel>().ReverseMap();
+            CreateMap<Tag, TagModel>().ReverseMap();
         }
     }
 }

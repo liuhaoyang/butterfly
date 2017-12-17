@@ -16,7 +16,7 @@ namespace Butterfly.Flow.InMemory
             _blockingQueue = blockingQueue ?? throw new ArgumentNullException(nameof(blockingQueue));
         }
 
-        public Task PostAsync(IEnumerable<Span> spans, CancellationToken cancellationToken)
+        public Task PostAsync(IEnumerable<Span> spans, CancellationToken cancellationToken = default(CancellationToken))
         {
             if (_blockingQueue.IsActived && !cancellationToken.IsCancellationRequested)
             {

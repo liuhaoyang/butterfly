@@ -1,64 +1,37 @@
-﻿using System;
-using System.Collections.Generic;
-using AutoMapper;
-using Butterfly.EntityFrameworkCore;
-using Butterfly.EntityFrameworkCore.Models;
+﻿using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
+using Butterfly.Flow;
 using Butterfly.Protocol;
+using Butterfly.Storage;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using  System.Linq;
-using Microsoft.EntityFrameworkCore;
+
 
 namespace Butterfly.Server.Controllers
 {
     [Route("api/[controller]")]
     public class SpanController : Controller
     {
-        private readonly IMapper _mapper;
-        private readonly ButterflyDbContext _context;
+        private readonly ISpanPublisher _spanPublisher;
+        private readonly ISpanStorage _spanStorage;
 
-        public SpanController(IMapper mapper, ButterflyDbContext context)
+        public SpanController(ISpanPublisher spanPublisher, ISpanStorage spanStorage)
         {
-            _mapper = mapper;
-            _context = context;
+            _spanPublisher = spanPublisher;
+            _spanStorage = spanStorage;
         }
 
-        public IEnumerable<SpanModel> Get()
+        [HttpGet]
+        public Task<IEnumerable<Span>> Get()
         {
-            var span = new SpanModel()
-            {
-                SpanId = Guid.NewGuid().ToString()
-            };
-            span.StartTimestamp = DateTimeOffset.UtcNow;
-            span.FinishTimestamp = DateTimeOffset.UtcNow;
-
-            span.Tags = new List<TagModel>();
-
-            span.Tags.Add(new TagModel()
-            {
-                SpanId = span.SpanId,
-                Key = "test",
-                Value = "testV"
-            });
-            
-            span.Tags.Add(new TagModel()
-            {
-                SpanId = span.SpanId,
-                Key = "aaa",
-                Value = "bbb"
-            });
-
-            _context.Spans.Add(span);
-
-            _context.SaveChanges();
-
-            var spans = _context.Spans.Include(x=> x.Tags).ToList();
-            return spans;
+            return _spanStorage.GetAll();
         }
 
         [HttpPost]
-        public IActionResult Post(IEnumerable<Span> spans)
+        public IActionResult Post([FromBody]Span[] spans)
         {
+            _spanPublisher.PostAsync(spans, CancellationToken.None);
             return StatusCode(StatusCodes.Status201Created);
         }
     }

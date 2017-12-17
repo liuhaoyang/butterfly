@@ -8,5 +8,7 @@ namespace Butterfly.Storage
     public interface ISpanStorage
     {
         Task StoreAsync(IEnumerable<Span> spans, CancellationToken cancellationToken);
+
+        Task<IEnumerable<Span>> GetAll();
     }
 }

@@ -7,6 +7,6 @@ namespace Butterfly.Flow
 {
     public interface ISpanPublisher
     {
-        Task PostAsync(IEnumerable<Span> spans, CancellationToken cancellationToken);
+        Task PostAsync(IEnumerable<Span> spans, CancellationToken cancellationToken = default(CancellationToken));
     }
 }

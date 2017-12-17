@@ -4,7 +4,9 @@
     {
         public const string StorageType = "storage_type";
 
-        public const string InMemory = "in_memory";
+        public const string FlowType = "flow_type";
+
+        public const string InMemory = "memory";
         
         
     }
