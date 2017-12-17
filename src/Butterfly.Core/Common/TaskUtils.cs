@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace Butterfly.Core
+namespace Butterfly.Common
 {
     public static class TaskUtils
     {

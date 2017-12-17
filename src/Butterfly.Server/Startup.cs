@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 
 namespace Butterfly.Server
 {
@@ -31,8 +32,8 @@ namespace Butterfly.Server
             });
             services.AddDbContextPool<ButterflyDbContext>(options =>
             {
-                options.UseInMemoryDatabase("Butterfly.Server");
-            });
+                options.UseInMemoryDatabase("--Butterfly--");
+            });  
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

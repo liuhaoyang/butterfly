@@ -5,8 +5,8 @@ using Butterfly.Protocol;
 
 namespace Butterfly.Flow
 {
-    public interface ISpanConsumer
+    public interface ISpanConsumerCallback
     {
-        Task AcceptAsync(ISpanConsumerCallback callback, CancellationToken cancellationToken);
+        Task InvokeAsync(IEnumerable<Span> spans, CancellationToken cancellationToken);
     }
 }

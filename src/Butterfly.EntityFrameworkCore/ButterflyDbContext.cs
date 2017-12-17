@@ -1,7 +1,5 @@
 ﻿using Butterfly.EntityFrameworkCore.Models;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Caching.Memory;
-using Microsoft.Extensions.Options;
 
 namespace Butterfly.EntityFrameworkCore
 {
@@ -27,7 +25,7 @@ namespace Butterfly.EntityFrameworkCore
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
-                optionsBuilder.UseInMemoryDatabase();
+                optionsBuilder.UseInMemoryDatabase("--Butterfly--");
         }
     }
 }
