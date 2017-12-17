@@ -1,0 +1,22 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <Import Project="..\..\build\common.props" />
+  <PropertyGroup>
+    <Description>
+    </Description>
+    <AssemblyTitle>Butterfly.Flow.InMemory</AssemblyTitle>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <AssemblyName>Butterfly.Flow.InMemory</AssemblyName>
+    <PackageId>Butterfly.Flow.InMemory</PackageId>
+    <PackageTags>Butterfly;Tracing;APM</PackageTags>
+    <PackageReleaseNotes>
+    </PackageReleaseNotes>
+    <RootNamespace>Butterfly.Flow.InMemory</RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Butterfly.Core\Butterfly.Core.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Options" Version="2.0.0" />
+  </ItemGroup>
+</Project>
