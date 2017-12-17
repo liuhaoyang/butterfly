@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using Butterfly.Protocol;
@@ -10,19 +11,16 @@ namespace Butterfly.Flow
     {
         private static readonly ISpanStorage[] nullSpanStorages = new ISpanStorage[0];
 
-        private readonly IEnumerable<ISpanStorage> _spanStorages;
+        private readonly ISpanStorage _spanStorage;
 
-        public DefaultSpanConsumerCallback(IEnumerable<ISpanStorage> spanStorages)
+        public DefaultSpanConsumerCallback(ISpanStorage spanStorage)
         {
-            _spanStorages = spanStorages ?? nullSpanStorages;
+            _spanStorage = spanStorage ?? throw new ArgumentNullException(nameof(spanStorage));
         }
 
         public async Task InvokeAsync(IEnumerable<Span> spans, CancellationToken cancellationToken)
         {
-            foreach (var spanStorage in _spanStorages)
-            {
-                await spanStorage.StoreAsync(spans, cancellationToken);
-            }
+            await _spanStorage.StoreAsync(spans, cancellationToken);
         }
     }
 }
