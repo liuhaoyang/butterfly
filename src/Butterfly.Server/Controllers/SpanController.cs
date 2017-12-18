@@ -15,17 +15,19 @@ namespace Butterfly.Server.Controllers
     {
         private readonly ISpanProducer _spanProducer;
         private readonly ISpanStorage _spanStorage;
+        private readonly ISpanQuery _spanQuery;
 
-        public SpanController(ISpanProducer spanProducer, ISpanStorage spanStorage)
+        public SpanController(ISpanProducer spanProducer, ISpanStorage spanStorage, ISpanQuery spanQuery)
         {
             _spanProducer = spanProducer;
             _spanStorage = spanStorage;
+            _spanQuery = spanQuery;
         }
 
         [HttpGet]
         public Task<IEnumerable<Span>> Get()
         {
-            return _spanStorage.GetAll();
+            return _spanQuery.GetSpans();
         }
 
         [HttpPost]

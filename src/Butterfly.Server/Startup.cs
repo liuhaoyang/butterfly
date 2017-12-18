@@ -31,7 +31,7 @@ namespace Butterfly.Server
 
             services.AddSwaggerGen(option =>
             {
-                option.SwaggerDoc("v1", new Info { Title = "Butterfly HttpCollector", Version = "v1" });
+                option.SwaggerDoc("v1", new Info { Title = "butterfly http api", Version = "v1" });
             });
             // in-memory
             services.AddInMemoryFlow(Configuration)
@@ -64,7 +64,7 @@ namespace Butterfly.Server
             // Enable middleware to serve swagger-ui (HTML, JS, CSS, etc.), specifying the Swagger JSON endpoint.
             app.UseSwaggerUI(c =>
             {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Butterfly HttpCollector V1");
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "butterfly http api v1");
             });
         }
     }

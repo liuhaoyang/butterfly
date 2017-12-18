@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Butterfly.EntityFrameworkCore
 {
-    public class ButterflyDbContext : DbContext
+    public class InMemoryDbContext : DbContext
     {
         public DbSet<BaggageModel> Baggages { get; set; }
 
@@ -17,7 +17,7 @@ namespace Butterfly.EntityFrameworkCore
 
         public DbSet<TagModel> Tags { get; set; }
 
-        public ButterflyDbContext(DbContextOptions<ButterflyDbContext> options)
+        public InMemoryDbContext(DbContextOptions<InMemoryDbContext> options)
             : base(options)
         {
         }

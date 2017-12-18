@@ -27,11 +27,12 @@ namespace Butterfly.EntityFrameworkCore
                 {
                     config.AddProfile<MappingProfile>();
                 });
-                services.AddDbContextPool<ButterflyDbContext>(options =>
+                services.AddDbContextPool<InMemoryDbContext>(options =>
                 {
                     options.UseInMemoryDatabase("--Butterfly--");
                 });
-                services.AddScoped<ISpanStorage, EFCoreSpanStorage>();
+                services.AddScoped<ISpanStorage, InMemorySpanStorage>();
+                services.AddScoped<ISpanQuery, InMemorySpanQuery>();
             }
 
             return services;
