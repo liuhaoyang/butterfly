@@ -13,12 +13,12 @@ namespace Butterfly.Server.Controllers
     [Route("api/[controller]")]
     public class SpanController : Controller
     {
-        private readonly ISpanPublisher _spanPublisher;
+        private readonly ISpanProducer _spanProducer;
         private readonly ISpanStorage _spanStorage;
 
-        public SpanController(ISpanPublisher spanPublisher, ISpanStorage spanStorage)
+        public SpanController(ISpanProducer spanProducer, ISpanStorage spanStorage)
         {
-            _spanPublisher = spanPublisher;
+            _spanProducer = spanProducer;
             _spanStorage = spanStorage;
         }
 
@@ -31,7 +31,7 @@ namespace Butterfly.Server.Controllers
         [HttpPost]
         public IActionResult Post([FromBody]Span[] spans)
         {
-            _spanPublisher.PostAsync(spans, CancellationToken.None);
+            _spanProducer.PostAsync(spans, CancellationToken.None);
             return StatusCode(StatusCodes.Status201Created);
         }
     }

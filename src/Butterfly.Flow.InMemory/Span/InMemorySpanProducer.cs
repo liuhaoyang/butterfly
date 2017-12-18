@@ -7,11 +7,11 @@ using Butterfly.Protocol;
 
 namespace Butterfly.Flow.InMemory
 {
-    public class InMemorySpanPublisher : ISpanPublisher
+    public class InMemorySpanProducer : ISpanProducer
     {
         private readonly IBlockingQueue<Span> _blockingQueue;
 
-        public InMemorySpanPublisher(IBlockingQueue<Span> blockingQueue)
+        public InMemorySpanProducer(IBlockingQueue<Span> blockingQueue)
         {
             _blockingQueue = blockingQueue ?? throw new ArgumentNullException(nameof(blockingQueue));
         }

@@ -26,7 +26,7 @@ namespace Butterfly.Flow.InMemory
                 services.AddScoped<ISpanConsumerCallback, DefaultSpanConsumerCallback>();
                 services.AddSingleton(typeof(IBlockingQueue<>), typeof(BlockingQueue<>));
                 services.AddSingleton<ISpanConsumer, InMemorySpanConsumer>();
-                services.AddSingleton<ISpanPublisher, InMemorySpanPublisher>();
+                services.AddSingleton<ISpanProducer, InMemorySpanProducer>();
                 services.AddSingleton<IFlowService, InMemoryFlowService>();
                 services.AddSingleton<IHostedService>(provider => provider.GetService<IFlowService>());
             }
