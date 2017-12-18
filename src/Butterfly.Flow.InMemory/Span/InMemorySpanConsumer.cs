@@ -24,16 +24,19 @@ namespace Butterfly.Flow.InMemory
                 await Task.FromCanceled(cancellationToken);
             }
 
-            foreach (var spans in _blockingQueue.DequeueEnumerable())
+            var cts = new CancellationTokenSource();
+
+            foreach (var spans in _blockingQueue.DequeueEnumerable(cts.Token))
             {
                 try
                 {
                     if (!cancellationToken.IsCancellationRequested)
                         await callback.InvokeAsync(spans, cancellationToken);
                 }
-                catch (Exception exception)
+                catch (Exception)
                 {
-                    _logger?.LogError(exception, $"SpanConsumer callback invoke exception. Exception : {exception.Message}");
+                    cts.Cancel(); 
+                    throw;
                 }
             }
         }

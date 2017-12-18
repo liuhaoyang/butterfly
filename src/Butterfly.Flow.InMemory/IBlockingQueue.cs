@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Threading;
 
 namespace Butterfly.Flow.InMemory
 {
@@ -10,7 +11,7 @@ namespace Butterfly.Flow.InMemory
 
         IEnumerable<T> Dequeue();
 
-        IEnumerable<IEnumerable<T>> DequeueEnumerable();
+        IEnumerable<IEnumerable<T>> DequeueEnumerable(CancellationToken cancellationToken);
 
         void Complete();
     }

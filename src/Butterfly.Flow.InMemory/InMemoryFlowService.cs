@@ -3,6 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Butterfly.Common;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
 namespace Butterfly.Flow.InMemory
@@ -15,9 +16,11 @@ namespace Butterfly.Flow.InMemory
         private readonly Task[] _consumerTasks;
         private readonly CancellationTokenSource _cancellationTokenSource;
         private readonly InMemoryFlowOptions _inMemoryFlowOptions;
+        private readonly ILogger<InMemoryFlowService> _logger;
 
-        public InMemoryFlowService(IServiceProvider serviceProvider, ISpanConsumer spanConsumer, IOptions<InMemoryFlowOptions> options)
+        public InMemoryFlowService(IServiceProvider serviceProvider, ISpanConsumer spanConsumer, IOptions<InMemoryFlowOptions> options, ILogger<InMemoryFlowService> logger)
         {
+            _logger = logger;
             _serviceProvider = serviceProvider ?? throw new ArgumentNullException(nameof(serviceProvider));
             _spanConsumer = spanConsumer ?? throw new ArgumentNullException(nameof(spanConsumer));
             _inMemoryFlowOptions = options?.Value ?? throw new ArgumentNullException(nameof(options));
@@ -44,10 +47,20 @@ namespace Butterfly.Flow.InMemory
 
         private async Task ConsumerAction()
         {
-            using (var scope = _serviceProvider.CreateScope())
+            while (!_cancellationTokenSource.IsCancellationRequested)
             {
-                var callBack = scope.ServiceProvider.GetRequiredService<ISpanConsumerCallback>();
-                await _spanConsumer.AcceptAsync(callBack, _cancellationTokenSource.Token);
+                using (var scope = _serviceProvider.CreateScope())
+                {
+                    var callBack = scope.ServiceProvider.GetRequiredService<ISpanConsumerCallback>();
+                    try
+                    {
+                        await _spanConsumer.AcceptAsync(callBack, _cancellationTokenSource.Token);
+                    }
+                    catch (Exception exception)
+                    {
+                        _logger?.LogError(exception, $"{callBack.GetType().Name} invoke exception. Exception : {exception.Message}");
+                    }
+                }
             }
         }
     }

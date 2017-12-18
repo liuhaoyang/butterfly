@@ -1,5 +1,6 @@
 ﻿using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Threading;
 
 namespace Butterfly.Flow.InMemory
 {
@@ -30,9 +31,9 @@ namespace Butterfly.Flow.InMemory
             }
         }
 
-        public IEnumerable<IEnumerable<T>> DequeueEnumerable()
+        public IEnumerable<IEnumerable<T>> DequeueEnumerable(CancellationToken cancellationToken)
         {
-            foreach (var consumingEnumerable in _blocking.GetConsumingEnumerable())
+            foreach (var consumingEnumerable in _blocking.GetConsumingEnumerable(cancellationToken))
             {
                 yield return consumingEnumerable;
             }

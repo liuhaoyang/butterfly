@@ -29,6 +29,8 @@ namespace Butterfly.Server
         {
             services.AddMvc();
 
+            services.AddAutoMapper();
+
             services.AddSwaggerGen(option =>
             {
                 option.SwaggerDoc("v1", new Info { Title = "butterfly http api", Version = "v1" });

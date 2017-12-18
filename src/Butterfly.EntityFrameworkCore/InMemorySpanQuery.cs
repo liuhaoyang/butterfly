@@ -20,7 +20,7 @@ namespace Butterfly.EntityFrameworkCore
         {
             get
             {
-                return _dbContext.Spans.Include(x => x.Baggages).Include(x => x.Tags).Include(x => x.References).Include(x => x.Logs);
+                return _dbContext.Spans.AsNoTracking().Include(x => x.Baggages).Include(x => x.Tags).Include(x => x.References).Include(x => x.Logs);
             }
         }
 

@@ -1,8 +1,11 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using AutoMapper;
 using Butterfly.Flow;
 using Butterfly.Protocol;
+using Butterfly.Server.Models;
 using Butterfly.Storage;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -16,18 +19,20 @@ namespace Butterfly.Server.Controllers
         private readonly ISpanProducer _spanProducer;
         private readonly ISpanStorage _spanStorage;
         private readonly ISpanQuery _spanQuery;
+        private readonly IMapper _mapper;
 
-        public SpanController(ISpanProducer spanProducer, ISpanStorage spanStorage, ISpanQuery spanQuery)
+        public SpanController(ISpanProducer spanProducer, ISpanStorage spanStorage, ISpanQuery spanQuery, IMapper mapper)
         {
             _spanProducer = spanProducer;
             _spanStorage = spanStorage;
             _spanQuery = spanQuery;
+            _mapper = mapper;
         }
 
         [HttpGet]
-        public Task<IEnumerable<Span>> Get()
+        public async Task<SpanResponse[]> Get()
         {
-            return _spanQuery.GetSpans();
+            return _mapper.Map<IEnumerable<SpanResponse>>(await _spanQuery.GetSpans()).ToArray();
         }
 
         [HttpPost]
