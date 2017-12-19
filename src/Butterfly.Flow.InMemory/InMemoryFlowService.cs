@@ -45,23 +45,9 @@ namespace Butterfly.Flow.InMemory
             return TaskUtils.CompletedTask;
         }
 
-        private async Task ConsumerAction()
+        private Task ConsumerAction()
         {
-            while (!_cancellationTokenSource.IsCancellationRequested)
-            {
-                using (var scope = _serviceProvider.CreateScope())
-                {
-                    var callBack = scope.ServiceProvider.GetRequiredService<ISpanConsumerCallback>();
-                    try
-                    {
-                        await _spanConsumer.AcceptAsync(callBack, _cancellationTokenSource.Token);
-                    }
-                    catch (Exception exception)
-                    {
-                        _logger?.LogError(exception, $"{callBack.GetType().Name} invoke exception. Exception : {exception.Message}");
-                    }
-                }
-            }
+            return _spanConsumer.AcceptAsync(new InMemorySpanConsumerCallback(_serviceProvider), _cancellationTokenSource.Token);
         }
     }
 }

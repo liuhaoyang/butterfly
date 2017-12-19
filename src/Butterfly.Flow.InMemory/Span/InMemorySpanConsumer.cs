@@ -24,19 +24,15 @@ namespace Butterfly.Flow.InMemory
                 await Task.FromCanceled(cancellationToken);
             }
 
-            var cts = new CancellationTokenSource();
-
-            foreach (var spans in _blockingQueue.DequeueEnumerable(cts.Token))
+            foreach (var spans in _blockingQueue.DequeueEnumerable(cancellationToken))
             {
                 try
                 {
-                    if (!cancellationToken.IsCancellationRequested)
-                        await callback.InvokeAsync(spans, cancellationToken);
+                    await callback.InvokeAsync(spans, cancellationToken);
                 }
-                catch (Exception)
+                catch (Exception exception)
                 {
-                    cts.Cancel(); 
-                    throw;
+                    _logger?.LogError(exception, $"{callback.GetType().Name} invoke exception. {exception.GetType()} : {exception.Message}");
                 }
             }
         }
