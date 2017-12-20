@@ -3,10 +3,10 @@ using System.Threading;
 using System.Threading.Tasks;
 using Butterfly.Protocol;
 
-namespace Butterfly.Core
+namespace Butterfly.Storage
 {
     public interface ISpanStorage
     {
-        Task Store(IEnumerable<Span> spans, CancellationToken cancellationToken);
+        Task StoreAsync(IEnumerable<Span> spans, CancellationToken cancellationToken);
     }
 }

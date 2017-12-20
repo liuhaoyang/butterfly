@@ -1,11 +1,9 @@
 ﻿using Butterfly.EntityFrameworkCore.Models;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Caching.Memory;
-using Microsoft.Extensions.Options;
 
 namespace Butterfly.EntityFrameworkCore
 {
-    public class ButterflyDbContext : DbContext
+    public class InMemoryDbContext : DbContext
     {
         public DbSet<BaggageModel> Baggages { get; set; }
 
@@ -19,7 +17,7 @@ namespace Butterfly.EntityFrameworkCore
 
         public DbSet<TagModel> Tags { get; set; }
 
-        public ButterflyDbContext(DbContextOptions<ButterflyDbContext> options)
+        public InMemoryDbContext(DbContextOptions<InMemoryDbContext> options)
             : base(options)
         {
         }
@@ -27,7 +25,7 @@ namespace Butterfly.EntityFrameworkCore
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
-                optionsBuilder.UseInMemoryDatabase();
+                optionsBuilder.UseInMemoryDatabase("--Butterfly--");
         }
     }
 }

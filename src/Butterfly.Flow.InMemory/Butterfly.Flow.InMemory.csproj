@@ -3,22 +3,23 @@
   <PropertyGroup>
     <Description>
     </Description>
-    <AssemblyTitle>Butterfly.EntityFrameworkCore</AssemblyTitle>
+    <AssemblyTitle>Butterfly.Flow.InMemory</AssemblyTitle>
     <TargetFramework>netstandard2.0</TargetFramework>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <AssemblyName>Butterfly.EntityFrameworkCore</AssemblyName>
-    <PackageId>Butterfly.EntityFrameworkCore</PackageId>
-    <PackageTags>Butterfly;Tracing;APM;EntityFrameworkCore;Storage</PackageTags>
+    <AssemblyName>Butterfly.Flow.InMemory</AssemblyName>
+    <PackageId>Butterfly.Flow.InMemory</PackageId>
+    <PackageTags>Butterfly;Tracing;APM</PackageTags>
     <PackageReleaseNotes>
     </PackageReleaseNotes>
+    <RootNamespace>Butterfly.Flow.InMemory</RootNamespace>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\Butterfly.Core\Butterfly.Core.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="3.2.0" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="2.0.0" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="2.0.0" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="2.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="2.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Options" Version="2.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="2.0.0" />
   </ItemGroup>
 </Project>

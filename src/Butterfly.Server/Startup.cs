@@ -4,11 +4,14 @@ using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using Butterfly.EntityFrameworkCore;
+using Butterfly.Flow.InMemory;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using Swashbuckle.AspNetCore.Swagger;
 
 namespace Butterfly.Server
 {
@@ -25,14 +28,16 @@ namespace Butterfly.Server
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
-            services.AddAutoMapper(config =>
+
+            services.AddAutoMapper();
+
+            services.AddSwaggerGen(option =>
             {
-                config.AddProfile<MappingProfile>();
+                option.SwaggerDoc("v1", new Info { Title = "butterfly http api", Version = "v1" });
             });
-            services.AddDbContextPool<ButterflyDbContext>(options =>
-            {
-                options.UseInMemoryDatabase("Butterfly.Server");
-            });
+            // in-memory
+            services.AddInMemoryFlow(Configuration)
+                    .AddInMemoryStorage(Configuration);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -41,6 +46,14 @@ namespace Butterfly.Server
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                
+                app.UseSwagger();
+
+                // Enable middleware to serve swagger-ui (HTML, JS, CSS, etc.), specifying the Swagger JSON endpoint.
+                app.UseSwaggerUI(c =>
+                {
+                    c.SwaggerEndpoint("/swagger/v1/swagger.json", "butterfly http api v1");
+                });
             }
             else
             {

@@ -3,10 +3,10 @@ using System.Threading;
 using System.Threading.Tasks;
 using Butterfly.Protocol;
 
-namespace Butterfly.Core
+namespace Butterfly.Flow
 {
     public interface ISpanConsumer
     {
-        Task Accept(IEnumerable<Span> spans, CancellationToken cancellationToken);
+        Task AcceptAsync(ISpanConsumerCallback callback, CancellationToken cancellationToken);
     }
 }

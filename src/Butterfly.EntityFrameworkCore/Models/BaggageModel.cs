@@ -8,9 +8,7 @@ namespace Butterfly.EntityFrameworkCore.Models
     {
         [Key]
         public long BaggageId { get; set; }
-        
-        
-        
+           
         public string SpanId { get; set; }
         
         public string Key { get; set; }

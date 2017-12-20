@@ -13,6 +13,11 @@ namespace Butterfly.Protocol
 
         public string OperationName { get; set; }
 
+        /// <summary>
+        /// duration(microsecond)
+        /// </summary>
+        public long Duration { get; set; }
+
         public DateTimeOffset StartTimestamp { get;  set;}
 
         public DateTimeOffset FinishTimestamp { get;  set;}

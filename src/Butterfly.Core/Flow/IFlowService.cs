@@ -2,9 +2,9 @@
 using System.Threading.Tasks;
 using Microsoft.Extensions.Hosting;
 
-namespace Butterfly.Collector
+namespace Butterfly.Flow
 {
-    public interface IHostedCollector : IHostedService
+    public interface IFlowService : IHostedService
     {
     }
 }
