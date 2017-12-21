@@ -29,6 +29,8 @@ namespace Butterfly.Server
         {
             services.AddMvc();
 
+            services.AddCors();
+
             services.AddAutoMapper();
 
             services.AddSwaggerGen(option =>
@@ -60,6 +62,8 @@ namespace Butterfly.Server
                 app.UseExceptionHandler("/Home/Error");
             }
 
+            app.UseCors(cors => cors.AllowAnyOrigin());
+            
             app.UseStaticFiles();
 
             app.UseMvc(routes =>
