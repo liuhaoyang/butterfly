@@ -67,17 +67,19 @@ namespace Butterfly.EntityFrameworkCore
                 query = query.Where(x => x.Duration <= traceQuery.MaxDuration);
             }
 
-            query = query.Skip((traceQuery.CurrentPageNumber - 1) * traceQuery.PageSize).Take(traceQuery.PageSize);
+            var queryGroup = query.GroupBy(x => x.TraceId);
 
-            var totalMemberCount = query.Count();
+            var totalMemberCount = queryGroup.Count();
+
+            queryGroup = queryGroup.Skip((traceQuery.CurrentPageNumber - 1) * traceQuery.PageSize).Take(traceQuery.PageSize);
 
             return Task.FromResult(new PageResult<Trace>()
             {
-                CurrentPageNumber = traceQuery.CurrentPageNumber + 1,
+                CurrentPageNumber = traceQuery.CurrentPageNumber,
                 PageSize = traceQuery.PageSize,
                 TotalMemberCount = totalMemberCount,
                 TotalPageCount = (int) Math.Ceiling((double) totalMemberCount / (double) traceQuery.PageSize),
-                Data = query.ToList().GroupBy(x => x.TraceId).Select(x => new Trace() {TraceId = x.Key, Spans = _mapper.Map<List<Span>>(x.ToList())}).ToList()
+                Data = queryGroup.ToList().Select(x => new Trace() {TraceId = x.Key, Spans = _mapper.Map<List<Span>>(x.ToList())}).ToList()
             });
         }
     }

@@ -21,12 +21,18 @@ namespace Butterfly.Server.Common
                 .ForMember(destination => destination.Duration, option => option.MapFrom(source => source.Spans.Sum(x => x.Duration)))
                 .ForMember(destination => destination.StartTimestamp, option => option.MapFrom(source => source.Spans.Min(x => x.StartTimestamp)))
                 .ForMember(destination => destination.FinishTimestamp, option => option.MapFrom(source => source.Spans.Max(x => x.FinishTimestamp)))
-                .ForMember(destination => destination.Services, option => option.MapFrom(source => GetServicesFromTrace(source)));
+                .ForMember(destination => destination.Applications, option => option.MapFrom(source => GetTraceApplicationsFromTrace(source)));
         }
 
-        private static List<string> GetServicesFromTrace(Trace trace)
+        private static List<TraceApplication> GetTraceApplicationsFromTrace(Trace trace)
         {
-            return trace.Spans.SelectMany(x => x.Tags).Where(x => x.Key == "application").Select(x => x.Value).ToList();
+            var traceApplications = new List<TraceApplication>();
+            foreach (var span in trace.Spans)
+            {
+                var applicationTag = span.Tags.FirstOrDefault(x => x.Key == "application");
+                traceApplications.Add(new TraceApplication(applicationTag?.Value));
+            }
+            return traceApplications;
         }
     }
 }

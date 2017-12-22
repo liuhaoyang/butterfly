@@ -13,6 +13,16 @@ namespace Butterfly.Server.ViewModels
 
         public DateTimeOffset FinishTimestamp { get; set; }
 
-        public List<string> Services { get; set; }
+        public List<TraceApplication> Applications { get; set; }
+    }
+
+    public class TraceApplication
+    {
+        public string Name { get; }
+
+        public TraceApplication(string name = null)
+        {
+            Name = name ?? "unknown";
+        }
     }
 }
