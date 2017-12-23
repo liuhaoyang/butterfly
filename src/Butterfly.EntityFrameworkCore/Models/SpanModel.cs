@@ -17,6 +17,8 @@ namespace Butterfly.EntityFrameworkCore.Models
         public bool Sampled { get; set; }
 
         public string OperationName { get; set; }
+        
+        public long Duration { get; set; }
 
         public DateTimeOffset StartTimestamp { get;  set;}
 
