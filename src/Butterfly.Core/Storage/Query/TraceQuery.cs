@@ -4,7 +4,7 @@ namespace Butterfly.Storage.Query
 {
     public class TraceQuery : PageQuery
     {
-        public string ApplicationName { get; set; }
+        public string ServiceName { get; set; }
 
         public DateTimeOffset? StartTimestamp { get; set; }
 

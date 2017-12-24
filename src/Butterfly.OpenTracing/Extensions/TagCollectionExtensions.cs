@@ -39,9 +39,9 @@ namespace Butterfly.OpenTracing
             return Set(tagCollection, key, value.ToString());
         }
 
-        public static TagCollection Application(this TagCollection tagCollection, string application)
+        public static TagCollection Service(this TagCollection tagCollection, string service)
         {
-            return Set(tagCollection, Tags.Component, application);
+            return Set(tagCollection, Tags.Component, service);
         }
 
         /// <summary>

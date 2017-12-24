@@ -40,34 +40,35 @@ namespace Butterfly.EntityFrameworkCore
 
         public Task<PageResult<Trace>> GetTraces(TraceQuery traceQuery)
         {
-            var query = _dbContext.Spans.AsNoTracking().Include(x => x.Tags).AsQueryable();
-            if (traceQuery.ApplicationName != null)
+            var query = _dbContext.Spans.AsNoTracking().Include(x => x.Tags).OrderByDescending(x => x.StartTimestamp).AsQueryable();
+            if (traceQuery.ServiceName != null)
             {
-                var traceIds = query.Where(x => x.Tags.Any(t => t.Key == "application" && t.Value == traceQuery.ApplicationName)).Select(x => x.TraceId).ToList();
+                var traceIds = query.Where(x => x.Tags.Any(t => t.Key == QueryConstants.Service && t.Value == traceQuery.ServiceName))
+                    .Select(x => x.TraceId).Distinct().ToList();
                 query = query.Where(x => traceIds.Contains(x.TraceId));
             }
 
             if (traceQuery.StartTimestamp != null)
             {
-                query = query.Where(x => x.StartTimestamp <= traceQuery.StartTimestamp);
+                query = query.Where(x => x.StartTimestamp >= traceQuery.StartTimestamp);
             }
 
             if (traceQuery.FinishTimestamp != null)
             {
-                query = query.Where(x => x.FinishTimestamp >= traceQuery.FinishTimestamp);
+                query = query.Where(x => x.FinishTimestamp <= traceQuery.FinishTimestamp);
             }
+
+            var queryGroup = query.ToList().GroupBy(x => x.TraceId);
 
             if (traceQuery.MinDuration != null)
             {
-                query = query.Where(x => x.Duration >= traceQuery.MinDuration);
+                queryGroup = queryGroup.Where(x => x.Sum(s => s.Duration) >= traceQuery.MinDuration);
             }
 
             if (traceQuery.MaxDuration != null)
             {
-                query = query.Where(x => x.Duration <= traceQuery.MaxDuration);
+                queryGroup = queryGroup.Where(x => x.Sum(s => s.Duration) <= traceQuery.MaxDuration);
             }
-
-            var queryGroup = query.GroupBy(x => x.TraceId);
 
             var totalMemberCount = queryGroup.Count();
 
@@ -81,6 +82,12 @@ namespace Butterfly.EntityFrameworkCore
                 TotalPageCount = (int) Math.Ceiling((double) totalMemberCount / (double) traceQuery.PageSize),
                 Data = queryGroup.ToList().Select(x => new Trace() {TraceId = x.Key, Spans = _mapper.Map<List<Span>>(x.ToList())}).ToList()
             });
+        }
+
+        public Task<IEnumerable<string>> GetServices()
+        {
+            var services = _dbContext.Tags.AsNoTracking().Where(x => x.Key == QueryConstants.Service).Select(x => x.Value).Distinct().ToList();
+            return Task.FromResult((IEnumerable<string>) services);
         }
     }
 }
