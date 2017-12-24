@@ -9,7 +9,7 @@ namespace Butterfly.Storage
     {
         Task<IEnumerable<Span>> GetSpans();
 
-        Task<IEnumerable<Span>> GetTrace(string traceId);
+        Task<Trace> GetTrace(string traceId);
 
         Task<PageResult<Trace>> GetTraces(TraceQuery traceQuery);
 

@@ -33,9 +33,15 @@ namespace Butterfly.EntityFrameworkCore
             return Task.FromResult(_mapper.Map<IEnumerable<Span>>(_spanQuery.ToList()));
         }
 
-        public Task<IEnumerable<Span>> GetTrace(string traceId)
+        public Task<Trace> GetTrace(string traceId)
         {
-            return Task.FromResult(_mapper.Map<IEnumerable<Span>>(_spanQuery.Where(x => x.TraceId == traceId).ToList()));
+            var spans = _spanQuery.Where(x => x.TraceId == traceId).OrderBy(x => x.StartTimestamp).ToList();
+            var result = new Trace
+            {
+                TraceId = traceId,
+                Spans = _mapper.Map<List<Span>>(spans)
+            };
+            return Task.FromResult(result);
         }
 
         public Task<PageResult<Trace>> GetTraces(TraceQuery traceQuery)
@@ -59,16 +65,17 @@ namespace Butterfly.EntityFrameworkCore
             }
 
             var queryGroup = query.ToList().GroupBy(x => x.TraceId);
-
-            if (traceQuery.MinDuration != null)
-            {
-                queryGroup = queryGroup.Where(x => x.Sum(s => s.Duration) >= traceQuery.MinDuration);
-            }
-
-            if (traceQuery.MaxDuration != null)
-            {
-                queryGroup = queryGroup.Where(x => x.Sum(s => s.Duration) <= traceQuery.MaxDuration);
-            }
+            
+            //todo fix
+//            if (traceQuery.MinDuration != null)
+//            {
+//                queryGroup = queryGroup.Where(x => x.Sum(s => s.Duration) >= traceQuery.MinDuration);
+//            }
+//
+//            if (traceQuery.MaxDuration != null)
+//            {
+//                queryGroup = queryGroup.Where(x => x.Sum(s => s.Duration) <= traceQuery.MaxDuration);
+//            }
 
             var totalMemberCount = queryGroup.Count();
 

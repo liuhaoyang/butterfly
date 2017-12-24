@@ -2,11 +2,12 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
-using Butterfly.Server.Models;
 using Butterfly.Server.ViewModels;
 using Butterfly.Storage;
 using Butterfly.Storage.Query;
 using Microsoft.AspNetCore.Mvc;
+using  Butterfly.Protocol;
+using  System.Linq;
 
 namespace Butterfly.Server.Controllers
 {
@@ -39,8 +40,29 @@ namespace Butterfly.Server.Controllers
                 CurrentPageNumber = pageNumber.GetValueOrDefault(1),
                 PageSize = pageSize.GetValueOrDefault(10)
             };
+
             var data = await _spanQuery.GetTraces(query);
-            return _mapper.Map<PageViewModel<TraceViewModel>>(data);
+            var pageViewModel = _mapper.Map<PageViewModel<TraceViewModel>>(data);
+
+            foreach (var traceViewModel in pageViewModel.Data)
+            {
+                var trace = data.Data.FirstOrDefault(x => x.TraceId == traceViewModel.TraceId);
+                traceViewModel.Services = GetTraceServices(trace);
+            }
+
+            return pageViewModel;
+        }
+
+        private List<TraceService> GetTraceServices(Trace trace)
+        {
+            var traceApplications = new List<TraceService>();
+            foreach (var span in trace.Spans)
+            {
+                var applicationTag = span.Tags.FirstOrDefault(x => x.Key == QueryConstants.Service);
+                traceApplications.Add(new TraceService(applicationTag?.Value));
+            }
+
+            return traceApplications;
         }
     }
 }

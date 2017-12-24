@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime;
 using System.Threading.Tasks;
 using AutoMapper;
 using Butterfly.Protocol;
@@ -18,22 +19,30 @@ namespace Butterfly.Server.Common
             CreateMap<PageResult<Trace>, PageViewModel<TraceViewModel>>()
                 .ForMember(destination => destination.PageNumber, option => option.MapFrom(source => source.CurrentPageNumber));
             CreateMap<Trace, TraceViewModel>()
-                .ForMember(destination => destination.Duration, option => option.MapFrom(source => source.Spans.Sum(x => x.Duration)))
-                .ForMember(destination => destination.StartTimestamp, option => option.MapFrom(source => source.Spans.Min(x => x.StartTimestamp).LocalDateTime))
-                .ForMember(destination => destination.FinishTimestamp, option => option.MapFrom(source => source.Spans.Max(x => x.FinishTimestamp).LocalDateTime))
-                .ForMember(destination => destination.Services, option => option.MapFrom(source => GetTraceApplicationsFromTrace(source)));
+                .ForMember(destination => destination.Duration, option => option.MapFrom(source => GetDuration(source.Spans)))
+                .ForMember(destination => destination.StartTimestamp, option => option.MapFrom(source => ToLocalDateTime(source.Spans.Min(x => x.StartTimestamp))))
+                .ForMember(destination => destination.FinishTimestamp, option => option.MapFrom(source => ToLocalDateTime(source.Spans.Max(x => x.FinishTimestamp))))
+                .ForMember(destination => destination.Services, option => option.Ignore());
+            CreateMap<Trace, TraceDetailViewModel>()
+//                .ForMember(destination => destination.Spans, option => option.Ignore())
+                .ForMember(destination => destination.Duration, option => option.MapFrom(source => GetDuration(source.Spans)))
+                .ForMember(destination => destination.StartTimestamp, option => option.MapFrom(source => ToLocalDateTime(source.Spans.Min(x => x.StartTimestamp))))
+                .ForMember(destination => destination.FinishTimestamp, option => option.MapFrom(source => ToLocalDateTime(source.Spans.Max(x => x.FinishTimestamp))));
+            CreateMap<Span, SpanViewModel>()
+//                .ForMember(destination => destination.Childs, option => option.Ignore())
+                .ForMember(destination => destination.StartTimestamp, option => option.MapFrom(source => ToLocalDateTime(source.StartTimestamp)))
+                .ForMember(destination => destination.FinishTimestamp, option => option.MapFrom(source => ToLocalDateTime(source.FinishTimestamp)));
         }
 
-        private static List<TraceService> GetTraceApplicationsFromTrace(Trace trace)
+        private static long GetDuration(IEnumerable<Span> spans)
         {
-            var traceApplications = new List<TraceService>();
-            foreach (var span in trace.Spans)
-            {
-                var applicationTag = span.Tags.FirstOrDefault(x => x.Key == QueryConstants.Service);
-                traceApplications.Add(new TraceService(applicationTag?.Value));
-            }
+            var timeSpan = spans.Max(x => x.FinishTimestamp) - spans.Min(x => x.StartTimestamp);
+            return timeSpan.Ticks / 10L;
+        }
 
-            return traceApplications;
+        private static DateTime ToLocalDateTime(DateTimeOffset dateTimeOffset)
+        {
+            return dateTimeOffset.LocalDateTime;
         }
     }
 }
