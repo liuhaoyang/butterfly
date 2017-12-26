@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 
 namespace Butterfly.Server.Models
 {
+    // todo: remove this and use viewModel
     public class SpanResponse
     {
         public string SpanId { get; set; }

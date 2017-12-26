@@ -39,6 +39,11 @@ namespace Butterfly.OpenTracing
             return Set(tagCollection, key, value.ToString());
         }
 
+        public static TagCollection Service(this TagCollection tagCollection, string service)
+        {
+            return Set(tagCollection, Tags.Component, service);
+        }
+
         /// <summary>
         /// The software package, framework, library, or module that generated the associated Span.
         /// E.g., "grpc", "Asp.Net Core", "Spring".

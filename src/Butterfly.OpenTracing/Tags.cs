@@ -6,6 +6,7 @@ namespace Butterfly.OpenTracing
 {
     public static class Tags
     {
+        public const string Service = "service";
         /// <summary>
         /// The software package, framework, library, or module that generated the associated Span.
         /// E.g., "grpc", "django", "JDBI".

@@ -17,14 +17,12 @@ namespace Butterfly.Server.Controllers
     public class SpanController : Controller
     {
         private readonly ISpanProducer _spanProducer;
-        private readonly ISpanStorage _spanStorage;
         private readonly ISpanQuery _spanQuery;
         private readonly IMapper _mapper;
 
-        public SpanController(ISpanProducer spanProducer, ISpanStorage spanStorage, ISpanQuery spanQuery, IMapper mapper)
+        public SpanController(ISpanProducer spanProducer, ISpanQuery spanQuery, IMapper mapper)
         {
             _spanProducer = spanProducer;
-            _spanStorage = spanStorage;
             _spanQuery = spanQuery;
             _mapper = mapper;
         }

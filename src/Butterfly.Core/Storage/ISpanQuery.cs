@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using Butterfly.Protocol;
+using Butterfly.Storage.Query;
 
 namespace Butterfly.Storage
 {
@@ -8,6 +9,10 @@ namespace Butterfly.Storage
     {
         Task<IEnumerable<Span>> GetSpans();
 
-        Task<IEnumerable<Span>> GetTrace(string traceId);
+        Task<Trace> GetTrace(string traceId);
+
+        Task<PageResult<Trace>> GetTraces(TraceQuery traceQuery);
+
+        Task<IEnumerable<string>> GetServices();
     }
 }
