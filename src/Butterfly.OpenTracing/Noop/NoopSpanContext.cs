@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Butterfly.OpenTracing.NullTracer
+namespace Butterfly.OpenTracing.Noop
 {
-    public class NullSpanContext : ISpanContext
+    public class NoopSpanContext : ISpanContext
     {
         public string TraceId => string.Empty;
 

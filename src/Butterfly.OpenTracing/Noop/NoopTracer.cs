@@ -1,24 +1,27 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace Butterfly.OpenTracing.NullTracer
+namespace Butterfly.OpenTracing.Noop
 {
-    public class NullTracer : ITracer
+    public class NoopTracer : ITracer
     {
-        public static readonly ITracer Instance = new NullTracer();
+        public static readonly ITracer Instance = new NoopTracer();
 
         public ISpanContext Extract(ICarrierReader carrierReader, ICarrier carrier)
         {
-            return new NullSpanContext();
+            return new NoopSpanContext();
         }
 
         public Task<ISpanContext> ExtractAsync(ICarrierReader carrierReader, ICarrier carrier)
         {
-            return Task.FromResult<ISpanContext>(new NullSpanContext());
+            return Task.FromResult<ISpanContext>(new NoopSpanContext());
         }
 
         public void Inject(ISpanContext spanContext, ICarrierWriter carrierWriter, ICarrier carrier)
         {
-           
+
         }
 
         public Task InjectAsync(ISpanContext spanContext, ICarrierWriter carrierWriter, ICarrier carrier)
@@ -28,7 +31,7 @@ namespace Butterfly.OpenTracing.NullTracer
 
         public ISpan Start(ISpanBuilder spanBuilder)
         {
-            return new NullSpan();
+            return new NoopSpan();
         }
     }
 }

@@ -2,26 +2,26 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Butterfly.OpenTracing.NullTracer
+namespace Butterfly.OpenTracing.Noop
 {
-    public class NullSpan : ISpan
+    public class NoopSpan : ISpan
     {
-        public ISpanContext SpanContext { get; } = new NullSpanContext();
+        public ISpanContext SpanContext { get; } = new NoopSpanContext();
 
         public Baggage Baggage => SpanContext.Baggage;
 
         public TagCollection Tags { get; } = new TagCollection();
-        
-        public LogCollection Logs { get; } =new LogCollection();
-        
+
+        public LogCollection Logs { get; } = new LogCollection();
+
         public void Finish(DateTimeOffset finishTimestamp)
         {
         }
 
         public DateTimeOffset StartTimestamp { get; set; }
-        
+
         public DateTimeOffset FinishTimestamp { get; set; }
-        
+
         public string OperationName => string.Empty;
 
         public void Dispose()

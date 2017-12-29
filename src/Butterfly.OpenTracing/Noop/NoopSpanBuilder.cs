@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Butterfly.OpenTracing.NullTracer
+namespace Butterfly.OpenTracing.Noop
 {
-    public class NullSpanBuilder : ISpanBuilder
+    public class NoopSpanBuilder : ISpanBuilder
     {
-        public static readonly ISpanBuilder Instance = new NullSpanBuilder();
+        public static readonly ISpanBuilder Instance = new NoopSpanBuilder();
 
         public SpanReferenceCollection References { get; } = new SpanReferenceCollection();
 

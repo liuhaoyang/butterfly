@@ -7,14 +7,14 @@ namespace Butterfly.OpenTracing
     public class Tracer : ITracer
     {
         private readonly ISpanContextFactory _spanContextFactory;
-        private readonly ISpanRecorder _spanQueue;
+        private readonly ISpanRecorder _spanRecorder;
         private readonly ISampler _sampler;
 
-        public Tracer(ISpanContextFactory spanContextFactory, ISpanRecorder spanQueue, ISampler sampler)
+        public Tracer(ISpanRecorder spanRecorder, ISampler sampler = null, ISpanContextFactory spanContextFactory = null)
         {
-            _spanContextFactory = spanContextFactory ?? throw new ArgumentNullException(nameof(spanContextFactory));
-            _spanQueue = spanQueue ?? throw new ArgumentNullException(nameof(spanQueue));
-            _sampler = sampler ?? throw new ArgumentNullException(nameof(sampler));
+            _spanRecorder = spanRecorder ?? throw new ArgumentNullException(nameof(spanRecorder));
+            _sampler = sampler;
+            _spanContextFactory = spanContextFactory ?? new SpanContextFactory();
         }
 
         public ISpanContext Extract(ICarrierReader carrierReader, ICarrier carrier)
@@ -80,8 +80,9 @@ namespace Butterfly.OpenTracing
                     baggage.Merge(reference.SpanContext.Baggage);
                 }
 
-            var spanContext = _spanContextFactory.Create(new SpanContextPackage(traceId, spanId, spanBuilder.Sampled ?? _sampler.ShouldSample(), baggage));
-            return new Span(spanBuilder.OperationName, spanBuilder.StartTimestamp ?? DateTimeOffset.UtcNow, spanContext, _spanQueue);
+            var sampled = spanBuilder.Sampled ?? _sampler?.ShouldSample();
+            var spanContext = _spanContextFactory.Create(new SpanContextPackage(traceId, spanId, sampled.GetValueOrDefault(true), baggage));
+            return new Span(spanBuilder.OperationName, spanBuilder.StartTimestamp ?? DateTimeOffset.UtcNow, spanContext, _spanRecorder);
         }
     }
 }
