@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
 using Butterfly.EntityFrameworkCore.Models;
-using Butterfly.Protocol;
+using Butterfly.DataContract.Tracing;
 using Butterfly.Storage;
 using Butterfly.Storage.Query;
 using Microsoft.EntityFrameworkCore;

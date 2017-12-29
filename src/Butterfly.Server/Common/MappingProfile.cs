@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime;
-using System.Threading.Tasks;
 using AutoMapper;
-using Butterfly.Protocol;
+using Butterfly.DataContract.Tracing;
 using Butterfly.Server.Models;
 using Butterfly.Server.ViewModels;
 using Butterfly.Storage.Query;

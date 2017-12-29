@@ -17,6 +17,6 @@
     <PackageReference Include="Microsoft.AspNetCore.Hosting.Abstractions" Version="2.0.0" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Butterfly.Protocal\Butterfly.Protocal.csproj" />
+    <ProjectReference Include="..\Butterfly.DataContract\Butterfly.DataContract.csproj" />
   </ItemGroup>
 </Project>

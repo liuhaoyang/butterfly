@@ -6,7 +6,7 @@ using Butterfly.Server.ViewModels;
 using Butterfly.Storage;
 using Butterfly.Storage.Query;
 using Microsoft.AspNetCore.Mvc;
-using  Butterfly.Protocol;
+using Butterfly.DataContract.Tracing;
 using  System.Linq;
 
 namespace Butterfly.Server.Controllers

@@ -4,7 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
 using Butterfly.Flow;
-using Butterfly.Protocol;
+using Butterfly.DataContract.Tracing;
 using Butterfly.Server.Models;
 using Butterfly.Storage;
 using Microsoft.AspNetCore.Http;

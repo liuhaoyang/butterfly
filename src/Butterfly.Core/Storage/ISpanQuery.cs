@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using Butterfly.Protocol;
+using Butterfly.DataContract.Tracing;
 using Butterfly.Storage.Query;
 
 namespace Butterfly.Storage

@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using Butterfly.EntityFrameworkCore.Models;
-using Butterfly.Protocol;
+using Butterfly.DataContract.Tracing;
 
 namespace Butterfly.EntityFrameworkCore
 {

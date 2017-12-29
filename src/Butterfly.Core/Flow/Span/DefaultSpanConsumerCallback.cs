@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-using Butterfly.Protocol;
+using Butterfly.DataContract.Tracing;
 using Butterfly.Storage;
 
 namespace Butterfly.Flow

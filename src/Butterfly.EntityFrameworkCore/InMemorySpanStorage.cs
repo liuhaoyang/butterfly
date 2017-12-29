@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
+using Butterfly.DataContract.Tracing;
 using Butterfly.EntityFrameworkCore.Models;
 using Butterfly.Storage;
-using Butterfly.Protocol;
 
 namespace Butterfly.EntityFrameworkCore
 {
