@@ -81,7 +81,7 @@ namespace Butterfly.OpenTracing
                 }
 
             var sampled = spanBuilder.Sampled ?? _sampler?.ShouldSample();
-            var spanContext = _spanContextFactory.Create(new SpanContextPackage(traceId, spanId, sampled.GetValueOrDefault(true), baggage));
+            var spanContext = _spanContextFactory.Create(new SpanContextPackage(traceId, spanId, sampled.GetValueOrDefault(true), baggage, spanBuilder.References));
             return new Span(spanBuilder.OperationName, spanBuilder.StartTimestamp ?? DateTimeOffset.UtcNow, spanContext, _spanRecorder);
         }
     }

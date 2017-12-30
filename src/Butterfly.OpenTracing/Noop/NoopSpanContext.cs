@@ -13,5 +13,7 @@ namespace Butterfly.OpenTracing.Noop
         public bool Sampled => true;
 
         public Baggage Baggage { get; } = new Baggage();
+        
+        public SpanReferenceCollection References { get; } =new SpanReferenceCollection();
     }
 }

@@ -10,12 +10,15 @@
 
         public bool Sampled { get; }
 
-        public SpanContextPackage(string traceId, string spanId, bool sampled, Baggage baggage)
+        public SpanReferenceCollection References { get; }
+
+        public SpanContextPackage(string traceId, string spanId, bool sampled, Baggage baggage, SpanReferenceCollection references = null)
         {
             TraceId = traceId;
             SpanId = spanId;
             Sampled = sampled;
             Baggage = baggage;
+            References = references;
         }
     }
 }

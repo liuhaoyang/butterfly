@@ -12,7 +12,8 @@ namespace Butterfly.OpenTracing
             {
                 throw new ArgumentNullException(nameof(spanContext));
             }
-            return new SpanContextPackage(spanContext.TraceId, spanContext.SpanId, spanContext.Sampled, spanContext.Baggage);
+
+            return new SpanContextPackage(spanContext.TraceId, spanContext.SpanId, spanContext.Sampled, spanContext.Baggage, null);
         }
 
         public static ISpanContext SetBaggage(this ISpanContext spanContext, string key, string value)
@@ -21,6 +22,7 @@ namespace Butterfly.OpenTracing
             {
                 throw new ArgumentNullException(nameof(spanContext));
             }
+
             spanContext.Baggage[key] = value;
             return spanContext;
         }

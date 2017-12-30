@@ -11,5 +11,7 @@ namespace Butterfly.OpenTracing
         bool Sampled { get; }
 
         Baggage Baggage { get; }
+        
+        SpanReferenceCollection References { get; }
     }
 }

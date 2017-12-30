@@ -10,7 +10,8 @@ namespace Butterfly.OpenTracing
                 spanContextPackage.TraceId ?? Guid.NewGuid().ToString(),
                 spanContextPackage.SpanId ?? Guid.NewGuid().ToString(),
                 spanContextPackage.Sampled,
-                spanContextPackage.Baggage ?? new Baggage());
+                spanContextPackage.Baggage ?? new Baggage(),
+                spanContextPackage.References);
         }
     }
 }
