@@ -22,8 +22,7 @@ namespace Butterfly.Server.ViewModels
 
         public DateTime FinishTimestamp { get; set; }
 
-        //todo span reference
-        //public IEnumerable<SpanViewModel> Childs { get; set; }
+        public IEnumerable<SpanViewModel> Children { get; set; }
         
         public string ServiceName { get; set; }
         

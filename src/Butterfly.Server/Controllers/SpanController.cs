@@ -1,11 +1,9 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
 using Butterfly.Flow;
 using Butterfly.DataContract.Tracing;
-using Butterfly.Server.Models;
+using Butterfly.Server.ViewModels;
 using Butterfly.Storage;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -27,10 +25,10 @@ namespace Butterfly.Server.Controllers
             _mapper = mapper;
         }
 
-        [HttpGet]
-        public async Task<SpanResponse[]> Get()
+        [HttpGet("{spanId}")]
+        public async Task<SpanDetailViewModel> Get([FromRoute]string spanId)
         {
-            return _mapper.Map<IEnumerable<SpanResponse>>(await _spanQuery.GetSpans()).ToArray();
+            return _mapper.Map<SpanDetailViewModel>(await _spanQuery.GetSpan(spanId));
         }
 
         [HttpPost]

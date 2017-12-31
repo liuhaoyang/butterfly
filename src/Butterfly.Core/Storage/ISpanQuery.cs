@@ -7,7 +7,7 @@ namespace Butterfly.Storage
 {
     public interface ISpanQuery
     {
-        Task<IEnumerable<Span>> GetSpans();
+        Task<Span> GetSpan(string spanId);
 
         Task<Trace> GetTrace(string traceId);
 

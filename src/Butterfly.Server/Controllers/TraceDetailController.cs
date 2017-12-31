@@ -1,5 +1,9 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using AutoMapper;
+using Butterfly.DataContract.Tracing;
 using Butterfly.Server.ViewModels;
 using Butterfly.Storage;
 using Microsoft.AspNetCore.Mvc;
@@ -22,15 +26,36 @@ namespace Butterfly.Server.Controllers
         public async Task<TraceDetailViewModel> Get([FromRoute] string traceId)
         {
             var trace = await _spanQuery.GetTrace(traceId);
-            var result = _mapper.Map<TraceDetailViewModel>(trace);
+            var traceDetailViewModel = _mapper.Map<TraceDetailViewModel>(trace);
 
-            foreach (var span in result.Spans)
+            traceDetailViewModel.Spans = GetSpanChildren(trace.Spans.Where(x => x.References?.Count == 0)).ToList();
+
+            CalculateOffset(traceDetailViewModel.Spans, traceDetailViewModel.StartTimestamp);
+
+            return traceDetailViewModel;
+
+            IEnumerable<SpanViewModel> GetSpanChildren(IEnumerable<Span> spans)
             {
-                var offsetTimespan = span.StartTimestamp - result.StartTimestamp;
-                span.Offset = offsetTimespan.GetMicroseconds();
+                foreach (var span in spans)
+                {
+                    var spanViewMode = _mapper.Map<SpanViewModel>(span);
+                    spanViewMode.Children = GetSpanChildren(trace.Spans.Where(x => x.References?.Count > 0 && x.References.FirstOrDefault()?.ParentId == span.SpanId)).ToList();
+                    yield return spanViewMode;
+                }
             }
+        }
 
-            return result;
+        private void CalculateOffset(IEnumerable<SpanViewModel> spans, DateTime startTimestamp)
+        {
+            if (spans.Any())
+            {
+                foreach (var span in spans)
+                {
+                    var offsetTimespan = span.StartTimestamp - startTimestamp;
+                    span.Offset = offsetTimespan.GetMicroseconds();
+                    CalculateOffset(span.Children, startTimestamp);
+                }
+            }
         }
     }
 }

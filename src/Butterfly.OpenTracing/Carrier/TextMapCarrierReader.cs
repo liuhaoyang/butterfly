@@ -24,6 +24,11 @@ namespace Butterfly.OpenTracing
             var spanId = textMapCarrier.GetSpanId();
             var sampled = textMapCarrier.GetSampled();
 
+            if (traceId == null || spanId == null)
+            {
+                return null;
+            }
+
             return _spanContextFactory.Create(new SpanContextPackage(traceId, spanId, sampled, textMapCarrier.GetBaggage()));
         }
 

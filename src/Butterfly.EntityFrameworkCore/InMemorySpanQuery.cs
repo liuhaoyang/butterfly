@@ -19,7 +19,7 @@ namespace Butterfly.EntityFrameworkCore
 
         public IQueryable<SpanModel> _spanQuery
         {
-            get { return _dbContext.Spans.AsNoTracking().Include(x => x.Baggages).Include(x => x.Tags).Include(x => x.References).Include(x => x.Logs); }
+            get { return _dbContext.Spans.AsNoTracking().Include(x => x.Baggages).Include(x => x.Tags).Include(x => x.References).Include(x => x.Logs).ThenInclude(x => x.Fields); }
         }
 
         public InMemorySpanQuery(InMemoryDbContext dbContext, IMapper mapper)
@@ -28,14 +28,15 @@ namespace Butterfly.EntityFrameworkCore
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
 
-        public Task<IEnumerable<Span>> GetSpans()
+        public Task<Span> GetSpan(string spanId)
         {
-            return Task.FromResult(_mapper.Map<IEnumerable<Span>>(_spanQuery.ToList()));
+            var span = _mapper.Map<Span>(_spanQuery.FirstOrDefault(x => x.SpanId == spanId));
+            return Task.FromResult(span ?? new Span());
         }
 
         public Task<Trace> GetTrace(string traceId)
         {
-            var spans = _spanQuery.Where(x => x.TraceId == traceId).OrderBy(x => x.StartTimestamp).ToList();
+            var spans = _dbContext.Spans.AsNoTracking().Include(x=>x.Tags).Include(x => x.References).Where(x => x.TraceId == traceId).OrderBy(x => x.StartTimestamp).ToList();
             var result = new Trace
             {
                 TraceId = traceId,

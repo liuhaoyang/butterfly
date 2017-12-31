@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
 using Butterfly.DataContract.Tracing;
-using Butterfly.Server.Models;
 using Butterfly.Server.ViewModels;
 using Butterfly.Storage.Query;
+using SQLitePCL;
 
 namespace Butterfly.Server.Common
 {
@@ -13,24 +13,40 @@ namespace Butterfly.Server.Common
     {
         public MappingProfile()
         {
-            CreateMap<Span, SpanResponse>().ReverseMap();
             CreateMap<PageResult<Trace>, PageViewModel<TraceViewModel>>()
                 .ForMember(destination => destination.PageNumber, option => option.MapFrom(source => source.CurrentPageNumber));
+            
             CreateMap<Trace, TraceViewModel>()
                 .ForMember(destination => destination.Duration, option => option.MapFrom(source => GetDuration(source.Spans)))
                 .ForMember(destination => destination.StartTimestamp, option => option.MapFrom(source => ToLocalDateTime(source.Spans.Min(x => x.StartTimestamp))))
                 .ForMember(destination => destination.FinishTimestamp, option => option.MapFrom(source => ToLocalDateTime(source.Spans.Max(x => x.FinishTimestamp))))
                 .ForMember(destination => destination.Services, option => option.Ignore());
+            
             CreateMap<Trace, TraceDetailViewModel>()
-//                .ForMember(destination => destination.Spans, option => option.Ignore())
+                .ForMember(destination => destination.Spans, option => option.Ignore())
                 .ForMember(destination => destination.Duration, option => option.MapFrom(source => GetDuration(source.Spans)))
                 .ForMember(destination => destination.StartTimestamp, option => option.MapFrom(source => ToLocalDateTime(source.Spans.Min(x => x.StartTimestamp))))
                 .ForMember(destination => destination.FinishTimestamp, option => option.MapFrom(source => ToLocalDateTime(source.Spans.Max(x => x.FinishTimestamp))));
+            
             CreateMap<Span, SpanViewModel>()
-//                .ForMember(destination => destination.Childs, option => option.Ignore())
+                .ForMember(destination => destination.Children, option => option.Ignore())
                 .ForMember(destination => destination.ServiceName, option => option.MapFrom(span => GetService(span)))
                 .ForMember(destination => destination.StartTimestamp, option => option.MapFrom(span => ToLocalDateTime(span.StartTimestamp)))
                 .ForMember(destination => destination.FinishTimestamp, option => option.MapFrom(span => ToLocalDateTime(span.FinishTimestamp)));
+            
+            CreateMap<Span,SpanDetailViewModel>()
+                .ForMember(destination => destination.ServiceName, option => option.MapFrom(span => GetService(span)))
+                .ForMember(destination => destination.StartTimestamp, option => option.MapFrom(span => ToLocalDateTime(span.StartTimestamp)))
+                .ForMember(destination => destination.FinishTimestamp, option => option.MapFrom(span => ToLocalDateTime(span.FinishTimestamp)));
+
+            CreateMap<Tag, TagViewModel>();
+
+            CreateMap<LogField, LogFieldViewModel>();
+
+            CreateMap<Log, LogViewModel>()
+                .ForMember(destination => destination.Timestamp, option => option.MapFrom(log => ToLocalDateTime(log.Timestamp)));
+            
+            CreateMap<SpanReference, ReferenceViewModel>();
         }
 
         private static long GetDuration(IEnumerable<Span> spans)
