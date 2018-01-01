@@ -36,7 +36,7 @@ namespace Butterfly.EntityFrameworkCore
 
         public Task<Trace> GetTrace(string traceId)
         {
-            var spans = _dbContext.Spans.AsNoTracking().Include(x=>x.Tags).Include(x => x.References).Where(x => x.TraceId == traceId).OrderBy(x => x.StartTimestamp).ToList();
+            var spans = _dbContext.Spans.AsNoTracking().Include(x => x.Tags).Include(x => x.References).Where(x => x.TraceId == traceId).OrderBy(x => x.StartTimestamp).ToList();
             var result = new Trace
             {
                 TraceId = traceId,
@@ -48,12 +48,6 @@ namespace Butterfly.EntityFrameworkCore
         public Task<PageResult<Trace>> GetTraces(TraceQuery traceQuery)
         {
             var query = _dbContext.Spans.AsNoTracking().Include(x => x.Tags).OrderByDescending(x => x.StartTimestamp).AsQueryable();
-            if (traceQuery.ServiceName != null)
-            {
-                var traceIds = query.Where(x => x.Tags.Any(t => t.Key == QueryConstants.Service && t.Value == traceQuery.ServiceName))
-                    .Select(x => x.TraceId).Distinct().ToList();
-                query = query.Where(x => traceIds.Contains(x.TraceId));
-            }
 
             if (traceQuery.StartTimestamp != null)
             {
@@ -65,8 +59,24 @@ namespace Butterfly.EntityFrameworkCore
                 query = query.Where(x => x.FinishTimestamp <= traceQuery.FinishTimestamp);
             }
 
+            var queryTags = BuildQueryTags(traceQuery).ToList();
+            if (queryTags.Any())
+            {
+                var traceIdsQuery = query;
+
+                foreach (var item in queryTags)
+                {
+                    var tag = item;
+                    traceIdsQuery = traceIdsQuery.Where(x => x.Tags.Any(t => t.Key == tag.Key && t.Value == tag.Value));
+                }
+
+                var traceIds = traceIdsQuery.Select(x => x.TraceId).Distinct().ToList();
+
+                query = query.Where(x => traceIds.Contains(x.TraceId));
+            }
+
             var queryGroup = query.ToList().GroupBy(x => x.TraceId);
-            
+
             //todo fix
 //            if (traceQuery.MinDuration != null)
 //            {
@@ -96,6 +106,27 @@ namespace Butterfly.EntityFrameworkCore
         {
             var services = _dbContext.Tags.AsNoTracking().Where(x => x.Key == QueryConstants.Service).Select(x => x.Value).Distinct().ToList();
             return Task.FromResult((IEnumerable<string>) services);
+        }
+
+        private IEnumerable<Tag> BuildQueryTags(TraceQuery traceQuery)
+        {
+            if (!string.IsNullOrEmpty(traceQuery.ServiceName))
+            {
+                yield return new Tag {Key = QueryConstants.Service, Value = traceQuery.ServiceName};
+            }
+
+            if (!string.IsNullOrEmpty(traceQuery.Tags))
+            {
+                var tags = traceQuery.Tags.Split('|');
+                foreach (var tag in tags)
+                {
+                    var pair = tag.Split('=');
+                    if (pair.Length == 2)
+                    {
+                        yield return new Tag {Key = pair[0], Value = pair[1]};
+                    }
+                }
+            }
         }
     }
 }

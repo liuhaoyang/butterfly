@@ -25,13 +25,14 @@ namespace Butterfly.Server.Controllers
 
         [HttpGet]
         public async Task<PageViewModel<TraceViewModel>> Get(
-            [FromQuery] string service,
+            [FromQuery] string service, [FromQuery] string tags,
             [FromQuery] DateTime? startTimestamp, [FromQuery] DateTime? finishTimestamp,
             [FromQuery] int? minDuration, [FromQuery] int? maxDuration,
             [FromQuery] int? pageNumber, [FromQuery] int? pageSize)
         {
             var query = new TraceQuery
             {
+                Tags = tags,
                 ServiceName = service,
                 StartTimestamp = startTimestamp?.ToUniversalTime(),
                 FinishTimestamp = finishTimestamp?.ToUniversalTime(),

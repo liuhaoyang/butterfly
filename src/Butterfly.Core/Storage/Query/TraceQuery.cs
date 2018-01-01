@@ -13,5 +13,7 @@ namespace Butterfly.Storage.Query
         public int? MinDuration { get; set; }
 
         public int? MaxDuration { get; set; }
+        
+        public string Tags { get; set; }
     }
 }
