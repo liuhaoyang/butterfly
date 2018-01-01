@@ -66,7 +66,7 @@ namespace Butterfly.Server.Controllers
         {
             foreach (var service in spans.GroupBy(GetService))
             {
-                yield return new NodeViewModel {Name = service.Key};
+                yield return new NodeViewModel {Name = service.Key, Value = service.Count()};
             }
         }
     }
