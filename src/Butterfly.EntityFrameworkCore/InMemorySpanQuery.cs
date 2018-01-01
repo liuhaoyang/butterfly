@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -106,6 +107,23 @@ namespace Butterfly.EntityFrameworkCore
         {
             var services = _dbContext.Tags.AsNoTracking().Where(x => x.Key == QueryConstants.Service).Select(x => x.Value).Distinct().ToList();
             return Task.FromResult((IEnumerable<string>) services);
+        }
+
+        public Task<IEnumerable<Span>> GetSpanDependencies(DependencyQuery dependencyQuery)
+        {
+            var query = _dbContext.Spans.AsNoTracking().Include(x => x.References).Include(x => x.Tags).AsQueryable();
+            
+            if (dependencyQuery.StartTimestamp != null)
+            {
+                query = query.Where(x => x.StartTimestamp >= dependencyQuery.StartTimestamp);
+            }
+
+            if (dependencyQuery.FinishTimestamp != null)
+            {
+                query = query.Where(x => x.FinishTimestamp <= dependencyQuery.FinishTimestamp);
+            }
+
+            return Task.FromResult(_mapper.Map<IEnumerable<Span>>(query.ToList()));
         }
 
         private IEnumerable<Tag> BuildQueryTags(TraceQuery traceQuery)
