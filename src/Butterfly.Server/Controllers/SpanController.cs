@@ -7,7 +7,7 @@ using Butterfly.Server.ViewModels;
 using Butterfly.Storage;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-
+using System.Linq;
 
 namespace Butterfly.Server.Controllers
 {
@@ -28,7 +28,9 @@ namespace Butterfly.Server.Controllers
         [HttpGet("{spanId}")]
         public async Task<SpanDetailViewModel> Get([FromRoute]string spanId)
         {
-            return _mapper.Map<SpanDetailViewModel>(await _spanQuery.GetSpan(spanId));
+            var span= _mapper.Map<SpanDetailViewModel>(await _spanQuery.GetSpan(spanId));
+            span.Logs = span.Logs.OrderBy(x => x.Timestamp).ToList();
+            return span;
         }
 
         [HttpPost]
