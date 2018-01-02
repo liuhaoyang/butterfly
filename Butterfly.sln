@@ -5,8 +5,6 @@ VisualStudioVersion = 15.0.27130.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{2E623577-C14B-42DB-97D3-EBF1E1B5B554}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Butterfly.OpenTracing", "src\Butterfly.OpenTracing\Butterfly.OpenTracing.csproj", "{3539233D-B905-497F-8178-2304CBDBA768}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Butterfly.Core", "src\Butterfly.Core\Butterfly.Core.csproj", "{ED0C7CB9-CF67-404B-A788-03646BF351F5}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Storage", "Storage", "{6EB52406-41A3-492D-90B6-2EF0CB0B222F}"
@@ -33,10 +31,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{3539233D-B905-497F-8178-2304CBDBA768}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3539233D-B905-497F-8178-2304CBDBA768}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{3539233D-B905-497F-8178-2304CBDBA768}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3539233D-B905-497F-8178-2304CBDBA768}.Release|Any CPU.Build.0 = Release|Any CPU
 		{ED0C7CB9-CF67-404B-A788-03646BF351F5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{ED0C7CB9-CF67-404B-A788-03646BF351F5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{ED0C7CB9-CF67-404B-A788-03646BF351F5}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -62,7 +56,6 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{3539233D-B905-497F-8178-2304CBDBA768} = {F5006079-5343-40F4-A68D-8435DE36353D}
 		{ED0C7CB9-CF67-404B-A788-03646BF351F5} = {F5006079-5343-40F4-A68D-8435DE36353D}
 		{6EB52406-41A3-492D-90B6-2EF0CB0B222F} = {2E623577-C14B-42DB-97D3-EBF1E1B5B554}
 		{2CD13284-D7A4-4C5F-AC42-8371A7D02109} = {2E623577-C14B-42DB-97D3-EBF1E1B5B554}
