@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore;
+﻿using Butterfly.Server.Common;
+using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Configuration;
 
 namespace Butterfly.Server
 {
@@ -7,13 +9,14 @@ namespace Butterfly.Server
     {
         public static void Main(string[] args)
         {
-            BuildWebHost(args).Run();
+            BuildWebHost(args, UrlHelpers.GetApplicationUrl()).Run();
         }
 
-        public static IWebHost BuildWebHost(string[] args) =>
+        public static IWebHost BuildWebHost(string[] args, string url) =>
             WebHost.CreateDefaultBuilder(args)
                 .UseStartup<Startup>()
-                .UseUrls("http://*:9618")
+                .UseUrls(url)
                 .Build();
+
     }
 }
