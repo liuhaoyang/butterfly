@@ -8,6 +8,7 @@ using Butterfly.Storage.Query;
 using Microsoft.AspNetCore.Mvc;
 using Butterfly.DataContract.Tracing;
 using  System.Linq;
+using Butterfly.Server.Common;
 
 namespace Butterfly.Server.Controllers
 {
@@ -59,8 +60,7 @@ namespace Butterfly.Server.Controllers
             var traceApplications = new List<TraceService>();
             foreach (var span in trace.Spans)
             {
-                var applicationTag = span.Tags.FirstOrDefault(x => x.Key == QueryConstants.Service);
-                traceApplications.Add(new TraceService(applicationTag?.Value));
+                traceApplications.Add(new TraceService(ServiceHelpers.GetService(span)));
             }
 
             return traceApplications;

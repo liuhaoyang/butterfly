@@ -26,18 +26,21 @@ namespace Butterfly.Server.Controllers
         }
 
         [HttpGet("{spanId}")]
-        public async Task<SpanDetailViewModel> Get([FromRoute]string spanId)
+        public async Task<SpanDetailViewModel> Get([FromRoute] string spanId)
         {
-            var span= _mapper.Map<SpanDetailViewModel>(await _spanQuery.GetSpan(spanId));
+            var span = _mapper.Map<SpanDetailViewModel>(await _spanQuery.GetSpan(spanId));
             span.Logs = span.Logs.OrderBy(x => x.Timestamp).ToList();
             return span;
         }
 
         [HttpPost]
-        public IActionResult Post([FromBody]Span[] spans)
+        public IActionResult Post([FromBody] Span[] spans)
         {
-            _spanProducer.PostAsync(spans, CancellationToken.None);
-            return StatusCode(StatusCodes.Status201Created);
+            if (spans != null)
+            {
+                _spanProducer.PostAsync(spans, CancellationToken.None);
+            }
+            return StatusCode(StatusCodes.Status202Accepted);
         }
     }
 }

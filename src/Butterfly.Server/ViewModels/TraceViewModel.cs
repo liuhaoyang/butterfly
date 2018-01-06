@@ -20,9 +20,9 @@ namespace Butterfly.Server.ViewModels
     {
         public string Name { get; }
 
-        public TraceService(string name = null)
+        public TraceService(string name)
         {
-            Name = name ?? "unknown";
+            Name = name;
         }
     }
 }

@@ -2,6 +2,6 @@
 {
     public static class QueryConstants
     {
-        public const string Service = "service";
+        public const string Service = "service.name";
     }
 }

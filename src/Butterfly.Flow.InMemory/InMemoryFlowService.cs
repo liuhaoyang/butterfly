@@ -10,7 +10,7 @@ namespace Butterfly.Flow.InMemory
 {
     public class InMemoryFlowService : IFlowService
     {
-        private const int DEFAUKT_CONSUMER = 1;
+        private const int DEFAUKT_CONSUMER = 2;
         private readonly IServiceProvider _serviceProvider;
         private readonly ISpanConsumer _spanConsumer;
         private readonly Task[] _consumerTasks;
@@ -47,7 +47,10 @@ namespace Butterfly.Flow.InMemory
 
         private Task ConsumerAction()
         {
-            return _spanConsumer.AcceptAsync(new InMemorySpanConsumerCallback(_serviceProvider), _cancellationTokenSource.Token);
+            using (var scope = _serviceProvider.CreateScope())
+            {
+                return _spanConsumer.AcceptAsync(scope.ServiceProvider.GetRequiredService<ISpanConsumerCallback>(), _cancellationTokenSource.Token);
+            }
         }
     }
 }

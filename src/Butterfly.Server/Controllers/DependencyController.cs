@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Butterfly.DataContract.Tracing;
+using Butterfly.Server.Common;
 using Butterfly.Server.ViewModels;
 using Butterfly.Storage;
 using Butterfly.Storage.Query;
@@ -14,7 +15,6 @@ namespace Butterfly.Server.Controllers
     [Route("api/[controller]")]
     public class DependencyController : Controller
     {
-        private const string unknownService = "unknown";
         private readonly ISpanQuery _spanQuery;
 
         public DependencyController(ISpanQuery spanQuery)
@@ -36,7 +36,7 @@ namespace Butterfly.Server.Controllers
             {
                 var @ref = x.References.First();
                 var parent = spans.FirstOrDefault(s => s.SpanId == @ref.ParentId);
-                return new {source = GetService(parent), target = GetService(x)};
+                return new {source = ServiceHelpers.GetService(parent), target = ServiceHelpers.GetService(x)};
             });
 
             foreach (var item in dependencies)
@@ -57,14 +57,9 @@ namespace Butterfly.Server.Controllers
             return dependency;
         }
 
-        private string GetService(Span span)
-        {
-            return span?.Tags?.FirstOrDefault(x => x.Key == QueryConstants.Service)?.Value ?? unknownService;
-        }
-
         private IEnumerable<NodeViewModel> GetNodes(IEnumerable<Span> spans)
         {
-            foreach (var service in spans.GroupBy(GetService))
+            foreach (var service in spans.GroupBy(ServiceHelpers.GetService))
             {
                 yield return new NodeViewModel {Name = service.Key, Value = service.Count()};
             }

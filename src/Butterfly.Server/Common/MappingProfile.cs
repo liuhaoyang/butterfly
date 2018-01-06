@@ -15,26 +15,26 @@ namespace Butterfly.Server.Common
         {
             CreateMap<PageResult<Trace>, PageViewModel<TraceViewModel>>()
                 .ForMember(destination => destination.PageNumber, option => option.MapFrom(source => source.CurrentPageNumber));
-            
+
             CreateMap<Trace, TraceViewModel>()
                 .ForMember(destination => destination.Duration, option => option.MapFrom(source => GetDuration(source.Spans)))
                 .ForMember(destination => destination.StartTimestamp, option => option.MapFrom(source => ToLocalDateTime(source.Spans.Min(x => x.StartTimestamp))))
                 .ForMember(destination => destination.FinishTimestamp, option => option.MapFrom(source => ToLocalDateTime(source.Spans.Max(x => x.FinishTimestamp))))
                 .ForMember(destination => destination.Services, option => option.Ignore());
-            
+
             CreateMap<Trace, TraceDetailViewModel>()
                 .ForMember(destination => destination.Spans, option => option.Ignore())
                 .ForMember(destination => destination.Duration, option => option.MapFrom(source => GetDuration(source.Spans)))
                 .ForMember(destination => destination.StartTimestamp, option => option.MapFrom(source => ToLocalDateTime(source.Spans.Min(x => x.StartTimestamp))))
                 .ForMember(destination => destination.FinishTimestamp, option => option.MapFrom(source => ToLocalDateTime(source.Spans.Max(x => x.FinishTimestamp))));
-            
+
             CreateMap<Span, SpanViewModel>()
                 .ForMember(destination => destination.Children, option => option.Ignore())
                 .ForMember(destination => destination.ServiceName, option => option.MapFrom(span => GetService(span)))
                 .ForMember(destination => destination.StartTimestamp, option => option.MapFrom(span => ToLocalDateTime(span.StartTimestamp)))
                 .ForMember(destination => destination.FinishTimestamp, option => option.MapFrom(span => ToLocalDateTime(span.FinishTimestamp)));
-            
-            CreateMap<Span,SpanDetailViewModel>()
+
+            CreateMap<Span, SpanDetailViewModel>()
                 .ForMember(destination => destination.ServiceName, option => option.MapFrom(span => GetService(span)))
                 .ForMember(destination => destination.StartTimestamp, option => option.MapFrom(span => ToLocalDateTime(span.StartTimestamp)))
                 .ForMember(destination => destination.FinishTimestamp, option => option.MapFrom(span => ToLocalDateTime(span.FinishTimestamp)));
@@ -45,7 +45,7 @@ namespace Butterfly.Server.Common
 
             CreateMap<Log, LogViewModel>()
                 .ForMember(destination => destination.Timestamp, option => option.MapFrom(log => ToLocalDateTime(log.Timestamp)));
-            
+
             CreateMap<SpanReference, ReferenceViewModel>();
         }
 
@@ -62,7 +62,7 @@ namespace Butterfly.Server.Common
 
         private static string GetService(Span span)
         {
-            return span.Tags?.FirstOrDefault(x => x.Key == QueryConstants.Service)?.Value;
+           return ServiceHelpers.GetService(span);
         }
     }
 }
