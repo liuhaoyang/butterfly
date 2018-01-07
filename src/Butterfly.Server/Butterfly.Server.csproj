@@ -2,8 +2,7 @@
   <Import Project="..\..\build\common.props" />
   <PropertyGroup>
     <TargetFramework>netcoreapp2.0</TargetFramework>
-    <NETStandardImplicitPackageVersion>2.0.0-*</NETStandardImplicitPackageVersion>
-    <NETStandardLibraryNETFrameworkVersion>2.0.0-*</NETStandardLibraryNETFrameworkVersion>
+    <RuntimeFrameworkVersion>2.0.0</RuntimeFrameworkVersion>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="3.2.0" />

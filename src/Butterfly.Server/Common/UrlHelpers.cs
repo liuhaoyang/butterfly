@@ -7,7 +7,7 @@ namespace Butterfly.Server.Common
     internal static class UrlHelpers
     {
         private const string defaultUrl = "http://localhost:9618";
-        private const string UrlKey = "server:address";
+        private const string UrlKey = "server_address";
 
         internal static string GetApplicationUrl(string[] args)
         {
