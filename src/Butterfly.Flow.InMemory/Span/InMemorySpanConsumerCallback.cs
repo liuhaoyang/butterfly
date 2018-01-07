@@ -2,28 +2,24 @@
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-using Butterfly.Protocol;
+using Butterfly.DataContract.Tracing;
 using Butterfly.Storage;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Butterfly.Flow.InMemory
 {
-    public class InMemorySpanConsumerCallback :  ISpanConsumerCallback
+    public class InMemorySpanConsumerCallback : ISpanConsumerCallback
     {
-        private readonly IServiceProvider _serviceProvider;
+        private readonly ISpanStorage _spanStorage;
 
-        public InMemorySpanConsumerCallback(IServiceProvider serviceProvider)
+        public InMemorySpanConsumerCallback(ISpanStorage spanStorage)
         {
-            _serviceProvider = serviceProvider;
+            _spanStorage = spanStorage;
         }
-        
+
         public Task InvokeAsync(IEnumerable<Span> spans, CancellationToken cancellationToken)
         {
-            using (var scope = _serviceProvider.CreateScope())
-            {
-                var spanStorage = scope.ServiceProvider.GetRequiredService<ISpanStorage>();
-                return spanStorage.StoreAsync(spans, cancellationToken);
-            }
+            return _spanStorage.StoreAsync(spans, cancellationToken);
         }
     }
 }

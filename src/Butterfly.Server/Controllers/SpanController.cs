@@ -1,15 +1,13 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
 using Butterfly.Flow;
-using Butterfly.Protocol;
-using Butterfly.Server.Models;
+using Butterfly.DataContract.Tracing;
+using Butterfly.Server.ViewModels;
 using Butterfly.Storage;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-
+using System.Linq;
 
 namespace Butterfly.Server.Controllers
 {
@@ -17,29 +15,32 @@ namespace Butterfly.Server.Controllers
     public class SpanController : Controller
     {
         private readonly ISpanProducer _spanProducer;
-        private readonly ISpanStorage _spanStorage;
         private readonly ISpanQuery _spanQuery;
         private readonly IMapper _mapper;
 
-        public SpanController(ISpanProducer spanProducer, ISpanStorage spanStorage, ISpanQuery spanQuery, IMapper mapper)
+        public SpanController(ISpanProducer spanProducer, ISpanQuery spanQuery, IMapper mapper)
         {
             _spanProducer = spanProducer;
-            _spanStorage = spanStorage;
             _spanQuery = spanQuery;
             _mapper = mapper;
         }
 
-        [HttpGet]
-        public async Task<SpanResponse[]> Get()
+        [HttpGet("{spanId}")]
+        public async Task<SpanDetailViewModel> Get([FromRoute] string spanId)
         {
-            return _mapper.Map<IEnumerable<SpanResponse>>(await _spanQuery.GetSpans()).ToArray();
+            var span = _mapper.Map<SpanDetailViewModel>(await _spanQuery.GetSpan(spanId));
+            span.Logs = span.Logs.OrderBy(x => x.Timestamp).ToList();
+            return span;
         }
 
         [HttpPost]
-        public IActionResult Post([FromBody]Span[] spans)
+        public IActionResult Post([FromBody] Span[] spans)
         {
-            _spanProducer.PostAsync(spans, CancellationToken.None);
-            return StatusCode(StatusCodes.Status201Created);
+            if (spans != null)
+            {
+                _spanProducer.PostAsync(spans, CancellationToken.None);
+            }
+            return StatusCode(StatusCodes.Status202Accepted);
         }
     }
 }

@@ -9,20 +9,20 @@ namespace Butterfly.Server.ViewModels
 
         public long Duration { get; set; }
 
-        public DateTimeOffset StartTimestamp { get; set; }
+        public DateTime StartTimestamp { get; set; }
 
-        public DateTimeOffset FinishTimestamp { get; set; }
+        public DateTime FinishTimestamp { get; set; }
 
-        public List<TraceApplication> Applications { get; set; }
+        public List<TraceService> Services { get; set; }
     }
 
-    public class TraceApplication
+    public class TraceService
     {
         public string Name { get; }
 
-        public TraceApplication(string name = null)
+        public TraceService(string name)
         {
-            Name = name ?? "unknown";
+            Name = name;
         }
     }
 }

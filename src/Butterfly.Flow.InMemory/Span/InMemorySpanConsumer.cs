@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
-using Butterfly.Protocol;
+using Butterfly.DataContract.Tracing;
 using Microsoft.Extensions.Logging;
 
 namespace Butterfly.Flow.InMemory

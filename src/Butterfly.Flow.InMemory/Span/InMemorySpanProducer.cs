@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using Butterfly.Common;
-using Butterfly.Protocol;
+using Butterfly.DataContract.Tracing;
 
 namespace Butterfly.Flow.InMemory
 {
@@ -18,9 +18,14 @@ namespace Butterfly.Flow.InMemory
 
         public Task PostAsync(IEnumerable<Span> spans, CancellationToken cancellationToken = default(CancellationToken))
         {
+            if (spans == null)
+            {
+                throw new ArgumentNullException(nameof(spans));
+            }
             if (_blockingQueue.IsActived && !cancellationToken.IsCancellationRequested)
             {
                 _blockingQueue.Enqueue(spans);
+                return TaskUtils.CompletedTask;
             }
 
             return TaskUtils.FailCompletedTask;

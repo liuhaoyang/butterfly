@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using Butterfly.Protocol;
+using Butterfly.DataContract.Tracing;
 
 namespace Butterfly.EntityFrameworkCore.Models
 {
