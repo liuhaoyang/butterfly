@@ -9,13 +9,13 @@ namespace Butterfly.Server
     {
         public static void Main(string[] args)
         {
-            BuildWebHost(args, UrlHelpers.GetApplicationUrl()).Run();
+            BuildWebHost(args).Run();
         }
 
-        public static IWebHost BuildWebHost(string[] args, string url) =>
+        public static IWebHost BuildWebHost(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
                 .UseStartup<Startup>()
-                .UseUrls(url)
+                .UseUrls(UrlHelpers.GetApplicationUrl(args))
                 .Build();
 
     }
