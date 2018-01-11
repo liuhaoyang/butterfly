@@ -16,6 +16,4 @@
     <PackageReference Include="Butterfly.DataContract" Version="0.0.2" />
     <PackageReference Include="Microsoft.AspNetCore.Hosting.Abstractions" Version="2.0.0" />
   </ItemGroup>
-  <ItemGroup>
-  </ItemGroup>
 </Project>
