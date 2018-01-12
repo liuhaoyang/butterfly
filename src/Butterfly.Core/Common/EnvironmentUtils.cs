@@ -7,7 +7,7 @@
         public const string FlowType = "flow_type";
 
         public const string InMemory = "memory";
-        
-        
+
+        public const string Elasticsearch = "elasticsearch";
     }
 }
