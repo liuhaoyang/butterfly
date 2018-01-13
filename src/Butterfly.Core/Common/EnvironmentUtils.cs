@@ -2,9 +2,9 @@
 {
     public static class EnvironmentUtils
     {
-        public const string StorageType = "storage_type";
+        public const string StorageType = "storagetype";
 
-        public const string FlowType = "flow_type";
+        public const string FlowType = "flowtype";
 
         public const string InMemory = "memory";
 

@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Butterfly.Elasticsearch;
 using Butterfly.EntityFrameworkCore;
 using Butterfly.Flow.InMemory;
 using Microsoft.AspNetCore.Builder;
@@ -27,13 +28,12 @@ namespace Butterfly.Server
 
             services.AddAutoMapper();
 
-            services.AddSwaggerGen(option =>
-            {
-                option.SwaggerDoc("v1", new Info { Title = "butterfly http api", Version = "v1" });
-            });
+            services.AddSwaggerGen(option => { option.SwaggerDoc("v1", new Info {Title = "butterfly http api", Version = "v1"}); });
             // in-memory
             services.AddInMemoryFlow(Configuration)
-                    .AddInMemoryStorage(Configuration);
+                .AddInMemoryStorage(Configuration);
+
+            services.AddElasticsearchStorage(Configuration);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

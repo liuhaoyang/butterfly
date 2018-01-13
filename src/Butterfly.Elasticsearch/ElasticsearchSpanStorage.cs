@@ -14,10 +14,12 @@ namespace Butterfly.Elasticsearch
     public class ElasticsearchSpanStorage : ISpanStorage
     {
         private readonly ElasticClient _elasticClient;
+        private readonly IIndexFactory _indexFactory;
 
-        public ElasticsearchSpanStorage(ElasticClient elasticClient)
+        public ElasticsearchSpanStorage(IElasticClientFactory elasticClientFactory, IIndexFactory indexFactory)
         {
-            _elasticClient = elasticClient;
+            _elasticClient = elasticClientFactory?.Create() ?? throw new ArgumentNullException(nameof(elasticClientFactory));
+            _indexFactory = indexFactory ?? throw new ArgumentNullException(nameof(indexFactory));
         }
 
         public Task StoreAsync(IEnumerable<Span> spans, CancellationToken cancellationToken)
@@ -27,9 +29,14 @@ namespace Butterfly.Elasticsearch
                 return TaskUtils.FailCompletedTask;
             }
 
-            var operations = spans.Select(x => new BulkIndexOperation<Span>(x)).ToArray();
-            var bulkRequest = new BulkRequest();
+            var bulkRequest = new BulkRequest {Operations = new List<IBulkOperation>()};
+            foreach (var span in spans)
+            {
+                var operation = new BulkIndexOperation<Span>(span) {Index = _indexFactory.CreateTracingIndex()};
+                bulkRequest.Operations.Add(operation);
+            }
 
+            return _elasticClient.BulkAsync(bulkRequest, cancellationToken);
         }
     }
 }

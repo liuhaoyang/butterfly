@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Butterfly.Storage;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -22,7 +23,12 @@ namespace Butterfly.Elasticsearch
 
             if (configuration.EnableElasticsearchStorage())
             {
-
+                services.AddOptions();
+                services.Configure<ElasticsearchOptions>(configuration);
+                services.AddSingleton<IIndexFactory, DateIndexFactory>();
+                services.AddSingleton<IElasticClientFactory, ElasticClientFactory>();
+                services.AddScoped<ISpanStorage, ElasticsearchSpanStorage>();
+                services.AddScoped<ISpanQuery, ElasticsearchSpanQuery>();
             }
 
             return services;
