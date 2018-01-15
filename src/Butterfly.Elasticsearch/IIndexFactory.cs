@@ -6,6 +6,6 @@ namespace Butterfly.Elasticsearch
 {
     public interface IIndexFactory
     {
-        string CreateTracingIndex();
+        string CreateIndex();
     }
 }

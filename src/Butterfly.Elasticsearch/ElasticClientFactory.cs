@@ -31,15 +31,14 @@ namespace Butterfly.Elasticsearch
             var pool = new StaticConnectionPool(urls);
             var settings = new ConnectionSettings(pool);
             var client = new ElasticClient(settings);
-            var tracingIndexName = _indexFactory.CreateTracingIndex();
+            var tracingIndexName = _indexFactory.CreateIndex();
             var existsResponse = client.IndexExists(Indices.Parse(tracingIndexName));
             if (!existsResponse.Exists)
             {
                 var tracingIndex = new CreateIndexDescriptor(tracingIndexName);
                 tracingIndex.Mappings(x => x.Map<Span>(m => m.AutoMap()));
                 var response = client.CreateIndex(tracingIndex);
-                Console.WriteLine(tracingIndexName);
-                Console.WriteLine(response.ServerError);
+                //todo log response
             }
 
             return client;

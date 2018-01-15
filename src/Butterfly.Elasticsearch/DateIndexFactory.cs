@@ -6,11 +6,11 @@ namespace Butterfly.Elasticsearch
 {
     internal class DateIndexFactory : IIndexFactory
     {
-        private const string TracingIndexSuffix = "tracing";
+        private const string IndexSuffix = "butterfly";
 
-        public string CreateTracingIndex()
+        public string CreateIndex()
         {
-            return $"{DateTimeOffset.UtcNow:yyyyMMdd}-{TracingIndexSuffix}";
+            return $"{IndexSuffix}-{DateTimeOffset.UtcNow:yyyyMMdd}";
         }
     }
 }

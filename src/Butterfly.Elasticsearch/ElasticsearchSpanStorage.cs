@@ -32,7 +32,7 @@ namespace Butterfly.Elasticsearch
             var bulkRequest = new BulkRequest {Operations = new List<IBulkOperation>()};
             foreach (var span in spans)
             {
-                var operation = new BulkIndexOperation<Span>(span) {Index = _indexFactory.CreateTracingIndex()};
+                var operation = new BulkIndexOperation<Span>(span) {Index = _indexFactory.CreateIndex()};
                 bulkRequest.Operations.Add(operation);
             }
 
