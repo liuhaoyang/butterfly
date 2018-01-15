@@ -29,7 +29,13 @@ namespace Butterfly.Elasticsearch
                 return TaskUtils.FailCompletedTask;
             }
 
+            return BulkStore(spans, cancellationToken);
+        }
+
+        private Task BulkStore(IEnumerable<Span> spans, CancellationToken cancellationToken)
+        {
             var bulkRequest = new BulkRequest {Operations = new List<IBulkOperation>()};
+            
             foreach (var span in spans)
             {
                 var operation = new BulkIndexOperation<Span>(span) {Index = _indexFactory.CreateIndex()};

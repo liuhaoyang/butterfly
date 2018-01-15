@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Threading;
 using Butterfly.DataContract.Tracing;
 using Elasticsearch.Net;
 using Microsoft.Extensions.Options;
@@ -12,15 +13,21 @@ namespace Butterfly.Elasticsearch
     {
         private readonly ElasticsearchOptions _elasticsearchOptions;
         private readonly IIndexFactory _indexFactory;
+        private readonly Lazy<ElasticClient> _value;
 
         public ElasticClientFactory(IOptions<ElasticsearchOptions> options, IIndexFactory indexFactory)
         {
             _elasticsearchOptions = options?.Value ?? throw new ArgumentNullException(nameof(options));
             _indexFactory = indexFactory ?? throw new ArgumentNullException(nameof(indexFactory));
+            _value = new Lazy<ElasticClient>(CreatElasticClient, LazyThreadSafetyMode.ExecutionAndPublication);
         }
 
-        [MethodImpl(MethodImplOptions.Synchronized)]
         public ElasticClient Create()
+        {
+            return _value.Value;
+        }
+
+        private ElasticClient CreatElasticClient()
         {
             if (string.IsNullOrEmpty(_elasticsearchOptions.ElasticsearchUrls))
             {

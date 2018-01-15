@@ -11,7 +11,7 @@ namespace Butterfly.Elasticsearch
         public static bool EnableElasticsearchStorage(this IConfiguration configuration)
         {
             var storageType = configuration[EnvironmentUtils.StorageType];
-            return storageType.ToLower() == EnvironmentUtils.Elasticsearch;
+            return storageType?.ToLower() == EnvironmentUtils.Elasticsearch;
         }
     }
 }
