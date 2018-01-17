@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Butterfly.Common;
 using Butterfly.DataContract.Tracing;
 using Butterfly.Storage.Query;
 using Nest;
@@ -12,11 +13,11 @@ namespace Butterfly.Elasticsearch
     public class ElasticsearchSpanQuery : ISpanQuery
     {
         private readonly ElasticClient _elasticClient;
-        private readonly IIndexFactory _indexFactory;
+        private readonly IIndexManager _indexManager;
 
-        public ElasticsearchSpanQuery(IElasticClientFactory elasticClientFactory, IIndexFactory indexFactory)
+        public ElasticsearchSpanQuery(IElasticClientFactory elasticClientFactory, IIndexManager indexManager)
         {
-            _indexFactory = indexFactory;
+            _indexManager = indexManager;
             _elasticClient = elasticClientFactory.Create();
         }
 
@@ -32,7 +33,7 @@ namespace Butterfly.Elasticsearch
 
         public async Task<PageResult<Trace>> GetTraces(TraceQuery traceQuery)
         {
-            var index = Indices.Parse(_indexFactory.CreateIndex());
+            var index = Indices.Index(_indexManager.CreateIndex(null));
 
             var query = BuildTracesQuery(traceQuery);
 
@@ -56,9 +57,12 @@ namespace Butterfly.Elasticsearch
             };
         }
 
-        public Task<IEnumerable<string>> GetServices()
+        public async Task<IEnumerable<string>> GetServices()
         {
-            throw new System.NotImplementedException();
+            var index = Indices.Index(_indexManager.CreateIndex(null));
+            var spans = await _elasticClient.SearchAsync<Span>(s => s.Index(index).Source(x => x
+                .Includes(i => i.Fields("tags.key", "tags.value"))).Query(q => q.Nested(n => n.Path(x => x.Tags).Query(q1 => q1.Term(new Field("tags.key"), QueryConstants.Service)))));
+            return spans.Documents.Select(ServiceUtils.GetService).Distinct().ToArray();
         }
 
         public Task<IEnumerable<Span>> GetSpanDependencies(DependencyQuery dependencyQuery)
@@ -68,7 +72,7 @@ namespace Butterfly.Elasticsearch
 
         private Func<QueryContainerDescriptor<Span>, QueryContainer> BuildTracesQuery(TraceQuery traceQuery)
         {
-            return query => query.Bool(b => b.Filter(BuildMustQuery(traceQuery)));
+            return query => query.Bool(b => b.Must(BuildMustQuery(traceQuery)));
         }
 
         private IEnumerable<Func<QueryContainerDescriptor<Span>, QueryContainer>> BuildMustQuery(TraceQuery traceQuery)
@@ -85,13 +89,8 @@ namespace Butterfly.Elasticsearch
 
             foreach (var queryTag in BuildQueryTags(traceQuery))
             {
-                yield return q => q.Bool(b => b.Filter(f => f.Term(new Field("tags.key"), queryTag.Key), f => f.Term(new Field("tags.value"), queryTag.Value)));
+                yield return q => q.Nested(n => n.Path(x => x.Tags).Query(q1 => q1.Bool(b => b.Must(f => f.Term(new Field("tags.key"), queryTag.Key?.ToLower()), f => f.Term(new Field("tags.value"), queryTag.Value?.ToLower())))));
             }
-        }
-
-        private Indices BuildIndices(DateTimeOffset? startTimestamp, DateTimeOffset? finishTimestamp)
-        {
-            return Indices.Index(_indexFactory.CreateIndex());
         }
 
         private IEnumerable<Tag> BuildQueryTags(TraceQuery traceQuery)

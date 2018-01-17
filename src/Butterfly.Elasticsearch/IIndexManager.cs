@@ -7,6 +7,6 @@ namespace Butterfly.Elasticsearch
 {
     public interface IIndexManager
     {
-        IndexName GetIndex(DateTimeOffset dateTimeOffset);
+        IndexName CreateIndex(DateTimeOffset? dateTimeOffset);
     }
 }

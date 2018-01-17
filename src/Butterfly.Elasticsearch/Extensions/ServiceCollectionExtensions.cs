@@ -25,7 +25,7 @@ namespace Butterfly.Elasticsearch
             {
                 services.AddOptions();
                 services.Configure<ElasticsearchOptions>(configuration);
-                services.AddSingleton<IIndexFactory, DateIndexFactory>();
+                services.AddSingleton<IIndexManager, IndexManager>();
                 services.AddSingleton<IElasticClientFactory, ElasticClientFactory>();
                 services.AddScoped<ISpanStorage, ElasticsearchSpanStorage>();
                 services.AddScoped<ISpanQuery, ElasticsearchSpanQuery>();
