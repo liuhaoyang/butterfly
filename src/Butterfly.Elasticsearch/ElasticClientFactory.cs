@@ -38,17 +38,18 @@ namespace Butterfly.Elasticsearch
             var pool = new StaticConnectionPool(urls);
             var settings = new ConnectionSettings(pool);
             var client = new ElasticClient(settings);
-            var tracingIndexName = _indexFactory.CreateIndex();
-            var existsResponse = client.IndexExists(Indices.Parse(tracingIndexName));
-            if (!existsResponse.Exists)
-            {
-                var tracingIndex = new CreateIndexDescriptor(tracingIndexName);
-                tracingIndex.Mappings(x => x.Map<Span>(m => m.AutoMap()));
-                var response = client.CreateIndex(tracingIndex);
-                //todo log response
-            }
-
             return client;
+            //var tracingIndexName = _indexFactory.CreateIndex();
+            //var existsResponse = client.IndexExists(Indices.Parse(tracingIndexName));
+            //if (!existsResponse.Exists)
+            //{
+            //    var tracingIndex = new CreateIndexDescriptor(tracingIndexName);
+            //    tracingIndex.Mappings(x => x.Map<Span>(m => m.AutoMap()));
+            //    var response = client.CreateIndex(tracingIndex);
+            //    //todo log response
+            //}
+
+            //var cc = client.CatIndices();
         }
     }
 }
