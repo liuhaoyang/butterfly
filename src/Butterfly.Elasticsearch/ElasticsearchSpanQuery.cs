@@ -37,23 +37,19 @@ namespace Butterfly.Elasticsearch
 
             var query = BuildTracesQuery(traceQuery);
 
-            var searchQuery = _elasticClient.SearchAsync<Span>(search => search.Index(index).Query(query).From((traceQuery.CurrentPageNumber - 1) * traceQuery.PageSize).Size(traceQuery.PageSize).Sort(sort => sort.Descending(x => x.StartTimestamp)));
+            var spans = await _elasticClient.SearchAsync<Span>(search => search.Index(index).Query(query).Size(10).Sort(sort => sort.Descending(x => x.StartTimestamp)));
 
-            var totalMemberCountQuery = _elasticClient.CountAsync<Span>(c => c.Index(index).Query(query));
+            var traces = spans.Documents.GroupBy(x => x.TraceId);
 
-            await Task.WhenAll(searchQuery, totalMemberCountQuery);
-
-            var spans = searchQuery.Result;
-
-            var totalMemberCount = totalMemberCountQuery.Result.Count;
+            var totalMemberCount = traces.Count();
 
             return new PageResult<Trace>()
             {
                 CurrentPageNumber = traceQuery.CurrentPageNumber,
                 PageSize = traceQuery.PageSize,
-                TotalMemberCount = (int) totalMemberCount,
+                TotalMemberCount = totalMemberCount,
                 TotalPageCount = (int) Math.Ceiling((double) totalMemberCount / (double) traceQuery.PageSize),
-                Data = spans.Documents.GroupBy(x => x.TraceId).Select(x => new Trace {TraceId = x.Key, Spans = x.ToList()})
+                Data = traces.Skip((traceQuery.CurrentPageNumber - 1) * traceQuery.PageSize).Take(traceQuery.PageSize).Select(x => new Trace {TraceId = x.Key, Spans = x.ToList()})
             };
         }
 
