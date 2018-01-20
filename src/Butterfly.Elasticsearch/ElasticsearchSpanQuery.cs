@@ -31,28 +31,26 @@ namespace Butterfly.Elasticsearch
             throw new System.NotImplementedException();
         }
 
-        public async Task<PageResult<Trace>> GetTraces(TraceQuery traceQuery)
+        public async Task<IEnumerable<Trace>> GetTraces(TraceQuery traceQuery)
         {
             var index = Indices.Index(_indexManager.CreateIndex(null));
 
             var query = BuildTracesQuery(traceQuery);
 
-            var spans = await _elasticClient.SearchAsync<Span>(search => search.Index(index).Query(query).Size(10).Sort(sort => sort.Descending(x => x.StartTimestamp)));
+            var traceIdsAggregationsResult = await _elasticClient.SearchAsync<Span>(s => s.Index(index).Size(0).Query(query).
+                 Aggregations(a => a.Terms("group_by_traceId",
+                 t => t.Aggregations(sub => sub.Min("min_startTimestapm", m => m.Field(f => f.StartTimestamp))).Field(f => f.TraceId).Order(o => o.Descending("min_startTimestapm")).Size(traceQuery.Limit))));
 
-            var traces = spans.Documents.GroupBy(x => x.TraceId);
+            var traceIdsAggregations = traceIdsAggregationsResult.Aggregations.FirstOrDefault().Value as BucketAggregate;
 
-            var totalMemberCount = traces.Count();
-            
-            //var ss 
-
-            return new PageResult<Trace>()
+            if (traceIdsAggregations == null)
             {
-                CurrentPageNumber = traceQuery.CurrentPageNumber,
-                PageSize = traceQuery.PageSize,
-                TotalMemberCount = totalMemberCount,
-                TotalPageCount = (int) Math.Ceiling((double) totalMemberCount / (double) traceQuery.PageSize),
-                Data = traces.Skip((traceQuery.CurrentPageNumber - 1) * traceQuery.PageSize).Take(traceQuery.PageSize).Select(x => new Trace {TraceId = x.Key, Spans = x.ToList()})
-            };
+                return new Trace[0];
+            }
+
+            var traces = traceIdsAggregations.Items.OfType<KeyedBucket<object>>().AsParallel().Select(x => GetTrace(x.Key?.ToString(), (int)x.DocCount.GetValueOrDefault(10), index)).OrderByDescending(x => x.Spans.Min(s => s.StartTimestamp)).ToList();
+
+            return traces;
         }
 
         public async Task<IEnumerable<string>> GetServices()
@@ -95,7 +93,7 @@ namespace Butterfly.Elasticsearch
         {
             if (!string.IsNullOrEmpty(traceQuery.ServiceName))
             {
-                yield return new Tag {Key = QueryConstants.Service, Value = traceQuery.ServiceName};
+                yield return new Tag { Key = QueryConstants.Service, Value = traceQuery.ServiceName };
             }
 
             if (!string.IsNullOrEmpty(traceQuery.Tags))
@@ -106,10 +104,20 @@ namespace Butterfly.Elasticsearch
                     var pair = tag.Split('=');
                     if (pair.Length == 2)
                     {
-                        yield return new Tag {Key = pair[0], Value = pair[1]};
+                        yield return new Tag { Key = pair[0], Value = pair[1] };
                     }
                 }
             }
+        }
+
+        private Trace GetTrace(string traceId, int size, Indices index)
+        {
+            var spans = _elasticClient.Search<Span>(s => s.Index(index).Size(size).Query(q => q.Term(t => t.Field(f => f.TraceId).Value(traceId)))).Documents;
+            return new Trace
+            {
+                TraceId = traceId,
+                Spans = spans.ToList()
+            };
         }
     }
 }

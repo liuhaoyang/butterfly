@@ -52,7 +52,9 @@ namespace Butterfly.Elasticsearch
         {
             _logger.LogInformation($"Not exists index {index}.");
             var tracingIndex = new CreateIndexDescriptor(index);
-            tracingIndex.Mappings(x => x.Map<Span>(m => m.AutoMap().Properties(p => p.Nested<Tag>(n => n.Name(name => name.Tags).AutoMap()))));
+            tracingIndex.Mappings(x => x.Map<Span>(m => m.AutoMap()
+                .Properties(p => p.Keyword(t => t.Name(n => n.TraceId)))
+                .Properties(p => p.Nested<Tag>(n => n.Name(name => name.Tags).AutoMap()))));
             var response = _elasticClient.CreateIndex(tracingIndex);
             if (response.IsValid)
             {
