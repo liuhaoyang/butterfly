@@ -42,6 +42,8 @@ namespace Butterfly.Elasticsearch
             var traces = spans.Documents.GroupBy(x => x.TraceId);
 
             var totalMemberCount = traces.Count();
+            
+            //var ss 
 
             return new PageResult<Trace>()
             {

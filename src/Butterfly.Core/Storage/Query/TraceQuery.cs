@@ -2,7 +2,7 @@
 
 namespace Butterfly.Storage.Query
 {
-    public class TraceQuery : PageQuery
+    public class TraceQuery
     {
         public string ServiceName { get; set; }
 
@@ -13,6 +13,8 @@ namespace Butterfly.Storage.Query
         public int? MinDuration { get; set; }
 
         public int? MaxDuration { get; set; }
+        
+        public int Limit { get; set; }
         
         public string Tags { get; set; }
     }
