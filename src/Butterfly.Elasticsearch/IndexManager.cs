@@ -54,6 +54,7 @@ namespace Butterfly.Elasticsearch
             var tracingIndex = new CreateIndexDescriptor(index);
             tracingIndex.Mappings(x => x.Map<Span>(m => m.AutoMap()
                 .Properties(p => p.Keyword(t => t.Name(n => n.TraceId)))
+                .Properties(p => p.Keyword(t => t.Name(n => n.SpanId)))
                 .Properties(p => p.Nested<Tag>(n => n.Name(name => name.Tags).AutoMap()))));
             var response = _elasticClient.CreateIndex(tracingIndex);
             if (response.IsValid)

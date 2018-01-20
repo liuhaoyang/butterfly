@@ -21,14 +21,22 @@ namespace Butterfly.Elasticsearch
             _elasticClient = elasticClientFactory.Create();
         }
 
-        public Task<Span> GetSpan(string spanId)
+        public async Task<Span> GetSpan(string spanId)
         {
-            throw new System.NotImplementedException();
+            var index = Indices.Index(_indexManager.CreateIndex(null));
+            var spanResult = await _elasticClient.SearchAsync<Span>(s => s.Index(index).Query(q => q.Term(t => t.Field(f => f.SpanId).Value(spanId))));
+            return spanResult.Documents.FirstOrDefault();
         }
 
         public Task<Trace> GetTrace(string traceId)
         {
-            throw new System.NotImplementedException();
+            if (string.IsNullOrEmpty(traceId))
+            {
+                return Task.FromResult(new Trace { TraceId = traceId, Spans = new List<Span>() });
+            }
+            var index = Indices.Index(_indexManager.CreateIndex(null));
+            var trace = GetTrace(traceId, 999, index);
+            return Task.FromResult(trace);
         }
 
         public async Task<IEnumerable<Trace>> GetTraces(TraceQuery traceQuery)
