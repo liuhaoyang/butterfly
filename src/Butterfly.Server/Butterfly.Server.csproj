@@ -21,7 +21,4 @@
     <ProjectReference Include="..\Butterfly.EntityFrameworkCore\Butterfly.EntityFrameworkCore.csproj" />
     <ProjectReference Include="..\Butterfly.Streaming.InMemory\Butterfly.Streaming.InMemory.csproj" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="wwwroot" />
-  </ItemGroup>
 </Project>
