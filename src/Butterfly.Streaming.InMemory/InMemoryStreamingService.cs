@@ -6,19 +6,19 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
-namespace Butterfly.Flow.InMemory
+namespace Butterfly.Streaming.InMemory
 {
-    public class InMemoryFlowService : IFlowService
+    public class InMemoryStreamingService : IStreamingService
     {
         private const int DEFAUKT_CONSUMER = 2;
         private readonly IServiceProvider _serviceProvider;
         private readonly ISpanConsumer _spanConsumer;
         private readonly Task[] _consumerTasks;
         private readonly CancellationTokenSource _cancellationTokenSource;
-        private readonly InMemoryFlowOptions _inMemoryFlowOptions;
-        private readonly ILogger<InMemoryFlowService> _logger;
+        private readonly InMemoryStreamingOptions _inMemoryFlowOptions;
+        private readonly ILogger<InMemoryStreamingService> _logger;
 
-        public InMemoryFlowService(IServiceProvider serviceProvider, ISpanConsumer spanConsumer, IOptions<InMemoryFlowOptions> options, ILogger<InMemoryFlowService> logger)
+        public InMemoryStreamingService(IServiceProvider serviceProvider, ISpanConsumer spanConsumer, IOptions<InMemoryStreamingOptions> options, ILogger<InMemoryStreamingService> logger)
         {
             _logger = logger;
             _serviceProvider = serviceProvider ?? throw new ArgumentNullException(nameof(serviceProvider));

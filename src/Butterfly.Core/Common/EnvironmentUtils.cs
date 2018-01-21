@@ -4,7 +4,7 @@
     {
         public const string StorageType = "storagetype";
 
-        public const string FlowType = "flowtype";
+        public const string StreamType = "streamtype";
 
         public const string InMemory = "memory";
 

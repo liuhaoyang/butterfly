@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using Butterfly.Elasticsearch;
 using Butterfly.EntityFrameworkCore;
-using Butterfly.Flow.InMemory;
+using Butterfly.Streaming.InMemory;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;

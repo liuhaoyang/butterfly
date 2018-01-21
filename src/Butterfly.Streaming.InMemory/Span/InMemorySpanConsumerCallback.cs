@@ -6,7 +6,7 @@ using Butterfly.DataContract.Tracing;
 using Butterfly.Storage;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Butterfly.Flow.InMemory
+namespace Butterfly.Streaming.InMemory
 {
     public class InMemorySpanConsumerCallback : ISpanConsumerCallback
     {

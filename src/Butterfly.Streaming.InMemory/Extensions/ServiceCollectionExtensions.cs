@@ -3,7 +3,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
-namespace Butterfly.Flow.InMemory
+namespace Butterfly.Streaming.InMemory
 {
     public static class ServiceCollectionExtensions
     {
@@ -19,16 +19,16 @@ namespace Butterfly.Flow.InMemory
                 throw new ArgumentNullException(nameof(configuration));
             }
 
-            if (configuration.EnableInMemoryFlow())
+            if (configuration.EnableInMemoryStreaming())
             {
                 services.AddOptions();
-                services.Configure<InMemoryFlowOptions>(configuration);
+                services.Configure<InMemoryStreamingOptions>(configuration);
                 services.AddScoped<ISpanConsumerCallback, InMemorySpanConsumerCallback>();
                 services.AddSingleton(typeof(IBlockingQueue<>), typeof(BlockingQueue<>));
                 services.AddSingleton<ISpanConsumer, InMemorySpanConsumer>();
                 services.AddSingleton<ISpanProducer, InMemorySpanProducer>();
-                services.AddSingleton<IFlowService, InMemoryFlowService>();
-                services.AddSingleton<IHostedService>(provider => provider.GetService<IFlowService>());
+                services.AddSingleton<IStreamingService, InMemoryStreamingService>();
+                services.AddSingleton<IHostedService>(provider => provider.GetService<IStreamingService>());
             }
 
             return services;

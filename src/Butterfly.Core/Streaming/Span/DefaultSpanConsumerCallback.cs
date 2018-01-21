@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Butterfly.DataContract.Tracing;
 using Butterfly.Storage;
 
-namespace Butterfly.Flow
+namespace Butterfly.Streaming
 {
     public class DefaultSpanConsumerCallback : ISpanConsumerCallback
     {

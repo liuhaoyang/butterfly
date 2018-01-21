@@ -3,7 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Butterfly.DataContract;
 
-namespace Butterfly.Flow
+namespace Butterfly.Streaming
 {
     public interface ISpanConsumer
     {

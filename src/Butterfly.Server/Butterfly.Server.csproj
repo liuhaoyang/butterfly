@@ -19,7 +19,7 @@
     <ProjectReference Include="..\Butterfly.Core\Butterfly.Core.csproj" />
     <ProjectReference Include="..\Butterfly.Elasticsearch\Butterfly.Elasticsearch.csproj" />
     <ProjectReference Include="..\Butterfly.EntityFrameworkCore\Butterfly.EntityFrameworkCore.csproj" />
-    <ProjectReference Include="..\Butterfly.Flow.InMemory\Butterfly.Flow.InMemory.csproj" />
+    <ProjectReference Include="..\Butterfly.Streaming.InMemory\Butterfly.Streaming.InMemory.csproj" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="wwwroot" />

@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Butterfly.Common;
 using Butterfly.DataContract.Tracing;
 
-namespace Butterfly.Flow.InMemory
+namespace Butterfly.Streaming.InMemory
 {
     public class InMemorySpanProducer : ISpanProducer
     {

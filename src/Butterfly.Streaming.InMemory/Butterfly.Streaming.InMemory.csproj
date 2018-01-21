@@ -3,15 +3,15 @@
   <PropertyGroup>
     <Description>
     </Description>
-    <AssemblyTitle>Butterfly.Flow.InMemory</AssemblyTitle>
+    <AssemblyTitle>Butterfly.Streaming.InMemory</AssemblyTitle>
     <TargetFramework>netstandard2.0</TargetFramework>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <AssemblyName>Butterfly.Flow.InMemory</AssemblyName>
-    <PackageId>Butterfly.Flow.InMemory</PackageId>
+    <AssemblyName>Butterfly.Streaming.InMemory</AssemblyName>
+    <PackageId>Butterfly.Streaming.InMemory</PackageId>
     <PackageTags>Butterfly;Tracing;APM</PackageTags>
     <PackageReleaseNotes>
     </PackageReleaseNotes>
-    <RootNamespace>Butterfly.Flow.InMemory</RootNamespace>
+    <RootNamespace>Butterfly.Streaming.InMemory</RootNamespace>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\Butterfly.Core\Butterfly.Core.csproj" />

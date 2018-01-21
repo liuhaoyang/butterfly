@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Threading;
 
-namespace Butterfly.Flow.InMemory
+namespace Butterfly.Streaming.InMemory
 {
     public class BlockingQueue<T> : IBlockingQueue<T>
     {

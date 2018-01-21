@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using Butterfly.DataContract.Tracing;
 using Microsoft.Extensions.Logging;
 
-namespace Butterfly.Flow.InMemory
+namespace Butterfly.Streaming.InMemory
 {
     public class InMemorySpanConsumer : ISpanConsumer
     {
