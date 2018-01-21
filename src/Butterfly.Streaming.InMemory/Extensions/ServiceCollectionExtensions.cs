@@ -23,9 +23,8 @@ namespace Butterfly.Streaming.InMemory
             {
                 services.AddOptions();
                 services.Configure<InMemoryStreamingOptions>(configuration);
-                services.AddScoped<ISpanConsumerCallback, InMemorySpanConsumerCallback>();
-                services.AddSingleton(typeof(IBlockingQueue<>), typeof(BlockingQueue<>));
-                services.AddSingleton<ISpanConsumer, InMemorySpanConsumer>();
+                services.AddSingleton(typeof(IStreamingSource<>), typeof(StreamingSource<>));
+                services.AddSingleton<IStreamingTarget, SpanStreamingTarget>();
                 services.AddSingleton<ISpanProducer, InMemorySpanProducer>();
                 services.AddSingleton<IStreamingService, InMemoryStreamingService>();
                 services.AddSingleton<IHostedService>(provider => provider.GetService<IStreamingService>());

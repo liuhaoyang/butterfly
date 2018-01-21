@@ -9,11 +9,11 @@ namespace Butterfly.Streaming.InMemory
 {
     public class InMemorySpanProducer : ISpanProducer
     {
-        private readonly IBlockingQueue<Span> _blockingQueue;
+        private readonly IStreamingSource<IEnumerable<Span>> _streamingSource;
 
-        public InMemorySpanProducer(IBlockingQueue<Span> blockingQueue)
+        public InMemorySpanProducer(IStreamingSource<IEnumerable<Span>> streamingSource)
         {
-            _blockingQueue = blockingQueue ?? throw new ArgumentNullException(nameof(blockingQueue));
+            _streamingSource = streamingSource ?? throw new ArgumentNullException(nameof(streamingSource));
         }
 
         public Task PostAsync(IEnumerable<Span> spans, CancellationToken cancellationToken = default(CancellationToken))
@@ -22,13 +22,9 @@ namespace Butterfly.Streaming.InMemory
             {
                 throw new ArgumentNullException(nameof(spans));
             }
-            if (_blockingQueue.IsActived && !cancellationToken.IsCancellationRequested)
-            {
-                _blockingQueue.Enqueue(spans);
-                return TaskUtils.CompletedTask;
-            }
 
-            return TaskUtils.FailCompletedTask;
+            _streamingSource.Post(spans);
+            return TaskUtils.CompletedTask;
         }
     }
 }

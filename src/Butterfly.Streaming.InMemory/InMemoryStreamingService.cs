@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using Butterfly.Common;
+using Butterfly.DataContract.Tracing;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -10,47 +12,26 @@ namespace Butterfly.Streaming.InMemory
 {
     public class InMemoryStreamingService : IStreamingService
     {
-        private const int DEFAUKT_CONSUMER = 2;
-        private readonly IServiceProvider _serviceProvider;
-        private readonly ISpanConsumer _spanConsumer;
-        private readonly Task[] _consumerTasks;
-        private readonly CancellationTokenSource _cancellationTokenSource;
-        private readonly InMemoryStreamingOptions _inMemoryFlowOptions;
-        private readonly ILogger<InMemoryStreamingService> _logger;
+        private readonly IStreamingSource<IEnumerable<Span>> _streamingSource;
+        private readonly IEnumerable<IStreamingTarget> _streamingTargets;
 
-        public InMemoryStreamingService(IServiceProvider serviceProvider, ISpanConsumer spanConsumer, IOptions<InMemoryStreamingOptions> options, ILogger<InMemoryStreamingService> logger)
+        public InMemoryStreamingService(IStreamingSource<IEnumerable<Span>> streamingSource, IEnumerable<IStreamingTarget> streamingTargets)
         {
-            _logger = logger;
-            _serviceProvider = serviceProvider ?? throw new ArgumentNullException(nameof(serviceProvider));
-            _spanConsumer = spanConsumer ?? throw new ArgumentNullException(nameof(spanConsumer));
-            _inMemoryFlowOptions = options?.Value ?? throw new ArgumentNullException(nameof(options));
-            _consumerTasks = new Task[_inMemoryFlowOptions.MaxConsumer == 0 ? DEFAUKT_CONSUMER : _inMemoryFlowOptions.MaxConsumer];
-            _cancellationTokenSource = new CancellationTokenSource();
+            _streamingSource = streamingSource;
+            _streamingTargets = streamingTargets;
         }
 
-        public Task StartAsync(CancellationToken cancellationToken)
+        public async Task StartAsync(CancellationToken cancellationToken)
         {
-            for (var i = 0; i < _consumerTasks.Length; i++)
-            {
-                _consumerTasks[i] = Task.Factory.StartNew(async () => await ConsumerAction(),
-                    _cancellationTokenSource.Token, TaskCreationOptions.LongRunning, TaskScheduler.Default);
-            }
-
-            return TaskUtils.CompletedTask;
+            foreach (var target in _streamingTargets)
+                await target.Executing();
         }
 
-        public Task StopAsync(CancellationToken cancellationToken)
+        public async Task StopAsync(CancellationToken cancellationToken)
         {
-            _cancellationTokenSource.Cancel();
-            return TaskUtils.CompletedTask;
-        }
-
-        private Task ConsumerAction()
-        {
-            using (var scope = _serviceProvider.CreateScope())
-            {
-                return _spanConsumer.AcceptAsync(scope.ServiceProvider.GetRequiredService<ISpanConsumerCallback>(), _cancellationTokenSource.Token);
-            }
+            await _streamingSource.Complete();
+            foreach (var target in _streamingTargets)
+                await target.Complete();
         }
     }
 }

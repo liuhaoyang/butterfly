@@ -6,6 +6,10 @@ namespace Butterfly.Streaming.InMemory
     {
         public InMemoryStreamingOptions Value => this;
 
-        public int MaxConsumer { get; set; }
+        public int MaxConsumerParallelism { get; set; }
+
+        public int ProducerCapacity { get; set; }
+
+        public int ConsumerCapacity { get; set; }
     }
 }
