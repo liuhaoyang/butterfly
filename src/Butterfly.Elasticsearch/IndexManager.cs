@@ -11,7 +11,7 @@ namespace Butterfly.Elasticsearch
 {
     internal class IndexManager : IIndexManager
     {
-        private const string IndexSuffix = "butterfly";
+        private const string IndexSuffix = "butterfly-tracing-";
 
         private readonly IMemoryCache _memoryCache;
         private readonly ElasticClient _elasticClient;
@@ -25,7 +25,7 @@ namespace Butterfly.Elasticsearch
         }
 
         [MethodImpl(MethodImplOptions.Synchronized)]
-        public IndexName CreateIndex(DateTimeOffset? dateTimeOffset)
+        public IndexName CreateTracingIndex(DateTimeOffset? dateTimeOffset)
         {
             if (dateTimeOffset == null)
             {
@@ -41,14 +41,14 @@ namespace Butterfly.Elasticsearch
             var existsResponse = _elasticClient.IndexExists(Indices.Index(index));
             if (!existsResponse.Exists)
             {
-                CreateIndexExecute(index);
+                CreateTracingIndexExecute(index);
             }
 
             _memoryCache.Set<bool>(index, true, TimeSpan.FromHours(6));
             return index;
         }
 
-        private void CreateIndexExecute(string index)
+        private void CreateTracingIndexExecute(string index)
         {
             _logger.LogInformation($"Not exists index {index}.");
             var tracingIndex = new CreateIndexDescriptor(index);

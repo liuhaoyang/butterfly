@@ -23,7 +23,7 @@ namespace Butterfly.Elasticsearch
 
         public async Task<Span> GetSpan(string spanId)
         {
-            var index = Indices.Index(_indexManager.CreateIndex(null));
+            var index = Indices.Index(_indexManager.CreateTracingIndex(null));
             var spanResult = await _elasticClient.SearchAsync<Span>(s => s.Index(index).Query(q => q.Term(t => t.Field(f => f.SpanId).Value(spanId))));
             return spanResult.Documents.FirstOrDefault();
         }
@@ -34,14 +34,14 @@ namespace Butterfly.Elasticsearch
             {
                 return Task.FromResult(new Trace { TraceId = traceId, Spans = new List<Span>() });
             }
-            var index = Indices.Index(_indexManager.CreateIndex(null));
+            var index = Indices.Index(_indexManager.CreateTracingIndex(null));
             var trace = GetTrace(traceId, 999, index);
             return Task.FromResult(trace);
         }
 
         public async Task<IEnumerable<Trace>> GetTraces(TraceQuery traceQuery)
         {
-            var index = Indices.Index(_indexManager.CreateIndex(null));
+            var index = Indices.Index(_indexManager.CreateTracingIndex(null));
 
             var query = BuildTracesQuery(traceQuery);
 
@@ -63,7 +63,7 @@ namespace Butterfly.Elasticsearch
 
         public async Task<IEnumerable<string>> GetServices()
         {
-            var index = Indices.Index(_indexManager.CreateIndex(null));
+            var index = Indices.Index(_indexManager.CreateTracingIndex(null));
             var spans = await _elasticClient.SearchAsync<Span>(s => s.Index(index).Source(x => x
                 .Includes(i => i.Fields("tags.key", "tags.value"))).Query(q => q.Nested(n => n.Path(x => x.Tags).Query(q1 => q1.Term(new Field("tags.key"), QueryConstants.Service)))));
             return spans.Documents.Select(ServiceUtils.GetService).Distinct().ToArray();

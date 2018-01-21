@@ -38,7 +38,7 @@ namespace Butterfly.Elasticsearch
 
             foreach (var span in spans)
             {
-                var operation = new BulkIndexOperation<Span>(span) {Index = _indexManager.CreateIndex(DateTimeOffset.UtcNow)};
+                var operation = new BulkIndexOperation<Span>(span) {Index = _indexManager.CreateTracingIndex(DateTimeOffset.UtcNow)};
                 bulkRequest.Operations.Add(operation);
             }
 
