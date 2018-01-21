@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Butterfly.Common;
@@ -9,34 +10,29 @@ using Nest;
 
 namespace Butterfly.Elasticsearch
 {
-    public class ElasticsearchSpanStorage : ISpanStorage
+    internal class ElasticSearchServiceStorage : IServiceStorage
     {
         private readonly ElasticClient _elasticClient;
         private readonly IIndexManager _indexManager;
 
-        public ElasticsearchSpanStorage(IElasticClientFactory elasticClientFactory, IIndexManager indexManager)
+        public ElasticSearchServiceStorage(IElasticClientFactory elasticClientFactory, IIndexManager indexManager)
         {
             _elasticClient = elasticClientFactory?.Create() ?? throw new ArgumentNullException(nameof(elasticClientFactory));
             _indexManager = indexManager ?? throw new ArgumentNullException(nameof(indexManager));
         }
 
-        public Task StoreAsync(IEnumerable<Span> spans, CancellationToken cancellationToken)
+        public Task StoreServiceAsync(IEnumerable<Service> services, CancellationToken cancellationToken)
         {
-            if (spans == null)
+            if (services == null)
             {
                 return TaskUtils.FailCompletedTask;
             }
 
-            return BulkStore(spans, cancellationToken);
-        }
+            var bulkRequest = new BulkRequest { Operations = new List<IBulkOperation>() };
 
-        private Task BulkStore(IEnumerable<Span> spans, CancellationToken cancellationToken)
-        {
-            var bulkRequest = new BulkRequest {Operations = new List<IBulkOperation>()};
-
-            foreach (var span in spans)
+            foreach (var service in services)
             {
-                var operation = new BulkIndexOperation<Span>(span) {Index = _indexManager.CreateTracingIndex(DateTimeOffset.UtcNow)};
+                var operation = new BulkIndexOperation<Service>(service) { Index = _indexManager.CreateTracingIndex(DateTimeOffset.UtcNow) };
                 bulkRequest.Operations.Add(operation);
             }
 
