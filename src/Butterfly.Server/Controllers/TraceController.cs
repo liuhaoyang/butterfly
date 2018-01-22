@@ -26,16 +26,16 @@ namespace Butterfly.Server.Controllers
 
         [HttpGet]
         public async Task<IEnumerable<TraceViewModel>> Get(
-            [FromQuery] string service, [FromQuery] string tags, [FromQuery] int? limit,
-            [FromQuery] DateTime? startTimestamp, [FromQuery] DateTime? finishTimestamp,
-            [FromQuery] int? minDuration, [FromQuery] int? maxDuration)
+            [FromQuery] string service, [FromQuery] string tags, 
+            [FromQuery] long? startTimestamp, [FromQuery] long? finishTimestamp,
+            [FromQuery] int? minDuration, [FromQuery] int? maxDuration, [FromQuery] int? limit)
         {
             var query = new TraceQuery
             {
                 Tags = tags,
                 ServiceName = service,
-                StartTimestamp = startTimestamp?.ToUniversalTime(),
-                FinishTimestamp = finishTimestamp?.ToUniversalTime(),
+                StartTimestamp = startTimestamp.HasValue ? (DateTimeOffset?)DateTimeOffset.FromUnixTimeMilliseconds(startTimestamp.Value) : null,
+                FinishTimestamp = finishTimestamp.HasValue ? (DateTimeOffset?)DateTimeOffset.FromUnixTimeMilliseconds(finishTimestamp.Value) : null,
                 MinDuration = minDuration,
                 MaxDuration = maxDuration,
                 Limit = limit.GetValueOrDefault(10)

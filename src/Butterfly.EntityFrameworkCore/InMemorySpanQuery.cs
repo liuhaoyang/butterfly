@@ -78,17 +78,6 @@ namespace Butterfly.EntityFrameworkCore
 
             var queryGroup = query.GroupBy(x => x.TraceId).Take(traceQuery.Limit);
 
-            //todo fix
-//            if (traceQuery.MinDuration != null)
-//            {
-//                queryGroup = queryGroup.Where(x => x.Sum(s => s.Duration) >= traceQuery.MinDuration);
-//            }
-//
-//            if (traceQuery.MaxDuration != null)
-//            {
-//                queryGroup = queryGroup.Where(x => x.Sum(s => s.Duration) <= traceQuery.MaxDuration);
-//            }
-
             return Task.FromResult<IEnumerable<Trace>>(queryGroup.ToList().Select(x => new Trace() {TraceId = x.Key, Spans = _mapper.Map<List<Span>>(x.ToList())}).ToList());
         }
 
