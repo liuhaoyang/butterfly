@@ -9,8 +9,6 @@ namespace Butterfly.EntityFrameworkCore
 {
     public class InMemoryServiceStorage : IServiceStorage
     {
-        private readonly InMemoryDbContext _inMemoryDbContext;
-
         public Task StoreServiceAsync(IEnumerable<Service> services, CancellationToken cancellationToken)
         {
             return TaskUtils.CompletedTask;
