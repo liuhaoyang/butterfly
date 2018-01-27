@@ -33,6 +33,8 @@ namespace Butterfly.EntityFrameworkCore
                 });
                 services.AddScoped<ISpanStorage, InMemorySpanStorage>();
                 services.AddScoped<ISpanQuery, InMemorySpanQuery>();
+                services.AddScoped<IServiceQuery, InMemoryServiceQuery>();
+                services.AddScoped<IServiceStorage, InMemoryServiceStorage>();
             }
 
             return services;

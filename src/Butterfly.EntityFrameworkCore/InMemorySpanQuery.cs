@@ -81,12 +81,6 @@ namespace Butterfly.EntityFrameworkCore
             return Task.FromResult<IEnumerable<Trace>>(queryGroup.ToList().Select(x => new Trace() {TraceId = x.Key, Spans = _mapper.Map<List<Span>>(x.ToList())}).ToList());
         }
 
-        public Task<IEnumerable<string>> GetServices()
-        {
-            var services = _dbContext.Tags.AsNoTracking().Where(x => x.Key == QueryConstants.Service).Select(x => x.Value).Distinct().ToList();
-            return Task.FromResult((IEnumerable<string>) services);
-        }
-
         public Task<IEnumerable<Span>> GetSpanDependencies(DependencyQuery dependencyQuery)
         {
             var query = _dbContext.Spans.AsNoTracking().Include(x => x.References).Include(x => x.Tags).AsQueryable();
