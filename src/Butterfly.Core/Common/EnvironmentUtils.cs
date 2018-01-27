@@ -2,12 +2,12 @@
 {
     public static class EnvironmentUtils
     {
-        public const string StorageType = "storage_type";
+        public const string StorageType = "storagetype";
 
-        public const string FlowType = "flow_type";
+        public const string StreamType = "streamtype";
 
         public const string InMemory = "memory";
-        
-        
+
+        public const string Elasticsearch = "elasticsearch";
     }
 }

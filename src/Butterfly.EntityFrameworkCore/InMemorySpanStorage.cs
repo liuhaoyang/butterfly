@@ -31,15 +31,16 @@ namespace Butterfly.EntityFrameworkCore
             var spanModels = _mapper.Map<IEnumerable<Span>, IEnumerable<SpanModel>>(spans);
             foreach (var spanModel in spanModels)
             {
-                if (spanModel.Logs != null)
+                spanModel.Tags?.ForEach(item => item.SpanId = spanModel.SpanId);
+                spanModel.Baggages?.ForEach(item => item.SpanId = spanModel.SpanId);
+                spanModel.References?.ForEach(item => item.SpanId = spanModel.SpanId);
+                spanModel.Logs?.ForEach(log =>
                 {
-                    foreach (var log in spanModel.Logs)
-                    {
-                        var logId = Guid.NewGuid().ToString();
-                        log.LogId = logId;
-                        log.Fields?.ForEach(field => field.LogId = logId);
-                    }
-                }
+                    log.SpanId = spanModel.SpanId;
+                    var logId = Guid.NewGuid().ToString();
+                    log.LogId = logId;
+                    log.Fields?.ForEach(field => field.LogId = logId);
+                });
 
                 _dbContext.Spans.Add(spanModel);
                 await _dbContext.SaveChangesAsync(cancellationToken);

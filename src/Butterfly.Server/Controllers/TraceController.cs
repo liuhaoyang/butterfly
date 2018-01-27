@@ -25,45 +25,43 @@ namespace Butterfly.Server.Controllers
         }
 
         [HttpGet]
-        public async Task<PageViewModel<TraceViewModel>> Get(
-            [FromQuery] string service, [FromQuery] string tags,
-            [FromQuery] DateTime? startTimestamp, [FromQuery] DateTime? finishTimestamp,
-            [FromQuery] int? minDuration, [FromQuery] int? maxDuration,
-            [FromQuery] int? pageNumber, [FromQuery] int? pageSize)
+        public async Task<IEnumerable<TraceViewModel>> Get(
+            [FromQuery] string service, [FromQuery] string tags, 
+            [FromQuery] long? startTimestamp, [FromQuery] long? finishTimestamp,
+            [FromQuery] int? minDuration, [FromQuery] int? maxDuration, [FromQuery] int? limit)
         {
             var query = new TraceQuery
             {
                 Tags = tags,
                 ServiceName = service,
-                StartTimestamp = startTimestamp?.ToUniversalTime(),
-                FinishTimestamp = finishTimestamp?.ToUniversalTime(),
+                StartTimestamp = startTimestamp.HasValue ? (DateTimeOffset?)DateTimeOffset.FromUnixTimeMilliseconds(startTimestamp.Value) : null,
+                FinishTimestamp = finishTimestamp.HasValue ? (DateTimeOffset?)DateTimeOffset.FromUnixTimeMilliseconds(finishTimestamp.Value) : null,
                 MinDuration = minDuration,
                 MaxDuration = maxDuration,
-                CurrentPageNumber = pageNumber.GetValueOrDefault(1),
-                PageSize = pageSize.GetValueOrDefault(10)
+                Limit = limit.GetValueOrDefault(10)
             };
 
             var data = await _spanQuery.GetTraces(query);
-            var pageViewModel = _mapper.Map<PageViewModel<TraceViewModel>>(data);
+            var traceViewModels = _mapper.Map<List<TraceViewModel>>(data);
 
-            foreach (var traceViewModel in pageViewModel.Data)
+            foreach (var trace in traceViewModels)
             {
-                var trace = data.Data.FirstOrDefault(x => x.TraceId == traceViewModel.TraceId);
-                traceViewModel.Services = GetTraceServices(trace);
+                var item = data.FirstOrDefault(x => x.TraceId == trace.TraceId);
+                trace.Services = GetTraceServices(item);
             }
 
-            return pageViewModel;
+            return traceViewModels;
         }
 
         private List<TraceService> GetTraceServices(Trace trace)
         {
-            var traceApplications = new List<TraceService>();
+            var traceServices= new List<TraceService>();
             foreach (var span in trace.Spans)
             {
-                traceApplications.Add(new TraceService(ServiceHelpers.GetService(span)));
+                traceServices.Add(new TraceService(ServiceHelpers.GetService(span)));
             }
 
-            return traceApplications;
+            return traceServices;
         }
     }
 }

@@ -9,7 +9,6 @@
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="3.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.SpaServices" Version="2.0.0" />
-    <PackageReference Include="Microsoft.NETCore.App" Version="2.0.0" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.0.0" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="1.1.0" />
   </ItemGroup>
@@ -18,10 +17,8 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Butterfly.Core\Butterfly.Core.csproj" />
+    <ProjectReference Include="..\Butterfly.Elasticsearch\Butterfly.Elasticsearch.csproj" />
     <ProjectReference Include="..\Butterfly.EntityFrameworkCore\Butterfly.EntityFrameworkCore.csproj" />
-    <ProjectReference Include="..\Butterfly.Flow.InMemory\Butterfly.Flow.InMemory.csproj" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="wwwroot" />
+    <ProjectReference Include="..\Butterfly.Streaming.InMemory\Butterfly.Streaming.InMemory.csproj" />
   </ItemGroup>
 </Project>

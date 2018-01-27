@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.27130.0
+VisualStudioVersion = 15.0.27130.2024
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{2E623577-C14B-42DB-97D3-EBF1E1B5B554}"
 EndProject
@@ -15,15 +15,17 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{F5006079-5
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Server", "Server", "{BD349368-FB1D-4C0E-B117-C8CA80DBC5FA}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Flow", "Flow", "{2F9B9267-7F12-44F1-B073-6BF587DD59EF}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Streaming", "Streaming", "{2F9B9267-7F12-44F1-B073-6BF587DD59EF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Butterfly.DataContract", "src\Butterfly.DataContract\Butterfly.DataContract.csproj", "{E6A100D1-BE31-48E1-9AFD-8E3777623DD8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Butterfly.DataContract", "src\Butterfly.DataContract\Butterfly.DataContract.csproj", "{E6A100D1-BE31-48E1-9AFD-8E3777623DD8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Butterfly.EntityFrameworkCore", "src\Butterfly.EntityFrameworkCore\Butterfly.EntityFrameworkCore.csproj", "{51D91BD8-2DB7-4C8A-B07E-CD3BBD81C754}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Butterfly.EntityFrameworkCore", "src\Butterfly.EntityFrameworkCore\Butterfly.EntityFrameworkCore.csproj", "{51D91BD8-2DB7-4C8A-B07E-CD3BBD81C754}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Butterfly.Flow.InMemory", "src\Butterfly.Flow.InMemory\Butterfly.Flow.InMemory.csproj", "{74D6368F-7AC6-4C6F-9AD3-E72B3BB24CA0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Butterfly.Server", "src\Butterfly.Server\Butterfly.Server.csproj", "{102CEB77-5911-47F4-99E6-FC3FC97FC989}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Butterfly.Server", "src\Butterfly.Server\Butterfly.Server.csproj", "{102CEB77-5911-47F4-99E6-FC3FC97FC989}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Butterfly.Elasticsearch", "src\Butterfly.Elasticsearch\Butterfly.Elasticsearch.csproj", "{5DA68189-6E2A-4741-B1DE-D3C43B5A8DC1}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Butterfly.Streaming.InMemory", "src\Butterfly.Streaming.InMemory\Butterfly.Streaming.InMemory.csproj", "{D86C8ED2-54F1-48D5-8AFB-8285857E1FC6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -43,14 +45,18 @@ Global
 		{51D91BD8-2DB7-4C8A-B07E-CD3BBD81C754}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{51D91BD8-2DB7-4C8A-B07E-CD3BBD81C754}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{51D91BD8-2DB7-4C8A-B07E-CD3BBD81C754}.Release|Any CPU.Build.0 = Release|Any CPU
-		{74D6368F-7AC6-4C6F-9AD3-E72B3BB24CA0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{74D6368F-7AC6-4C6F-9AD3-E72B3BB24CA0}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{74D6368F-7AC6-4C6F-9AD3-E72B3BB24CA0}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{74D6368F-7AC6-4C6F-9AD3-E72B3BB24CA0}.Release|Any CPU.Build.0 = Release|Any CPU
 		{102CEB77-5911-47F4-99E6-FC3FC97FC989}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{102CEB77-5911-47F4-99E6-FC3FC97FC989}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{102CEB77-5911-47F4-99E6-FC3FC97FC989}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{102CEB77-5911-47F4-99E6-FC3FC97FC989}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5DA68189-6E2A-4741-B1DE-D3C43B5A8DC1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5DA68189-6E2A-4741-B1DE-D3C43B5A8DC1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5DA68189-6E2A-4741-B1DE-D3C43B5A8DC1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5DA68189-6E2A-4741-B1DE-D3C43B5A8DC1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D86C8ED2-54F1-48D5-8AFB-8285857E1FC6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D86C8ED2-54F1-48D5-8AFB-8285857E1FC6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D86C8ED2-54F1-48D5-8AFB-8285857E1FC6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D86C8ED2-54F1-48D5-8AFB-8285857E1FC6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -64,8 +70,9 @@ Global
 		{2F9B9267-7F12-44F1-B073-6BF587DD59EF} = {2E623577-C14B-42DB-97D3-EBF1E1B5B554}
 		{E6A100D1-BE31-48E1-9AFD-8E3777623DD8} = {F5006079-5343-40F4-A68D-8435DE36353D}
 		{51D91BD8-2DB7-4C8A-B07E-CD3BBD81C754} = {6EB52406-41A3-492D-90B6-2EF0CB0B222F}
-		{74D6368F-7AC6-4C6F-9AD3-E72B3BB24CA0} = {2F9B9267-7F12-44F1-B073-6BF587DD59EF}
 		{102CEB77-5911-47F4-99E6-FC3FC97FC989} = {BD349368-FB1D-4C0E-B117-C8CA80DBC5FA}
+		{5DA68189-6E2A-4741-B1DE-D3C43B5A8DC1} = {6EB52406-41A3-492D-90B6-2EF0CB0B222F}
+		{D86C8ED2-54F1-48D5-8AFB-8285857E1FC6} = {2F9B9267-7F12-44F1-B073-6BF587DD59EF}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {3D45CC9B-D8C6-4DC1-8D68-09FBCD9371A8}

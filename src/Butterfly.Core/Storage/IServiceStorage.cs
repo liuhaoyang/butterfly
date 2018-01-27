@@ -5,8 +5,8 @@ using Butterfly.DataContract.Tracing;
 
 namespace Butterfly.Storage
 {
-    public interface ISpanStorage
+    public interface IServiceStorage
     {
-        Task StoreAsync(IEnumerable<Span> spans, CancellationToken cancellationToken = default(CancellationToken));
+        Task StoreServiceAsync(IEnumerable<Service> services, CancellationToken cancellationToken);
     }
 }

@@ -2,10 +2,7 @@
 
 namespace Butterfly.Storage.Query
 {
-    public class DependencyQuery
+    public class DependencyQuery : TimeRangeQuery
     {
-        public DateTimeOffset? StartTimestamp { get; set; }
-
-        public DateTimeOffset? FinishTimestamp { get; set; }
     }
 }

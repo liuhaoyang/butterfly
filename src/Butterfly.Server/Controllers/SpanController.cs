@@ -1,7 +1,7 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
-using Butterfly.Flow;
+using Butterfly.Streaming;
 using Butterfly.DataContract.Tracing;
 using Butterfly.Server.ViewModels;
 using Butterfly.Storage;

@@ -46,7 +46,7 @@ namespace Butterfly.EntityFrameworkCore
             return Task.FromResult(result);
         }
 
-        public Task<PageResult<Trace>> GetTraces(TraceQuery traceQuery)
+        public Task<IEnumerable<Trace>> GetTraces(TraceQuery traceQuery)
         {
             var query = _dbContext.Spans.AsNoTracking().Include(x => x.Tags).OrderByDescending(x => x.StartTimestamp).AsQueryable();
 
@@ -76,37 +76,9 @@ namespace Butterfly.EntityFrameworkCore
                 query = query.Where(x => traceIds.Contains(x.TraceId));
             }
 
-            var queryGroup = query.ToList().GroupBy(x => x.TraceId);
+            var queryGroup = query.GroupBy(x => x.TraceId).Take(traceQuery.Limit);
 
-            //todo fix
-//            if (traceQuery.MinDuration != null)
-//            {
-//                queryGroup = queryGroup.Where(x => x.Sum(s => s.Duration) >= traceQuery.MinDuration);
-//            }
-//
-//            if (traceQuery.MaxDuration != null)
-//            {
-//                queryGroup = queryGroup.Where(x => x.Sum(s => s.Duration) <= traceQuery.MaxDuration);
-//            }
-
-            var totalMemberCount = queryGroup.Count();
-
-            queryGroup = queryGroup.Skip((traceQuery.CurrentPageNumber - 1) * traceQuery.PageSize).Take(traceQuery.PageSize);
-
-            return Task.FromResult(new PageResult<Trace>()
-            {
-                CurrentPageNumber = traceQuery.CurrentPageNumber,
-                PageSize = traceQuery.PageSize,
-                TotalMemberCount = totalMemberCount,
-                TotalPageCount = (int) Math.Ceiling((double) totalMemberCount / (double) traceQuery.PageSize),
-                Data = queryGroup.ToList().Select(x => new Trace() {TraceId = x.Key, Spans = _mapper.Map<List<Span>>(x.ToList())}).ToList()
-            });
-        }
-
-        public Task<IEnumerable<string>> GetServices()
-        {
-            var services = _dbContext.Tags.AsNoTracking().Where(x => x.Key == QueryConstants.Service).Select(x => x.Value).Distinct().ToList();
-            return Task.FromResult((IEnumerable<string>) services);
+            return Task.FromResult<IEnumerable<Trace>>(queryGroup.ToList().Select(x => new Trace() {TraceId = x.Key, Spans = _mapper.Map<List<Span>>(x.ToList())}).ToList());
         }
 
         public Task<IEnumerable<Span>> GetSpanDependencies(DependencyQuery dependencyQuery)
