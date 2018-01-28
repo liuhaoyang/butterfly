@@ -6,6 +6,6 @@ namespace Butterfly.Elasticsearch
     {
         public ElasticsearchOptions Value { get; }
         
-        public string ElasticsearchUrls { get; set; }
+        public string ElasticsearchHosts{ get; set; }
     }
 }

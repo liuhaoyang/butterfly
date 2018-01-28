@@ -28,9 +28,11 @@ namespace Butterfly.Server.Controllers
             var trace = await _spanQuery.GetTrace(traceId);
             var traceDetailViewModel = _mapper.Map<TraceDetailViewModel>(trace);
 
-            var minReferences = trace.Spans.Min(x => x.References?.Count);
+            var traceSpans = trace.Spans.OrderBy(x => x.StartTimestamp).ToList() ;
 
-            traceDetailViewModel.Spans = GetSpanChildren(trace.Spans.Where(x => x.References?.Count == minReferences)).ToList();
+            var minReferences = traceSpans.Min(x => x.References?.Count);
+
+            traceDetailViewModel.Spans = GetSpanChildren(traceSpans.Where(x => x.References?.Count == minReferences)).ToList();
 
             CalculateOffset(traceDetailViewModel.Spans, traceDetailViewModel.StartTimestamp);
 
@@ -41,7 +43,7 @@ namespace Butterfly.Server.Controllers
                 foreach (var span in spans)
                 {
                     var spanViewMode = _mapper.Map<SpanViewModel>(span);
-                    spanViewMode.Children = GetSpanChildren(trace.Spans.Where(x => x.References?.Count > 0 && x.References.FirstOrDefault()?.ParentId == span.SpanId)).ToList();
+                    spanViewMode.Children = GetSpanChildren(traceSpans.Where(x => x.References?.Count > minReferences && x.References.FirstOrDefault()?.ParentId == span.SpanId)).ToList();
                     yield return spanViewMode;
                 }
             }

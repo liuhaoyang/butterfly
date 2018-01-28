@@ -12,6 +12,7 @@ namespace Butterfly.Elasticsearch
 {
     public class ElasticClientFactory : IElasticClientFactory
     {
+        private const string Default_ElasticsearchHosts = "http://localhost:9200";
         private readonly ElasticsearchOptions _elasticsearchOptions;
         private readonly Lazy<ElasticClient> _value;
         private readonly ILogger _logger;
@@ -32,12 +33,9 @@ namespace Butterfly.Elasticsearch
         {
             try
             {
-                if (string.IsNullOrEmpty(_elasticsearchOptions.ElasticsearchUrls))
-                {
-                    throw new InvalidOperationException("Invalid ElasticsearchUrls.");
-                }
-                _logger.LogInformation($"Using elasticsearch connection pool with {_elasticsearchOptions.ElasticsearchUrls}.");
-                var urls = _elasticsearchOptions.ElasticsearchUrls.Split(';').Select(x => new Uri(x)).ToArray();
+                var elasticsearchHosts = string.IsNullOrEmpty(_elasticsearchOptions.ElasticsearchHosts) ? Default_ElasticsearchHosts : _elasticsearchOptions.ElasticsearchHosts;
+                _logger.LogInformation($"Using elasticsearch connection pool with {elasticsearchHosts}.");
+                var urls = elasticsearchHosts.Split(';').Select(x => new Uri(x)).ToArray();
                 var pool = new StaticConnectionPool(urls);
                 var settings = new ConnectionSettings(pool);
                 var client = new ElasticClient(settings);       

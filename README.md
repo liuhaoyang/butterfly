@@ -18,6 +18,18 @@ A distributed tracing system and application performance management.
 * `cd butterfly-server-[latest version]`
 * `dotnet butterfly.server.dll`
 * browse to [http://localhost:9618](http://localhost:9618) to find traces
+### Elasticsearch Storage
+Elasticsearch storage supports versions 5.x and applies when `StorageType` is set to `elasticsearch`.  
+The following apply when `StorageType` is set to `elasticsearch`:
+```
+ `ElasticSearchHosts`: A comma separated list of elasticsearch base urls to connect to ex. http://your_es_host:9200.
+              Defaults to "http://localhost:9200".
+
+```
+Example usage:
+```
+dotnet butterfly.server.dll --StorageType=elasticsearch --ElasticSearchHosts=http://localhost:9200
+```
 
 # Screenshots
 ### Find-traces View
