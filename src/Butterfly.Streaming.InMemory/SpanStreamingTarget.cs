@@ -40,11 +40,9 @@ namespace Butterfly.Streaming.InMemory
         {
             var serviceScope = _serviceProvider.CreateScope();
             var spanStorage = serviceScope.ServiceProvider.GetRequiredService<ISpanStorage>();
-            if (_options.ConsumerCapacity <= 0)
-                return (new ActionBlock<IEnumerable<Span>>(async data => await ConsumerAction(spanStorage, data)), serviceScope);
             var executionDataflowBlockOptions = new ExecutionDataflowBlockOptions
             {
-                BoundedCapacity = _options.ConsumerCapacity,
+                BoundedCapacity = _options.ConsumerCapacity <= 0 ? -1 : _options.ConsumerCapacity,
                 MaxDegreeOfParallelism = _options.MaxConsumerParallelism <= 0 ? DEFAUKT_CONSUMER_PARALLELISM : _options.MaxConsumerParallelism
             };
             return (new ActionBlock<IEnumerable<Span>>(async data => await ConsumerAction(spanStorage, data), executionDataflowBlockOptions), serviceScope);

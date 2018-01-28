@@ -7,6 +7,8 @@ namespace Butterfly.Elasticsearch
 {
     public interface IIndexManager
     {
-        IndexName CreateTracingIndex(DateTimeOffset? dateTimeOffset);
+        IndexName CreateTracingIndex(DateTimeOffset? dateTimeOffset = null);
+
+        IndexName CreateServiceIndex();
     }
 }
