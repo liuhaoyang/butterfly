@@ -34,8 +34,8 @@ namespace Butterfly.Server.Controllers
             {
                 Tags = tags,
                 ServiceName = service,
-                StartTimestamp = startTimestamp.HasValue ? (DateTimeOffset?)DateTimeOffset.FromUnixTimeMilliseconds(startTimestamp.Value) : null,
-                FinishTimestamp = finishTimestamp.HasValue ? (DateTimeOffset?)DateTimeOffset.FromUnixTimeMilliseconds(finishTimestamp.Value) : null,
+                StartTimestamp = TimestampHelpers.Convert(startTimestamp),
+                FinishTimestamp = TimestampHelpers.Convert(finishTimestamp),
                 MinDuration = minDuration,
                 MaxDuration = maxDuration,
                 Limit = limit.GetValueOrDefault(10)

@@ -27,6 +27,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Butterfly.Elasticsearch", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Butterfly.Streaming.InMemory", "src\Butterfly.Streaming.InMemory\Butterfly.Streaming.InMemory.csproj", "{D86C8ED2-54F1-48D5-8AFB-8285857E1FC6}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "solution items", "solution items", "{BF3F1A5F-28F6-4E2D-802A-594C98DA5A45}"
+	ProjectSection(SolutionItems) = preProject
+		build\version.props = build\version.props
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

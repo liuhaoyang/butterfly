@@ -29,6 +29,8 @@ namespace Butterfly.Elasticsearch
                 services.AddSingleton<IElasticClientFactory, ElasticClientFactory>();
                 services.AddScoped<ISpanStorage, ElasticsearchSpanStorage>();
                 services.AddScoped<ISpanQuery, ElasticsearchSpanQuery>();
+                services.AddScoped<IServiceQuery, ElasticSearchServiceQuery>();
+                services.AddSingleton<IServiceStorage, ElasticSearchServiceStorage>();
             }
 
             return services;

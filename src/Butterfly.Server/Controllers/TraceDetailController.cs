@@ -28,7 +28,9 @@ namespace Butterfly.Server.Controllers
             var trace = await _spanQuery.GetTrace(traceId);
             var traceDetailViewModel = _mapper.Map<TraceDetailViewModel>(trace);
 
-            traceDetailViewModel.Spans = GetSpanChildren(trace.Spans.Where(x => x.References?.Count == 0)).ToList();
+            var minReferences = trace.Spans.Min(x => x.References?.Count);
+
+            traceDetailViewModel.Spans = GetSpanChildren(trace.Spans.Where(x => x.References?.Count == minReferences)).ToList();
 
             CalculateOffset(traceDetailViewModel.Spans, traceDetailViewModel.StartTimestamp);
 

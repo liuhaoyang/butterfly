@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Butterfly.Common;
 using Butterfly.DataContract.Tracing;
 using Butterfly.Storage.Query;
 using Nest;
@@ -23,7 +22,7 @@ namespace Butterfly.Elasticsearch
 
         public async Task<Span> GetSpan(string spanId)
         {
-            var index = Indices.Index(_indexManager.CreateTracingIndex(null));
+            var index = Indices.Index(_indexManager.CreateTracingIndex());
             var spanResult = await _elasticClient.SearchAsync<Span>(s => s.Index(index).Query(q => q.Term(t => t.Field(f => f.SpanId).Value(spanId))));
             return spanResult.Documents.FirstOrDefault();
         }
@@ -34,14 +33,14 @@ namespace Butterfly.Elasticsearch
             {
                 return Task.FromResult(new Trace { TraceId = traceId, Spans = new List<Span>() });
             }
-            var index = Indices.Index(_indexManager.CreateTracingIndex(null));
-            var trace = GetTrace(traceId, 999, index);
+            var index = Indices.Index(_indexManager.CreateTracingIndex());
+            var trace = GetTrace(traceId, index);
             return Task.FromResult(trace);
         }
 
         public async Task<IEnumerable<Trace>> GetTraces(TraceQuery traceQuery)
         {
-            var index = Indices.Index(_indexManager.CreateTracingIndex(null));
+            var index = Indices.Index(_indexManager.CreateTracingIndex());
 
             var query = BuildTracesQuery(traceQuery);
 
@@ -56,22 +55,33 @@ namespace Butterfly.Elasticsearch
                 return new Trace[0];
             }
 
-            var traces = traceIdsAggregations.Items.OfType<KeyedBucket<object>>().AsParallel().Select(x => GetTrace(x.Key?.ToString(), (int)x.DocCount.GetValueOrDefault(10), index)).OrderByDescending(x => x.Spans.Min(s => s.StartTimestamp)).ToList();
+            var traces = traceIdsAggregations.Items.OfType<KeyedBucket<object>>().AsParallel().Select(x => GetTrace(x.Key?.ToString(), index)).OrderByDescending(x => x.Spans.Min(s => s.StartTimestamp)).ToList();
 
             return traces;
         }
 
-        public async Task<IEnumerable<string>> GetServices()
+        public async Task<IEnumerable<Span>> GetSpanDependencies(DependencyQuery dependencyQuery)
         {
-            var index = Indices.Index(_indexManager.CreateTracingIndex(null));
-            var spans = await _elasticClient.SearchAsync<Span>(s => s.Index(index).Source(x => x
-                .Includes(i => i.Fields("tags.key", "tags.value"))).Query(q => q.Nested(n => n.Path(x => x.Tags).Query(q1 => q1.Term(new Field("tags.key"), QueryConstants.Service)))));
-            return spans.Documents.Select(ServiceUtils.GetService).Distinct().ToArray();
-        }
+            var index = Indices.Index(_indexManager.CreateTracingIndex());
 
-        public Task<IEnumerable<Span>> GetSpanDependencies(DependencyQuery dependencyQuery)
-        {
-            throw new System.NotImplementedException();
+            //var traceIdsAggregationsResult = await _elasticClient.SearchAsync<Span>(s => s.Index(index).Size(0).Query(query => query.Bool(b => b.Must(BuildMustQuery(dependencyQuery)))).
+            // Aggregations(a => a.Terms("group_by_traceId",
+            // t => t.Aggregations(sub => sub.Min("min_startTimestapm", m => m.Field(f => f.StartTimestamp))).Field(f => f.TraceId).Order(o => o.Descending("min_startTimestapm")).Size(99))));
+
+            //var traceIdsAggregations = traceIdsAggregationsResult.Aggregations.FirstOrDefault().Value as BucketAggregate;
+
+            //if (traceIdsAggregations == null)
+            //{
+            //    return new Span[0];
+            //}
+
+            //var spans = traceIdsAggregations.Items.OfType<KeyedBucket<object>>().AsParallel().Select(x => GetSpans(x.Key?.ToString(), (int)x.DocCount.GetValueOrDefault(10), index)).SelectMany(x => x).ToList();
+
+            //return spans;
+
+            var spanResult = await _elasticClient.SearchAsync<Span>(s => s.Index(index).Size(2048).Query(query => query.Bool(b => b.Must(BuildMustQuery(dependencyQuery)))));
+
+            return spanResult.Documents;
         }
 
         private Func<QueryContainerDescriptor<Span>, QueryContainer> BuildTracesQuery(TraceQuery traceQuery)
@@ -118,14 +128,33 @@ namespace Butterfly.Elasticsearch
             }
         }
 
-        private Trace GetTrace(string traceId, int size, Indices index)
+        private IEnumerable<Func<QueryContainerDescriptor<Span>, QueryContainer>> BuildMustQuery(DependencyQuery dependencyQuery)
         {
-            var spans = _elasticClient.Search<Span>(s => s.Index(index).Size(size).Query(q => q.Term(t => t.Field(f => f.TraceId).Value(traceId)))).Documents;
+            if (dependencyQuery.StartTimestamp != null)
+            {
+                yield return q => q.DateRange(d => d.Field(x => x.StartTimestamp).GreaterThanOrEquals(dependencyQuery.StartTimestamp.Value.DateTime));
+            }
+
+            if (dependencyQuery.FinishTimestamp != null)
+            {
+                yield return q => q.DateRange(d => d.Field(x => x.FinishTimestamp).LessThanOrEquals(dependencyQuery.FinishTimestamp.Value.DateTime));
+            }
+        }
+
+        private Trace GetTrace(string traceId, Indices index)
+        {
+            //var count = _elasticClient.Count<Span>(s => s.Index(index).Query(q => q.Term(t => t.Field(f => f.TraceId).Value(traceId)))).Count;
+            var spans = GetSpans(traceId, (int)49, index);
             return new Trace
             {
                 TraceId = traceId,
                 Spans = spans.ToList()
             };
+        }
+
+        private IEnumerable<Span> GetSpans(string traceId, int size, Indices index)
+        {
+            return _elasticClient.Search<Span>(s => s.Index(index).Size(size).Query(q => q.Term(t => t.Field(f => f.TraceId).Value(traceId)))).Documents;
         }
     }
 }
