@@ -48,7 +48,7 @@ namespace Butterfly.EntityFrameworkCore
 
         public Task<IEnumerable<Trace>> GetTraces(TraceQuery traceQuery)
         {
-            var query = _dbContext.Spans.AsNoTracking().Include(x => x.Tags).OrderByDescending(x => x.StartTimestamp).AsQueryable();
+            var query = _dbContext.Spans.Include(x => x.Tags).OrderByDescending(x => x.StartTimestamp).AsQueryable();
 
             if (traceQuery.StartTimestamp != null)
             {
@@ -76,9 +76,9 @@ namespace Butterfly.EntityFrameworkCore
                 query = query.Where(x => traceIds.Contains(x.TraceId));
             }
 
-            var queryGroup = query.GroupBy(x => x.TraceId).Take(traceQuery.Limit);
+            var queryGroup = query.ToList().GroupBy(x => x.TraceId).Take(traceQuery.Limit).ToList();
 
-            return Task.FromResult<IEnumerable<Trace>>(queryGroup.ToList().Select(x => new Trace() {TraceId = x.Key, Spans = _mapper.Map<List<Span>>(x.ToList())}).ToList());
+            return Task.FromResult<IEnumerable<Trace>>(queryGroup.Select(x => new Trace() {TraceId = x.Key, Spans = _mapper.Map<List<Span>>(x.ToList())}).ToList());
         }
 
         public Task<IEnumerable<Span>> GetSpanDependencies(DependencyQuery dependencyQuery)

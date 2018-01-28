@@ -23,10 +23,14 @@ namespace Butterfly.Server.Controllers
         }
 
         [HttpGet]
-        public async Task<DependencyViewModel> Get([FromQuery] DateTime? startTimestamp, [FromQuery] DateTime? finishTimestamp)
+        public async Task<DependencyViewModel> Get([FromQuery] long? startTimestamp, [FromQuery] long? finishTimestamp)
         {
             var spans = await _spanQuery.GetSpanDependencies(
-                new DependencyQuery {StartTimestamp = startTimestamp?.ToUniversalTime(), FinishTimestamp = finishTimestamp?.ToUniversalTime()});
+                new DependencyQuery
+                {
+                    StartTimestamp = TimestampHelpers.Convert(startTimestamp),
+                    FinishTimestamp = TimestampHelpers.Convert(finishTimestamp),
+                });
 
             var dependency = new DependencyViewModel();
 

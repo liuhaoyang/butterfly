@@ -17,8 +17,8 @@ namespace Butterfly.Streaming.InMemory
         private readonly IStreamingSource<IEnumerable<Span>> _streamingSource;
         private readonly InMemoryStreamingOptions _options;
         private readonly IServiceProvider _serviceProvider;
-        private readonly ValueTuple<ActionBlock<IEnumerable<Span>>, IServiceScope> _consumers;
         private readonly ILogger _logger;
+        private ActionBlock<IEnumerable<Span>> _consumer;
 
         public SpanStreamingTarget(IStreamingSource<IEnumerable<Span>> streamingSource, IServiceProvider serviceProvider, IOptions<InMemoryStreamingOptions> options, ILogger<SpanStreamingTarget> logger)
         {
@@ -26,46 +26,45 @@ namespace Butterfly.Streaming.InMemory
             _options = options.Value;
             _serviceProvider = serviceProvider;
             _logger = logger;
-            _consumers = new ValueTuple<ActionBlock<IEnumerable<Span>>, IServiceScope>();
         }
 
         public Task Executing()
         {
-            var (targetBlock, serviceScope) = CreateConsumer();
-            _streamingSource.SourceBlock.LinkTo(targetBlock);
+            _consumer = CreateConsumer();
+            _streamingSource.SourceBlock.LinkTo(_consumer);
             return TaskUtils.CompletedTask;
         }
 
-        private (ActionBlock<IEnumerable<Span>>, IServiceScope) CreateConsumer()
+        private ActionBlock<IEnumerable<Span>> CreateConsumer()
         {
-            var serviceScope = _serviceProvider.CreateScope();
-            var spanStorage = serviceScope.ServiceProvider.GetRequiredService<ISpanStorage>();
             var executionDataflowBlockOptions = new ExecutionDataflowBlockOptions
             {
                 BoundedCapacity = _options.ConsumerCapacity <= 0 ? -1 : _options.ConsumerCapacity,
                 MaxDegreeOfParallelism = _options.MaxConsumerParallelism <= 0 ? DEFAUKT_CONSUMER_PARALLELISM : _options.MaxConsumerParallelism
             };
-            return (new ActionBlock<IEnumerable<Span>>(async data => await ConsumerAction(spanStorage, data), executionDataflowBlockOptions), serviceScope);
+            return new ActionBlock<IEnumerable<Span>>(async data => await ConsumerAction(data), executionDataflowBlockOptions);
         }
 
-        private async Task ConsumerAction(ISpanStorage spanStorage, IEnumerable<Span> spans)
+        private async Task ConsumerAction(IEnumerable<Span> spans)
         {
-            try
+            using (var serviceScope = _serviceProvider.CreateScope())
             {
-                await spanStorage.StoreAsync(spans);
-            }
-            catch (Exception exception)
-            {
-                _logger.LogError("Store spans error.", exception);
-                throw;
+                var spanStorage = serviceScope.ServiceProvider.GetRequiredService<ISpanStorage>();
+                try
+                {
+                    await spanStorage.StoreAsync(spans);
+                }
+                catch (Exception exception)
+                {
+                    _logger.LogError("Store spans error.", exception);
+                    throw;
+                }
             }
         }
 
         public async Task Complete()
         {
-            var (targetBlock, serviceScope) = _consumers;
-            await targetBlock.Completion;
-            serviceScope.Dispose();
+            await _consumer?.Completion;
         }
     }
 }
