@@ -29,6 +29,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Butterfly.Streaming.InMemor
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "solution items", "solution items", "{BF3F1A5F-28F6-4E2D-802A-594C98DA5A45}"
 	ProjectSection(SolutionItems) = preProject
+		README.md = README.md
 		build\version.props = build\version.props
 	EndProjectSection
 EndProject
