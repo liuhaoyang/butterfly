@@ -1,10 +1,10 @@
 ﻿using Microsoft.Extensions.Options;
 
-namespace Butterfly.Streaming.InMemory
+namespace Butterfly.Pipeline.Lite
 {
-    public class InMemoryStreamingOptions : IOptions<InMemoryStreamingOptions>
+    public class LitePipelineOptions : IOptions<LitePipelineOptions>
     {
-        public InMemoryStreamingOptions Value => this;
+        public LitePipelineOptions Value => this;
 
         public int MaxConsumerParallelism { get; set; }
 

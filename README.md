@@ -2,16 +2,7 @@
 A distributed tracing system and application performance management.
 
 # Design
-``` text
-+----------------------------------------------------------------------------------+
-|  Server                                                                          |
-|                                                                                  | 
-|  +-----------+   +-----------+   +-----------+   +-----------+   +-----------+   |
-|  | Collector +--->    MQ     +--->  Consumer +--->  Storage  +--->   Web UI  |   |  
-|  +-----------+   +-----------+   +-----------+   +-----------+   +-----------+   |
-|                                                                                  |
-+----------------------------------------------------------------------------------+
-```
+Butterfly¡¯s design is based on the [Google Dapper](https://research.google.com/pubs/pub36356.html) paper and [OpenTracing](http://opentracing.io/).
 # Quickstart
 * download [latest release](https://github.com/ButterflyAPM/butterfly/releases)
 * extract `butterfly-server-[latest version]`

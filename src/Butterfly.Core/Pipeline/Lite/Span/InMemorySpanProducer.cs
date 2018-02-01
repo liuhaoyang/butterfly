@@ -5,13 +5,13 @@ using System.Threading.Tasks;
 using Butterfly.Common;
 using Butterfly.DataContract.Tracing;
 
-namespace Butterfly.Streaming.InMemory
+namespace Butterfly.Pipeline.Lite
 {
     public class InMemorySpanProducer : ISpanProducer
     {
-        private readonly IStreamingSource<IEnumerable<Span>> _streamingSource;
+        private readonly IPipelineSource<IEnumerable<Span>> _streamingSource;
 
-        public InMemorySpanProducer(IStreamingSource<IEnumerable<Span>> streamingSource)
+        public InMemorySpanProducer(IPipelineSource<IEnumerable<Span>> streamingSource)
         {
             _streamingSource = streamingSource ?? throw new ArgumentNullException(nameof(streamingSource));
         }

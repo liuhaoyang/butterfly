@@ -1,21 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-using Butterfly.Common;
 using Butterfly.DataContract.Tracing;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
+using Microsoft.Extensions.Hosting;
 
-namespace Butterfly.Streaming.InMemory
+namespace Butterfly.Pipeline.Lite
 {
-    public class InMemoryStreamingService : IStreamingService
+    public class LitePipelineService : IHostedService
     {
-        private readonly IStreamingSource<IEnumerable<Span>> _streamingSource;
-        private readonly IEnumerable<IStreamingTarget> _streamingTargets;
+        private readonly IPipelineSource<IEnumerable<Span>> _streamingSource;
+        private readonly IEnumerable<IPipelineTarget> _streamingTargets;
 
-        public InMemoryStreamingService(IStreamingSource<IEnumerable<Span>> streamingSource, IEnumerable<IStreamingTarget> streamingTargets)
+        public LitePipelineService(IPipelineSource<IEnumerable<Span>> streamingSource, IEnumerable<IPipelineTarget> streamingTargets)
         {
             _streamingSource = streamingSource;
             _streamingTargets = streamingTargets;

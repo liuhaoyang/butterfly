@@ -9,18 +9,18 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Butterfly.Streaming.InMemory
+namespace Butterfly.Pipeline.Lite
 {
-    internal class SpanStreamingTarget : IStreamingTarget
+    internal class SpanPipelineTarget : IPipelineTarget
     {
         private const int DEFAUKT_CONSUMER_PARALLELISM = 2;
-        private readonly IStreamingSource<IEnumerable<Span>> _streamingSource;
-        private readonly InMemoryStreamingOptions _options;
+        private readonly IPipelineSource<IEnumerable<Span>> _streamingSource;
+        private readonly LitePipelineOptions _options;
         private readonly IServiceProvider _serviceProvider;
         private readonly ILogger _logger;
         private ActionBlock<IEnumerable<Span>> _consumer;
 
-        public SpanStreamingTarget(IStreamingSource<IEnumerable<Span>> streamingSource, IServiceProvider serviceProvider, IOptions<InMemoryStreamingOptions> options, ILogger<SpanStreamingTarget> logger)
+        public SpanPipelineTarget(IPipelineSource<IEnumerable<Span>> streamingSource, IServiceProvider serviceProvider, IOptions<LitePipelineOptions> options, ILogger<SpanPipelineTarget> logger)
         {
             _streamingSource = streamingSource;
             _options = options.Value;

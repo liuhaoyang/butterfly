@@ -1,7 +1,7 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 
-namespace Butterfly.Streaming
+namespace Butterfly.Pipeline
 {
     public interface ISpanConsumer
     {

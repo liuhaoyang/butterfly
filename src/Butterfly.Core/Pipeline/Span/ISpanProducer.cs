@@ -3,7 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Butterfly.DataContract.Tracing;
 
-namespace Butterfly.Streaming
+namespace Butterfly.Pipeline
 {
     public interface ISpanProducer
     {

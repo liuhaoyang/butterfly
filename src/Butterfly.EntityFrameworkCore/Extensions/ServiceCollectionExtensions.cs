@@ -9,7 +9,7 @@ namespace Butterfly.EntityFrameworkCore
 {
     public static class ServiceCollectionExtensions
     {
-        public static IServiceCollection AddInMemoryStorage(this IServiceCollection services, IConfiguration configuration)
+        public static IServiceCollection AddEntityFrameworkCore(this IServiceCollection services, IConfiguration configuration)
         {
             if (services == null)
             {
