@@ -10,8 +10,8 @@ Butterfly¡¯s design is based on the [Google Dapper](https://research.google.com/
 * `dotnet butterfly.server.dll`
 * browse to [http://localhost:9618](http://localhost:9618) to find traces
 ### Elasticsearch Storage
-Elasticsearch storage supports versions 5.x and applies when `StorageType` is set to `elasticsearch`.  
-The following apply when `StorageType` is set to `elasticsearch`:
+Elasticsearch storage supports versions 5.x and applies when `Storage` is set to `elasticsearch`.  
+The following apply when `Storage` is set to `elasticsearch`:
 ```
  `ElasticSearchHosts`: A comma separated list of elasticsearch base urls to connect to ex. http://your_es_host:9200.
               Defaults to "http://localhost:9200".
