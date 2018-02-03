@@ -24,9 +24,10 @@ namespace Butterfly.Pipeline.Lite
             _broadcastBlock.Post(item);
         }
 
-        public async Task Complete()
+        public Task Complete()
         {
-            await _broadcastBlock.Completion;
+            _broadcastBlock.Complete();
+            return Task.CompletedTask;
         }
     }
 }

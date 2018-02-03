@@ -62,9 +62,10 @@ namespace Butterfly.Pipeline.Lite
             }
         }
 
-        public async Task Complete()
+        public Task Complete()
         {
-            await _consumer?.Completion;
+            _consumer?.Complete();
+            return Task.CompletedTask;
         }
     }
 }
