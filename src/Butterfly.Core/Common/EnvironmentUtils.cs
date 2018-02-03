@@ -2,9 +2,9 @@
 {
     public static class EnvironmentUtils
     {
-        public const string StorageType = "storagetype";
+        public const string StorageType = "storage";
 
-        public const string StreamType = "streamtype";
+        public const string Analyzer = "analyzer";
 
         public const string InMemory = "memory";
 

@@ -9,7 +9,7 @@ namespace Butterfly.Elasticsearch
 {
     public static class ServiceCollectionExtensions
     {
-        public static IServiceCollection AddElasticsearchStorage(this IServiceCollection services, IConfiguration configuration)
+        public static IServiceCollection AddElasticsearch(this IServiceCollection services, IConfiguration configuration)
         {
             if (services == null)
             {

@@ -1,9 +1,9 @@
 ﻿using System.Threading.Tasks;
 using System.Threading.Tasks.Dataflow;
 
-namespace Butterfly.Streaming.InMemory
+namespace Butterfly.Pipeline.Lite
 {
-    public interface IStreamingSource<T>
+    public interface IPipelineSource<T>
     { 
         ISourceBlock<T> SourceBlock { get; }
 

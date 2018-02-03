@@ -3,20 +3,20 @@ using System.Threading.Tasks;
 using System.Threading.Tasks.Dataflow;
 using Microsoft.Extensions.Options;
 
-namespace Butterfly.Streaming.InMemory
+namespace Butterfly.Pipeline.Lite
 {
-    internal class StreamingSource<T> : IStreamingSource<T>
+    internal class PipelineSource<T> : IPipelineSource<T>
     {
         private readonly static Func<T, T> closingFunction = x => x;
         private readonly BroadcastBlock<T> _broadcastBlock;
         public ISourceBlock<T> SourceBlock => _broadcastBlock;
 
-        public StreamingSource(IOptions<InMemoryStreamingOptions> options)
+        public PipelineSource(IOptions<LitePipelineOptions> options)
         {
-            if (options.Value.ProducerCapacity <= 0)
+            if (options.Value.ProducerBoundedCapacity <= 0)
                 _broadcastBlock = new BroadcastBlock<T>(closingFunction);
             else
-                _broadcastBlock = new BroadcastBlock<T>(closingFunction, new DataflowBlockOptions { BoundedCapacity = options.Value.ProducerCapacity });
+                _broadcastBlock = new BroadcastBlock<T>(closingFunction, new DataflowBlockOptions { BoundedCapacity = options.Value.ProducerBoundedCapacity });
         }
 
         public void Post(T item)
@@ -24,9 +24,10 @@ namespace Butterfly.Streaming.InMemory
             _broadcastBlock.Post(item);
         }
 
-        public async Task Complete()
+        public Task Complete()
         {
-            await _broadcastBlock.Completion;
+            _broadcastBlock.Complete();
+            return Task.CompletedTask;
         }
     }
 }

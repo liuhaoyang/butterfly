@@ -9,18 +9,18 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Butterfly.Streaming.InMemory
+namespace Butterfly.Pipeline.Lite
 {
-    internal class SpanStreamingTarget : IStreamingTarget
+    internal class SpanPipelineTarget : IPipelineTarget
     {
-        private const int DEFAUKT_CONSUMER_PARALLELISM = 2;
-        private readonly IStreamingSource<IEnumerable<Span>> _streamingSource;
-        private readonly InMemoryStreamingOptions _options;
+        private readonly int DEFAUKT_CONSUMER_PARALLELISM = Environment.ProcessorCount;
+        private readonly IPipelineSource<IEnumerable<Span>> _streamingSource;
+        private readonly LitePipelineOptions _options;
         private readonly IServiceProvider _serviceProvider;
         private readonly ILogger _logger;
         private ActionBlock<IEnumerable<Span>> _consumer;
 
-        public SpanStreamingTarget(IStreamingSource<IEnumerable<Span>> streamingSource, IServiceProvider serviceProvider, IOptions<InMemoryStreamingOptions> options, ILogger<SpanStreamingTarget> logger)
+        public SpanPipelineTarget(IPipelineSource<IEnumerable<Span>> streamingSource, IServiceProvider serviceProvider, IOptions<LitePipelineOptions> options, ILogger<SpanPipelineTarget> logger)
         {
             _streamingSource = streamingSource;
             _options = options.Value;
@@ -39,7 +39,7 @@ namespace Butterfly.Streaming.InMemory
         {
             var executionDataflowBlockOptions = new ExecutionDataflowBlockOptions
             {
-                BoundedCapacity = _options.ConsumerCapacity <= 0 ? -1 : _options.ConsumerCapacity,
+                BoundedCapacity = _options.ConsumerBoundedCapacity <= 0 ? -1 : _options.ConsumerBoundedCapacity,
                 MaxDegreeOfParallelism = _options.MaxConsumerParallelism <= 0 ? DEFAUKT_CONSUMER_PARALLELISM : _options.MaxConsumerParallelism
             };
             return new ActionBlock<IEnumerable<Span>>(async data => await ConsumerAction(data), executionDataflowBlockOptions);
@@ -62,9 +62,10 @@ namespace Butterfly.Streaming.InMemory
             }
         }
 
-        public async Task Complete()
+        public Task Complete()
         {
-            await _consumer?.Completion;
+            _consumer?.Complete();
+            return Task.CompletedTask;
         }
     }
 }

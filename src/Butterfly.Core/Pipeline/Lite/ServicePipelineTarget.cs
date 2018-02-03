@@ -9,25 +9,26 @@ using Butterfly.DataContract.Tracing;
 using Butterfly.Storage;
 using Microsoft.Extensions.Logging;
 
-namespace Butterfly.Streaming.InMemory
+namespace Butterfly.Pipeline.Lite
 {
-    internal class ServiceStreamingTarget : IStreamingTarget
+    internal class ServicePipelineTarget : IPipelineTarget
     {
         private readonly ILogger _logger;
         private readonly IServiceStorage _serviceStorage;
-        private readonly IStreamingSource<IEnumerable<Span>> _streamingSource;
+        private readonly IPipelineSource<IEnumerable<Span>> _streamingSource;
         private ActionBlock<IEnumerable<Service>> _consumer;
 
-        public ServiceStreamingTarget(IStreamingSource<IEnumerable<Span>> streamingSource, IServiceStorage serviceStorage, ILogger<SpanStreamingTarget> logger)
+        public ServicePipelineTarget(IPipelineSource<IEnumerable<Span>> streamingSource, IServiceStorage serviceStorage, ILogger<SpanPipelineTarget> logger)
         {
             _logger = logger;
             _streamingSource = streamingSource;
             _serviceStorage = serviceStorage;
         }
 
-        public async Task Complete()
+        public Task Complete()
         {
-            await _consumer.Completion;
+            _consumer.Complete();
+            return Task.CompletedTask;
         }
 
         public Task Executing()

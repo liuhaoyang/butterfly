@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
 using Butterfly.Elasticsearch;
 using Butterfly.EntityFrameworkCore;
-using Butterfly.Streaming.InMemory;
+using Butterfly.Pipeline.Lite;
+using Butterfly.Server.Common;
+using MessagePack.Resolvers;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -22,7 +24,11 @@ namespace Butterfly.Server
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc();
+            services.AddMvc(option=>
+            {
+                option.OutputFormatters.Add(new MessagePackOutputFormatter(ContractlessStandardResolver.Instance));
+                option.InputFormatters.Add(new MessagePackInputFormatter(ContractlessStandardResolver.Instance));
+            });
 
             services.AddCors();
 
@@ -30,10 +36,10 @@ namespace Butterfly.Server
 
             services.AddSwaggerGen(option => { option.SwaggerDoc("v1", new Info {Title = "butterfly http api", Version = "v1"}); });
             // in-memory
-            services.AddInMemoryFlow(Configuration)
-                .AddInMemoryStorage(Configuration);
+            services.AddLitePipeline(Configuration)
+                .AddEntityFrameworkCore(Configuration);
 
-            services.AddElasticsearchStorage(Configuration);
+            services.AddElasticsearch(Configuration);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
