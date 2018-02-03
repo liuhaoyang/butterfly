@@ -13,7 +13,7 @@ namespace Butterfly.Pipeline.Lite
 {
     internal class SpanPipelineTarget : IPipelineTarget
     {
-        private const int DEFAUKT_CONSUMER_PARALLELISM = 2;
+        private readonly int DEFAUKT_CONSUMER_PARALLELISM = Environment.ProcessorCount;
         private readonly IPipelineSource<IEnumerable<Span>> _streamingSource;
         private readonly LitePipelineOptions _options;
         private readonly IServiceProvider _serviceProvider;
@@ -39,7 +39,7 @@ namespace Butterfly.Pipeline.Lite
         {
             var executionDataflowBlockOptions = new ExecutionDataflowBlockOptions
             {
-                BoundedCapacity = _options.ConsumerCapacity <= 0 ? -1 : _options.ConsumerCapacity,
+                BoundedCapacity = _options.ConsumerBoundedCapacity <= 0 ? -1 : _options.ConsumerBoundedCapacity,
                 MaxDegreeOfParallelism = _options.MaxConsumerParallelism <= 0 ? DEFAUKT_CONSUMER_PARALLELISM : _options.MaxConsumerParallelism
             };
             return new ActionBlock<IEnumerable<Span>>(async data => await ConsumerAction(data), executionDataflowBlockOptions);

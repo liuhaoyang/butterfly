@@ -1,14 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using Butterfly.DataContract.Tracing;
+using Butterfly.Server.Common;
 using Butterfly.Server.ViewModels;
 using Butterfly.Storage;
 using Butterfly.Storage.Query;
 using Microsoft.AspNetCore.Mvc;
-using Butterfly.DataContract.Tracing;
-using  System.Linq;
-using Butterfly.Server.Common;
 
 namespace Butterfly.Server.Controllers
 {

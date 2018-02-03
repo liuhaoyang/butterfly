@@ -13,10 +13,10 @@ namespace Butterfly.Pipeline.Lite
 
         public PipelineSource(IOptions<LitePipelineOptions> options)
         {
-            if (options.Value.ProducerCapacity <= 0)
+            if (options.Value.ProducerBoundedCapacity <= 0)
                 _broadcastBlock = new BroadcastBlock<T>(closingFunction);
             else
-                _broadcastBlock = new BroadcastBlock<T>(closingFunction, new DataflowBlockOptions { BoundedCapacity = options.Value.ProducerCapacity });
+                _broadcastBlock = new BroadcastBlock<T>(closingFunction, new DataflowBlockOptions { BoundedCapacity = options.Value.ProducerBoundedCapacity });
         }
 
         public void Post(T item)

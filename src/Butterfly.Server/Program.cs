@@ -15,7 +15,7 @@ namespace Butterfly.Server
         public static IWebHost BuildWebHost(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
                 .UseStartup<Startup>()
-                .UseUrls(UrlHelpers.GetApplicationUrl(args))
+                .UseUrls(AddressHelpers.GetApplicationUrl(args))
                 .Build();
 
     }

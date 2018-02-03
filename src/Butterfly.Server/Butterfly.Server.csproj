@@ -3,10 +3,11 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp2.0</TargetFramework>
     <RuntimeFrameworkVersion>2.0.0</RuntimeFrameworkVersion>
-    <AssemblyName>butterfly.server</AssemblyName>
+    <AssemblyName>Butterfly.Server</AssemblyName>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="3.2.0" />
+    <PackageReference Include="MessagePack" Version="1.7.3.4" />
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.SpaServices" Version="2.0.0" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.0.0" />

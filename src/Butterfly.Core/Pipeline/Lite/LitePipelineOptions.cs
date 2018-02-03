@@ -8,8 +8,8 @@ namespace Butterfly.Pipeline.Lite
 
         public int MaxConsumerParallelism { get; set; }
 
-        public int ProducerCapacity { get; set; }
+        public int ProducerBoundedCapacity { get; set; }
 
-        public int ConsumerCapacity { get; set; }
+        public int ConsumerBoundedCapacity { get; set; }
     }
 }
