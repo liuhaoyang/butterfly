@@ -118,5 +118,10 @@ namespace Butterfly.EntityFrameworkCore
                 }
             }
         }
+
+        public Task<IEnumerable<TraceHistogram>> GetTraceHistogram(TraceQuery traceQuery)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

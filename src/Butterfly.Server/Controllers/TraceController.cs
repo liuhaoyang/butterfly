@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -50,6 +51,33 @@ namespace Butterfly.Server.Controllers
             }
 
             return traceViewModels;
+        }
+
+        [HttpGet("Histogram")]
+        public async Task<IEnumerable<TraceHistogramViewModel>> GetTraceHistogram(
+            [FromQuery] string service, [FromQuery] string tags,
+            [FromQuery] long? startTimestamp, [FromQuery] long? finishTimestamp,
+            [FromQuery] int? minDuration, [FromQuery] int? maxDuration, [FromQuery] int? limit)
+        {
+            var query = new TraceQuery
+            {
+                Tags = tags,
+                ServiceName = service,
+                StartTimestamp = TimestampHelpers.Convert(startTimestamp),
+                FinishTimestamp = TimestampHelpers.Convert(finishTimestamp),
+                MinDuration = minDuration,
+                MaxDuration = maxDuration,
+                Limit = limit.GetValueOrDefault(10)
+            };
+
+            if (query.FinishTimestamp == null)
+                query.FinishTimestamp = DateTimeOffset.UtcNow;
+            if (query.StartTimestamp == null)
+                query.StartTimestamp = DateTimeOffset.Now.Date.ToUniversalTime();
+
+            var data = await _spanQuery.GetTraceHistogram(query);
+
+            return _mapper.Map<List<TraceHistogramViewModel>>(data);
         }
 
         private List<TraceService> GetTraceServices(Trace trace)

@@ -47,6 +47,8 @@ namespace Butterfly.Server.Common
                 .ForMember(destination => destination.Timestamp, option => option.MapFrom(log => ToLocalDateTime(log.Timestamp)));
 
             CreateMap<SpanReference, ReferenceViewModel>();
+
+            CreateMap<TraceHistogram, TraceHistogramViewModel>();
         }
 
         private static long GetDuration(IEnumerable<Span> spans)

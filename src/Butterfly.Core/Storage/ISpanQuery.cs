@@ -14,5 +14,7 @@ namespace Butterfly.Storage
         Task<IEnumerable<Trace>> GetTraces(TraceQuery traceQuery);
 
         Task<IEnumerable<Span>> GetSpanDependencies(DependencyQuery dependencyQuery);
+
+        Task<IEnumerable<TraceHistogram>> GetTraceHistogram(TraceQuery traceQuery);
     }
 }
