@@ -86,6 +86,8 @@ namespace Butterfly.Elasticsearch
 
         public async Task<IEnumerable<TraceHistogram>> GetTraceHistogram(TraceQuery traceQuery)
         {
+            traceQuery.Ensure();
+
             var index = Indices.Index(_indexManager.CreateTracingIndex());
 
             var query = BuildTracesQuery(traceQuery);
@@ -103,10 +105,16 @@ namespace Butterfly.Elasticsearch
 
             if (histogramAggregations == null)
             {
-                return new TraceHistogram[0];
+                return new TraceHistogram[] { new TraceHistogram { Time = traceQuery.StartTimestamp.Value, Count = 0 }, new TraceHistogram { Time = traceQuery.FinishTimestamp.Value, Count = 0 } };
             }
 
-            var traceHistograms = histogramAggregations.Items.OfType<DateHistogramBucket>().Select(x => new TraceHistogram { Time = x.KeyAsString, Count = GetTraceCount(x) });
+            var traceHistograms = new List<TraceHistogram>();
+
+            traceHistograms.Add(new TraceHistogram { Time = traceQuery.StartTimestamp.Value, Count = 0 });
+
+            traceHistograms.AddRange(histogramAggregations.Items.OfType<DateHistogramBucket>().Select(x => new TraceHistogram { Time = GetHistogramTime((long)x.Key), Count = GetTraceCount(x) }));
+
+            traceHistograms.Add(new TraceHistogram { Time = traceQuery.FinishTimestamp.Value, Count = 0 });
 
             return traceHistograms.ToList();
         }
@@ -192,6 +200,11 @@ namespace Butterfly.Elasticsearch
                 return 0;
             }
             return (int)valueAggregate.Value.Value;
+        }
+
+        private DateTimeOffset GetHistogramTime(long timestamp)
+        {
+            return DateTimeOffset.FromUnixTimeMilliseconds(timestamp);
         }
     }
 }

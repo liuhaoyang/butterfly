@@ -70,11 +70,6 @@ namespace Butterfly.Server.Controllers
                 Limit = limit.GetValueOrDefault(10)
             };
 
-            if (query.FinishTimestamp == null)
-                query.FinishTimestamp = DateTimeOffset.UtcNow;
-            if (query.StartTimestamp == null)
-                query.StartTimestamp = DateTimeOffset.Now.Date.ToUniversalTime();
-
             var data = await _spanQuery.GetTraceHistogram(query);
 
             return _mapper.Map<List<TraceHistogramViewModel>>(data);
