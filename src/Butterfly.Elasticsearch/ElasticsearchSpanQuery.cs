@@ -104,15 +104,9 @@ namespace Butterfly.Elasticsearch
                 return new TraceHistogram[0];
             }
 
-            var traceHistograms = new List<TraceHistogram>();
+            var traceHistograms = histogramAggregations.Items.OfType<DateHistogramBucket>().Select(x => new TraceHistogram { Time = GetHistogramTime((long)x.Key), Count = GetTraceCount(x) });
 
-            traceHistograms.Add(new TraceHistogram { Time = traceQuery.StartTimestamp.Value.AddSeconds(-1), Count = 0 });
-
-            traceHistograms.AddRange(histogramAggregations.Items.OfType<DateHistogramBucket>().Select(x => new TraceHistogram { Time = GetHistogramTime((long)x.Key), Count = GetTraceCount(x) }));
-
-            traceHistograms.Add(new TraceHistogram { Time = traceQuery.FinishTimestamp.Value.AddSeconds(1), Count = 0 });
-
-            return traceHistograms;
+            return traceHistograms.OrderBy(x => x.Time).ToList();
         }
 
         private Func<QueryContainerDescriptor<Span>, QueryContainer> BuildTracesQuery(TraceQuery traceQuery)
