@@ -1,6 +1,7 @@
 ﻿using Butterfly.Common;
 using Microsoft.Extensions.Configuration;
 
+// ReSharper disable once CheckNamespace
 namespace Butterfly.Pipeline.Lite
 {
     public static class ConfigurationExtensions

@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Butterfly.Common;
+﻿using Butterfly.Common;
 using Microsoft.Extensions.Configuration;
 
+// ReSharper disable once CheckNamespace
 namespace Butterfly.Elasticsearch
 {
     internal static class ConfigurationExtensions

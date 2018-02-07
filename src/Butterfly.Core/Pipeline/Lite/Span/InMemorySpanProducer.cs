@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Butterfly.Common;
 using Butterfly.DataContract.Tracing;
 
+// ReSharper disable once CheckNamespace
 namespace Butterfly.Pipeline.Lite
 {
     public class InMemorySpanProducer : ISpanProducer

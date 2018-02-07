@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Butterfly.DataContract.Tracing;
@@ -19,15 +20,14 @@ namespace Butterfly.Pipeline.Lite
 
         public async Task StartAsync(CancellationToken cancellationToken)
         {
-            foreach (var target in _streamingTargets)
-                await target.Executing();
+            await Task.WhenAll(_streamingTargets.Select(x => x.Executing()));
         }
 
         public async Task StopAsync(CancellationToken cancellationToken)
         {
             await _streamingSource.Complete();
-            foreach (var target in _streamingTargets)
-                await target.Complete();
+
+            await Task.WhenAll(_streamingTargets.Select(x => x.Complete()));
         }
     }
 }
