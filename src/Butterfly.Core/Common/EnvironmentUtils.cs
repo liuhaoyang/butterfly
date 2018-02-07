@@ -9,5 +9,7 @@
         public const string InMemory = "memory";
 
         public const string Elasticsearch = "elasticsearch";
+
+        public const string EnableHttpCollector = "enablehttpcollector";
     }
 }
