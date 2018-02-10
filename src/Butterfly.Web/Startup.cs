@@ -33,6 +33,8 @@ namespace Butterfly.Server
 
             mvcBuilder.AddApplicationPart(typeof(HttpCollectorOptions).Assembly);
 
+            services.AddResponseCompression();
+
             services.Configure<HttpCollectorOptions>(Configuration);
 
             services.AddCors();
@@ -66,6 +68,8 @@ namespace Butterfly.Server
             {
                 app.UseExceptionHandler("/Home/Error");
             }
+
+            app.UseResponseCompression();
 
             app.UseCors(cors => cors.AllowAnyOrigin());
             
