@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.27130.2024
+VisualStudioVersion = 15.0.27130.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{2E623577-C14B-42DB-97D3-EBF1E1B5B554}"
 EndProject
@@ -13,13 +13,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Collector", "Collector", "{
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{F5006079-5343-40F4-A68D-8435DE36353D}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Server", "Server", "{BD349368-FB1D-4C0E-B117-C8CA80DBC5FA}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Web", "Web", "{BD349368-FB1D-4C0E-B117-C8CA80DBC5FA}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Butterfly.DataContract", "src\Butterfly.DataContract\Butterfly.DataContract.csproj", "{E6A100D1-BE31-48E1-9AFD-8E3777623DD8}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Butterfly.EntityFrameworkCore", "src\Butterfly.EntityFrameworkCore\Butterfly.EntityFrameworkCore.csproj", "{51D91BD8-2DB7-4C8A-B07E-CD3BBD81C754}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Butterfly.Server", "src\Butterfly.Server\Butterfly.Server.csproj", "{102CEB77-5911-47F4-99E6-FC3FC97FC989}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Butterfly.Elasticsearch", "src\Butterfly.Elasticsearch\Butterfly.Elasticsearch.csproj", "{5DA68189-6E2A-4741-B1DE-D3C43B5A8DC1}"
 EndProject
@@ -28,6 +26,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "solution items", "solution 
 		README.md = README.md
 		build\version.props = build\version.props
 	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Butterfly.HttpCollector", "src\Butterfly.HttpCollector\Butterfly.HttpCollector.csproj", "{F7169B83-8AB7-480F-9FDF-F9FBD4CCC12F}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Butterfly.Web", "src\Butterfly.Web\Butterfly.Web.csproj", "{730CA734-C3E9-4DFF-8DFB-9E73ED52504E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -47,14 +49,18 @@ Global
 		{51D91BD8-2DB7-4C8A-B07E-CD3BBD81C754}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{51D91BD8-2DB7-4C8A-B07E-CD3BBD81C754}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{51D91BD8-2DB7-4C8A-B07E-CD3BBD81C754}.Release|Any CPU.Build.0 = Release|Any CPU
-		{102CEB77-5911-47F4-99E6-FC3FC97FC989}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{102CEB77-5911-47F4-99E6-FC3FC97FC989}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{102CEB77-5911-47F4-99E6-FC3FC97FC989}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{102CEB77-5911-47F4-99E6-FC3FC97FC989}.Release|Any CPU.Build.0 = Release|Any CPU
 		{5DA68189-6E2A-4741-B1DE-D3C43B5A8DC1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{5DA68189-6E2A-4741-B1DE-D3C43B5A8DC1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5DA68189-6E2A-4741-B1DE-D3C43B5A8DC1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5DA68189-6E2A-4741-B1DE-D3C43B5A8DC1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F7169B83-8AB7-480F-9FDF-F9FBD4CCC12F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F7169B83-8AB7-480F-9FDF-F9FBD4CCC12F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F7169B83-8AB7-480F-9FDF-F9FBD4CCC12F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F7169B83-8AB7-480F-9FDF-F9FBD4CCC12F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{730CA734-C3E9-4DFF-8DFB-9E73ED52504E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{730CA734-C3E9-4DFF-8DFB-9E73ED52504E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{730CA734-C3E9-4DFF-8DFB-9E73ED52504E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{730CA734-C3E9-4DFF-8DFB-9E73ED52504E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -67,8 +73,9 @@ Global
 		{BD349368-FB1D-4C0E-B117-C8CA80DBC5FA} = {2E623577-C14B-42DB-97D3-EBF1E1B5B554}
 		{E6A100D1-BE31-48E1-9AFD-8E3777623DD8} = {F5006079-5343-40F4-A68D-8435DE36353D}
 		{51D91BD8-2DB7-4C8A-B07E-CD3BBD81C754} = {6EB52406-41A3-492D-90B6-2EF0CB0B222F}
-		{102CEB77-5911-47F4-99E6-FC3FC97FC989} = {BD349368-FB1D-4C0E-B117-C8CA80DBC5FA}
 		{5DA68189-6E2A-4741-B1DE-D3C43B5A8DC1} = {6EB52406-41A3-492D-90B6-2EF0CB0B222F}
+		{F7169B83-8AB7-480F-9FDF-F9FBD4CCC12F} = {2CD13284-D7A4-4C5F-AC42-8371A7D02109}
+		{730CA734-C3E9-4DFF-8DFB-9E73ED52504E} = {BD349368-FB1D-4C0E-B117-C8CA80DBC5FA}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {3D45CC9B-D8C6-4DC1-8D68-09FBCD9371A8}

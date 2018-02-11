@@ -7,9 +7,9 @@ A distributed tracing system and application performance management.
 Butterfly's design is based on the [Google Dapper](https://research.google.com/pubs/pub36356.html) paper and [OpenTracing](http://opentracing.io/).
 # Quickstart
 * download [latest release](https://github.com/ButterflyAPM/butterfly/releases)
-* extract `butterfly-server-[latest version]`
-* `cd butterfly-server-[latest version]`
-* `dotnet Butterfly.Server.dll`
+* extract `butterfly-web-[latest version]`
+* `cd butterfly-web-[latest version]`
+* `dotnet Butterfly.Web.dll --EnableHttpCollector=true`
 * browse to [http://localhost:9618](http://localhost:9618) to find traces
 ### Elasticsearch Storage
 Elasticsearch storage supports versions 5.x and applies when `Storage` is set to `elasticsearch`.  
@@ -21,7 +21,7 @@ The following apply when `Storage` is set to `elasticsearch`:
 ```
 Example usage:
 ```
-dotnet Butterfly.Server.dll --Storage=elasticsearch --ElasticSearchHosts=http://localhost:9200
+dotnet Butterfly.Web.dll --EnableHttpCollector=true --Storage=elasticsearch --ElasticSearchHosts=http://localhost:9200
 ```
 
 # Screenshots
