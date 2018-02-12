@@ -78,13 +78,13 @@ namespace Butterfly.EntityFrameworkCore
 
             var queryGroup = query.ToList().GroupBy(x => x.TraceId).Take(traceQuery.Limit).ToList();
 
-            return Task.FromResult<IEnumerable<Trace>>(queryGroup.Select(x => new Trace() {TraceId = x.Key, Spans = _mapper.Map<List<Span>>(x.ToList())}).ToList());
+            return Task.FromResult<IEnumerable<Trace>>(queryGroup.Select(x => new Trace() { TraceId = x.Key, Spans = _mapper.Map<List<Span>>(x.ToList()) }).ToList());
         }
 
         public Task<IEnumerable<Span>> GetSpanDependencies(DependencyQuery dependencyQuery)
         {
             var query = _dbContext.Spans.AsNoTracking().Include(x => x.References).Include(x => x.Tags).AsQueryable();
-            
+
             if (dependencyQuery.StartTimestamp != null)
             {
                 query = query.Where(x => x.StartTimestamp >= dependencyQuery.StartTimestamp);
@@ -102,7 +102,7 @@ namespace Butterfly.EntityFrameworkCore
         {
             if (!string.IsNullOrEmpty(traceQuery.ServiceName))
             {
-                yield return new Tag {Key = QueryConstants.Service, Value = traceQuery.ServiceName};
+                yield return new Tag { Key = QueryConstants.Service, Value = traceQuery.ServiceName };
             }
 
             if (!string.IsNullOrEmpty(traceQuery.Tags))
@@ -113,15 +113,32 @@ namespace Butterfly.EntityFrameworkCore
                     var pair = tag.Split('=');
                     if (pair.Length == 2)
                     {
-                        yield return new Tag {Key = pair[0], Value = pair[1]};
+                        yield return new Tag { Key = pair[0], Value = pair[1] };
                     }
                 }
             }
         }
 
-        public Task<IEnumerable<TraceHistogram>> GetTraceHistogram(TraceQuery traceQuery)
+        public async Task<IEnumerable<TraceHistogram>> GetTraceHistogram(TraceQuery traceQuery)
         {
-            throw new NotImplementedException();
+            traceQuery.Ensure();
+
+            var query = _dbContext.Spans.AsQueryable();
+
+            if (traceQuery.StartTimestamp != null)
+            {
+                query = query.Where(x => x.StartTimestamp >= traceQuery.StartTimestamp);
+            }
+
+            if (traceQuery.FinishTimestamp != null)
+            {
+                query = query.Where(x => x.FinishTimestamp <= traceQuery.FinishTimestamp);
+            }
+
+            var queryGroup = query.ToList().GroupBy(x => x.TraceId).ToList();
+
+            var histogram = queryGroup.GroupBy(x => x.Min(s => s.StartTimestamp).ToString("yyyy-MM-dd HH:mm")).Select(x => new TraceHistogram { Count = x.Count(), Time = DateTimeOffset.Parse(x.Key) });
+            return histogram.ToList();
         }
     }
 }

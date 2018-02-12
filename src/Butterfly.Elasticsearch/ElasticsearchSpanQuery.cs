@@ -90,11 +90,9 @@ namespace Butterfly.Elasticsearch
 
             var timeSpan = traceQuery.FinishTimestamp.Value - traceQuery.StartTimestamp.Value;
 
-            var interval = timeSpan.TotalMinutes > 100 ? ((int)timeSpan.TotalMinutes / 100) + "m" : ((int)timeSpan.TotalSeconds / 100) + "s";
-
             var histogramAggregationsResult = await _elasticClient.SearchAsync<Span>(s => s.Index(index).Size(0).Query(query).
                 Aggregations(a =>
-                    a.DateHistogram("data_histogram_startTimestamp", d => d.Field(f => f.StartTimestamp).Interval(new Time(interval)).Format("yyyy-MM-dd HH:mm:ss").
+                    a.DateHistogram("data_histogram_startTimestamp", d => d.Field(f => f.StartTimestamp).Interval(DateInterval.Minute).Format("yyyy-MM-dd HH:mm:ss").
                     Aggregations(sub => sub.Cardinality("cardinality_traceId", c => c.Field(f => f.TraceId))))));
 
             var histogramAggregations = histogramAggregationsResult.Aggregations.FirstOrDefault().Value as BucketAggregate;
