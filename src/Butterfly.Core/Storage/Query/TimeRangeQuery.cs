@@ -14,7 +14,7 @@ namespace Butterfly.Storage.Query
         {
             if (FinishTimestamp == null)
             {
-                FinishTimestamp = DateTimeOffset.UtcNow.AddSeconds(-15);
+                FinishTimestamp = DateTimeOffset.UtcNow;
             }
             if (StartTimestamp == null)
             {
