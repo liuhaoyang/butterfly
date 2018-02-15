@@ -23,4 +23,4 @@ deploy:
   server: https://www.myget.org/F/butterfly-apm/api/v2/package
   api_key:
     secure: jpjXYvzq6XOX2E5PnhKPRBK/DKVoZAQ6Ok1UmWI3BuWq6rdtrGJMUJem/GtR8+qG
-  artifact: /artifacts\/packages\/.+\.nupkg/
+  skip_symbols: true
