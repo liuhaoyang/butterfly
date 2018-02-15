@@ -1,6 +1,7 @@
 # Butterfly
 
-[![Join the chat at https://gitter.im/ButterflyAPM/butterfly](https://badges.gitter.im/ButterflyAPM/butterfly.svg)](https://gitter.im/ButterflyAPM/butterfly?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+[![Build status](https://ci.appveyor.com/api/projects/status/ct5y72ux8py7101m?svg=true)](https://ci.appveyor.com/project/liuhaoyang/butterfly)  [![Join the chat at https://gitter.im/ButterflyAPM/butterfly](https://badges.gitter.im/ButterflyAPM/butterfly.svg)](https://gitter.im/ButterflyAPM/butterfly?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 A distributed tracing system and application performance management.
 
 # Design
