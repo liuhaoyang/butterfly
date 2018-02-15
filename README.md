@@ -1,4 +1,6 @@
 # Butterfly
+
+[![Join the chat at https://gitter.im/ButterflyAPM/butterfly](https://badges.gitter.im/ButterflyAPM/butterfly.svg)](https://gitter.im/ButterflyAPM/butterfly?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 A distributed tracing system and application performance management.
 
 # Design
