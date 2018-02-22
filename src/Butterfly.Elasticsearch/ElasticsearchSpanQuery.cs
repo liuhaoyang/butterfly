@@ -69,10 +69,6 @@ namespace Butterfly.Elasticsearch
             var spanResult = await _elasticClient.SearchAsync<Span>(s => s.Index(index).Size((int)limit).Query(q => q.ConstantScore(c => c.Filter(filter => filter.Terms(t => t.Field(f => f.TraceId).Terms(traceIds))))));
 
             return spanResult.Documents.GroupBy(x => x.TraceId).Select(x => new Trace { TraceId = x.Key, Spans = x.ToList() }).OrderByDescending(x => x.Spans.Min(s => s.StartTimestamp)).ToList();
-
-            //var traces = traceIdsAggregations.Items.OfType<KeyedBucket<object>>().AsParallel().Select(x => GetTrace(x.Key?.ToString(), index)).OrderByDescending(x => x.Spans.Min(s => s.StartTimestamp)).ToList();
-
-            //return traces;
         }
 
         public async Task<IEnumerable<Span>> GetSpanDependencies(DependencyQuery dependencyQuery)
@@ -82,6 +78,33 @@ namespace Butterfly.Elasticsearch
             var spanResult = await _elasticClient.SearchAsync<Span>(s => s.Index(index).Size(2048).Query(query => query.Bool(b => b.Must(BuildMustQuery(dependencyQuery)))));
 
             return spanResult.Documents;
+        }
+
+        public async Task<IEnumerable<TraceHistogram>> GetTraceHistogram(TraceQuery traceQuery)
+        {
+            traceQuery.Ensure();
+
+            var index = Indices.Index(_indexManager.CreateTracingIndex());
+
+            var query = BuildTracesQuery(traceQuery);
+
+            var timeSpan = traceQuery.FinishTimestamp.Value - traceQuery.StartTimestamp.Value;
+
+            var histogramAggregationsResult = await _elasticClient.SearchAsync<Span>(s => s.Index(index).Size(0).Query(query).
+                Aggregations(a =>
+                    a.DateHistogram("data_histogram_startTimestamp", d => d.Field(f => f.StartTimestamp).Interval(DateInterval.Minute).Format("yyyy-MM-dd HH:mm:ss").
+                    Aggregations(sub => sub.Cardinality("cardinality_traceId", c => c.Field(f => f.TraceId))))));
+
+            var histogramAggregations = histogramAggregationsResult.Aggregations.FirstOrDefault().Value as BucketAggregate;
+
+            if (histogramAggregations == null || histogramAggregations.Items == null || !histogramAggregations.Items.OfType<DateHistogramBucket>().Any())
+            {
+                return new TraceHistogram[0];
+            }
+
+            var traceHistograms = histogramAggregations.Items.OfType<DateHistogramBucket>().Select(x => new TraceHistogram { Time = GetHistogramTime((long)x.Key), Count = GetTraceCount(x) });
+
+            return traceHistograms.OrderBy(x => x.Time).ToList();
         }
 
         private Func<QueryContainerDescriptor<Span>, QueryContainer> BuildTracesQuery(TraceQuery traceQuery)
@@ -155,6 +178,21 @@ namespace Butterfly.Elasticsearch
         private IEnumerable<Span> GetSpans(string traceId, int size, Indices index)
         {
             return _elasticClient.Search<Span>(s => s.Index(index).Size(size).Query(q => q.Term(t => t.Field(f => f.TraceId).Value(traceId)))).Documents;
+        }
+
+        private int GetTraceCount(DateHistogramBucket dateHistogram)
+        {
+            var valueAggregate = dateHistogram.Values.FirstOrDefault() as ValueAggregate;
+            if (valueAggregate == null || valueAggregate.Value == null)
+            {
+                return 0;
+            }
+            return (int)valueAggregate.Value.Value;
+        }
+
+        private DateTimeOffset GetHistogramTime(long timestamp)
+        {
+            return DateTimeOffset.FromUnixTimeMilliseconds(timestamp);
         }
     }
 }

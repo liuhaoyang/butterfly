@@ -12,6 +12,6 @@ namespace Butterfly.Storage.Query
 
         public int Limit { get; set; }
 
-        public string Tags { get; set; }
+        public string Tags { get; set; }  
     }
 }
