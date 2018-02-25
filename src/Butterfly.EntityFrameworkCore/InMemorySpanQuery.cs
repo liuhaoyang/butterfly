@@ -119,7 +119,7 @@ namespace Butterfly.EntityFrameworkCore
             }
         }
 
-        public async Task<IEnumerable<TraceHistogram>> GetTraceHistogram(TraceQuery traceQuery)
+        public Task<IEnumerable<TraceHistogram>> GetTraceHistogram(TraceQuery traceQuery)
         {
             traceQuery.Ensure();
 
@@ -138,7 +138,7 @@ namespace Butterfly.EntityFrameworkCore
             var queryGroup = query.ToList().GroupBy(x => x.TraceId).ToList();
 
             var histogram = queryGroup.GroupBy(x => x.Min(s => s.StartTimestamp).ToString("yyyy-MM-dd HH:mm")).Select(x => new TraceHistogram { Count = x.Count(), Time = DateTimeOffset.Parse(x.Key) });
-            return histogram.ToList();
+            return Task.FromResult<IEnumerable<TraceHistogram>>(histogram.ToList());
         }
     }
 }
