@@ -7,16 +7,16 @@ namespace Butterfly.Consumer.Lite
 {
     internal class BroadcastSource<T> : ISource<T>
     {
-        private readonly static Func<T, T> closingFunction = x => x;
+        private static readonly Func<T, T> ClosingFunction = x => x;
         private readonly BroadcastBlock<T> _broadcastBlock;
         public ISourceBlock<T> SourceBlock => _broadcastBlock;
 
         public BroadcastSource(IOptions<ConsumerOptions> options)
         {
             if (options.Value.ProducerBoundedCapacity <= 0)
-                _broadcastBlock = new BroadcastBlock<T>(closingFunction);
+                _broadcastBlock = new BroadcastBlock<T>(ClosingFunction);
             else
-                _broadcastBlock = new BroadcastBlock<T>(closingFunction, new DataflowBlockOptions { BoundedCapacity = options.Value.ProducerBoundedCapacity });
+                _broadcastBlock = new BroadcastBlock<T>(ClosingFunction, new DataflowBlockOptions { BoundedCapacity = options.Value.ProducerBoundedCapacity });
         }
 
         public void Post(T item)
