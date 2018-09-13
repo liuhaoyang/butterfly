@@ -1,4 +1,5 @@
 # Butterfly
+!Warning! butterfly不再维护，.NET Core生产级的APM方案请参考[Apache SkyWalking](https://github.com/apache/incubator-skywalking/)和[SkyWalking .NET Core Agent](https://github.com/OpenSkywalking/skywalking-netcore)
 
 [![Build status](https://ci.appveyor.com/api/projects/status/ct5y72ux8py7101m?svg=true)](https://ci.appveyor.com/project/liuhaoyang/butterfly)  [![Join the chat at https://gitter.im/ButterflyAPM/butterfly](https://badges.gitter.im/ButterflyAPM/butterfly.svg)](https://gitter.im/ButterflyAPM/butterfly?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
